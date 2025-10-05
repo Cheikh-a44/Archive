@@ -1,1 +1,898 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Archive ISET Améliorée</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  :root {
+    --primary: #0077b6;
+    --primary-dark: #005f87;
+    --primary-light: #caf0f8;
+    --secondary: #0096c7;
+    --accent: #00b4d8;
+    --light: #f5f7fa;
+    --white: #ffffff;
+    --text: #333333;
+    --text-light: #666666;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --radius: 10px;
+    --transition: all 0.3s ease;
+  }
 
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--light);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  header {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: var(--white);
+    padding: 1.5rem 1rem;
+    text-align: center;
+    box-shadow: var(--shadow);
+  }
+
+  header h1 {
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  header p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  /* Breadcrumb */
+  #breadcrumb {
+    padding: 1rem;
+    background: var(--white);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+
+  #breadcrumbContent {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  #breadcrumbContent span {
+    font-weight: 600;
+    cursor: pointer;
+    background: var(--primary);
+    color: var(--white);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    user-select: none;
+    transition: var(--transition);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  #breadcrumbContent span:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+  }
+
+  #breadcrumbContent span:active {
+    transform: scale(0.97);
+  }
+
+  #breadcrumbContent span i {
+    font-size: 0.8rem;
+  }
+
+  /* Search Bar */
+  .search-container {
+    padding: 1rem;
+    background: var(--white);
+    border-radius: var(--radius);
+    margin: 1rem;
+    box-shadow: var(--shadow);
+  }
+
+  .search-box {
+    display: flex;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .search-box input {
+    flex: 1;
+    padding: 0.8rem 1rem;
+    border: 2px solid var(--primary-light);
+    border-radius: var(--radius) 0 0 var(--radius);
+    font-size: 1rem;
+    outline: none;
+    transition: var(--transition);
+  }
+
+  .search-box input:focus {
+    border-color: var(--primary);
+  }
+
+  .search-box button {
+    background: var(--primary);
+    color: var(--white);
+    border: none;
+    padding: 0 1.5rem;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+
+  .search-box button:hover {
+    background: var(--primary-dark);
+  }
+
+  /* Grid / Cards */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+    padding: 20px;
+  }
+
+  .card {
+    background: var(--white);
+    padding: 1em;
+    border-radius: var(--radius);
+    text-align: center;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 100px;
+  }
+
+  .card:hover {
+    background: var(--primary-light);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  }
+
+  .card:active {
+    transform: scale(0.97);
+  }
+
+  .card i {
+    font-size: 1.5rem;
+    color: var(--primary);
+  }
+
+  .card-title {
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  /* Sections */
+  section {
+    display: none;
+  }
+
+  section.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* File List */
+  .file-list-container {
+    padding: 1rem;
+  }
+
+  .file-item {
+    background: var(--white);
+    margin: 0.8rem 0;
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: var(--transition);
+  }
+
+  .file-item:hover {
+    background: var(--primary-light);
+    transform: translateX(5px);
+  }
+
+  .file-item:active {
+    transform: scale(0.98);
+  }
+
+  .file-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .file-icon {
+    font-size: 1.5rem;
+    color: var(--primary);
+  }
+
+  .file-name {
+    font-weight: 500;
+  }
+
+  .file-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .file-action {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: var(--text-light);
+    transition: var(--transition);
+    padding: 0.3rem;
+    border-radius: 50%;
+  }
+
+  .file-action:hover {
+    color: var(--primary);
+    background: rgba(0, 0, 0, 0.05);
+  }
+
+  .favorite {
+    color: #ffc107;
+  }
+
+  /* Info messages */
+  .info {
+    text-align: center;
+    color: var(--text-light);
+    margin: 1.5rem 0;
+    font-style: italic;
+    padding: 1rem;
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--text-light);
+  }
+
+  .empty-state i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--primary-light);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .grid {
+      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    }
+    
+    header h1 {
+      font-size: 1.8rem;
+    }
+    
+    .file-item {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    
+    .file-actions {
+      align-self: flex-end;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .grid {
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    }
+    
+    .card {
+      padding: 0.8rem 0.5rem;
+    }
+    
+    .card i {
+      font-size: 1.3rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <h1><i class="fas fa-graduation-cap"></i> Archive ISET</h1>
+    <p>Plateforme centralisée de ressources académiques pour les étudiants</p>
+  </div>
+</header>
+
+<div class="container">
+  <!-- Breadcrumb -->
+  <div id="breadcrumb">
+    <div id="breadcrumbContent">
+      <span onclick="goHome()"><i class="fas fa-home"></i> Accueil</span>
+    </div>
+  </div>
+
+  <!-- Search Bar -->
+  <div class="search-container">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Rechercher un fichier, une matière...">
+      <button onclick="performSearch()"><i class="fas fa-search"></i></button>
+    </div>
+  </div>
+
+  <!-- Main Content Sections -->
+  <section id="years" class="active">
+    <h2 class="section-title">Sélectionnez votre année</h2>
+    <div class="grid">
+      <div class="card" onclick="showSectionWithBreadcrumb('semesters', 'L1')">
+        <i class="fas fa-calendar-alt"></i>
+        <div class="card-title">L1</div>
+      </div>
+      <div class="card" onclick="showComingSoon()">
+        <i class="fas fa-calendar-alt"></i>
+        <div class="card-title">L2</div>
+      </div>
+      <div class="card" onclick="showComingSoon()">
+        <i class="fas fa-calendar-alt"></i>
+        <div class="card-title">L3</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="semesters">
+    <h2 class="section-title">Sélectionnez votre semestre</h2>
+    <div class="grid">
+      <div class="card" onclick="showSectionWithBreadcrumb('subjects', 'S1')">
+        <i class="fas fa-book"></i>
+        <div class="card-title">S1</div>
+      </div>
+      <div class="card" onclick="showComingSoon()">
+        <i class="fas fa-book"></i>
+        <div class="card-title">S2</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="subjects">
+    <h2 class="section-title">Sélectionnez une matière</h2>
+    <div class="grid">
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Math')">
+        <i class="fas fa-square-root-alt"></i>
+        <div class="card-title">Mathématiques</div>
+      </div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Physique')">
+        <i class="fas fa-atom"></i>
+        <div class="card-title">Physique</div>
+      </div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Chimie')">
+        <i class="fas fa-flask"></i>
+        <div class="card-title">Chimie</div>
+      </div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Anglais')">
+        <i class="fas fa-language"></i>
+        <div class="card-title">Anglais</div>
+      </div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Français')">
+        <i class="fas fa-font"></i>
+        <div class="card-title">Français</div>
+      </div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Biologie')">
+        <i class="fas fa-dna"></i>
+        <div class="card-title">Biologie</div>
+      </div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Microbiologie')">
+        <i class="fas fa-microscope"></i>
+        <div class="card-title">Microbiologie</div>
+      </div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Génétique')">
+        <i class="fas fa-dna"></i>
+        <div class="card-title">Génétique</div>
+      </div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Informatique')">
+        <i class="fas fa-laptop-code"></i>
+        <div class="card-title">Informatique</div>
+      </div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Statistique')">
+        <i class="fas fa-chart-bar"></i>
+        <div class="card-title">Statistique</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="fileTypes">
+    <h2 class="section-title" id="fileTypesTitle">Types de fichiers disponibles</h2>
+    <div class="grid" id="fileTypesGrid"></div>
+  </section>
+
+  <section id="coursParts">
+    <h2 class="section-title">Sélectionnez une partie du cours</h2>
+    <div class="grid">
+      <div class="card" onclick="showCoursFiles('Partie Devoirs')">
+        <i class="fas fa-tasks"></i>
+        <div class="card-title">Partie Devoirs</div>
+      </div>
+      <div class="card" onclick="showCoursFiles('Partie Examen')">
+        <i class="fas fa-file-alt"></i>
+        <div class="card-title">Partie Examen</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="filesList">
+    <h2 class="section-title" id="filesListTitle">Fichiers disponibles</h2>
+    <div class="file-list-container" id="fileListContainer"></div>
+  </section>
+
+  <section id="searchResults">
+    <h2 class="section-title">Résultats de recherche</h2>
+    <div class="file-list-container" id="searchResultsContainer"></div>
+  </section>
+</div>
+
+<script>
+// Data structure for files
+let currentSubject = '';
+let breadcrumbList = [];
+let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+const filesData = {
+  'Math': { 
+    'TD': ['TD1 - Algèbre linéaire.pdf', 'TD2 - Calcul différentiel.pdf', 'TD3 - Probabilités.pdf'], 
+    'Devoirs': ['Devoir 1 - Mathématiques.pdf', 'Devoir 2 - Equations différentielles.pdf'], 
+    'Examens': ['Examen Final - Mathématiques S1.pdf', 'Contrôle Continu - Mathématiques.pdf'],
+    'Cours': { 
+      'Partie Devoirs': ['Cours 1 - Algèbre.pdf', 'Cours 2 - Analyse.pdf'], 
+      'Partie Examen': ['Résumé - Formules importantes.pdf', 'Annales - Examens précédents.pdf'] 
+    }
+  },
+  'Physique': { 
+    'TD': ['TD1 - Mécanique.pdf'], 
+    'Devoirs': ['Devoir 1 - Électromagnétisme.pdf'], 
+    'Examens': ['Examen Final - Physique S1.pdf'],
+    'Cours': { 
+      'Partie Devoirs': ['Cours 1 - Mécanique.pdf'], 
+      'Partie Examen': ['Résumé - Lois de Newton.pdf'] 
+    }
+  },
+  'Chimie': { 
+    'TD': ['TD1 - Chimie organique.pdf'], 
+    'Devoirs': [], 
+    'Examens': ['Examen Final - Chimie S1.pdf'],
+    'Cours': { 
+      'Partie Devoirs': ['Cours 1 - Structure atomique.pdf'], 
+      'Partie Examen': ['Tableau périodique.pdf'] 
+    }
+  },
+  'Anglais': { 
+    'TD': ['TD1 - Grammaire.pdf'], 
+    'Devoirs': ['Devoir 1 - Rédaction.pdf'], 
+    'Examens': [],
+    'Cours': { 
+      'Partie Devoirs': ['Cours 1 - Vocabulaire.pdf'], 
+      'Partie Examen': ['Liste de verbes irréguliers.pdf'] 
+    }
+  },
+  'Français': { 
+    'TD': ['TD1 - Orthographe.pdf'], 
+    'Devoirs': [], 
+    'Examens': ['Examen Final - Français S1.pdf'],
+    'Cours': { 
+      'Partie Devoirs': ['Cours 1 - Conjugaison.pdf'], 
+      'Partie Examen': ['Fiches de révision.pdf'] 
+    }
+  },
+  'Statistique': { 
+    'TD': ['TD1 - Probabilités.pdf'], 
+    'Devoirs': ['Devoir 1 - Statistiques descriptives.pdf'], 
+    'Examens': ['Examen Final - Statistiques S1.pdf'],
+    'Cours': { 
+      'Partie Devoirs': ['Cours 1 - Introduction aux statistiques.pdf'], 
+      'Partie Examen': ['Formulaire statistique.pdf'] 
+    }
+  },
+  'Biologie': { 
+    'Cours': { 
+      'Partie Devoirs': ['Cours 1 - Cellule et tissus.pdf', 'Cours 2 - Génétique mendélienne.pdf'], 
+      'Partie Examen': ['Résumé - Biologie cellulaire.pdf', 'Fiches de révision - Biologie.pdf'] 
+    }, 
+    'Devoirs': ['Devoir 1 - Anatomie.pdf'], 
+    'Examens': ['Examen Final - Biologie S1.pdf']
+  },
+  'Microbiologie': { 
+    'Cours': { 
+      'Partie Devoirs': ['Cours 1 - Bactériologie.pdf', 'Cours 2 - Virologie.pdf'], 
+      'Partie Examen': ['Résumé - Microorganismes.pdf'] 
+    }, 
+    'Devoirs': ['Devoir 1 - Identification bactérienne.pdf'], 
+    'Examens': ['Examen Final - Microbiologie S1.pdf']
+  },
+  'Génétique': { 
+    'Cours': { 
+      'Partie Devoirs': ['Cours 1 - ADN et ARN.pdf', 'Cours 2 - Mutations génétiques.pdf'], 
+      'Partie Examen': ['Résumé - Génétique moléculaire.pdf'] 
+    }, 
+    'TD': ['TD1 - Croisements génétiques.pdf'], 
+    'Devoirs': ['Devoir 1 - Hérédité.pdf'], 
+    'Examens': ['Examen Final - Génétique S1.pdf']
+  },
+  'Informatique': { 
+    'TD': ['TD1 - Algorithmes.pdf', 'TD2 - Programmation Python.pdf'], 
+    'Devoirs': ['Devoir 1 - Bases de données.pdf'], 
+    'Examens': ['Examen Final - Informatique S1.pdf'],
+    'Cours': { 
+      'Partie Devoirs': ['Cours 1 - Introduction à la programmation.pdf'], 
+      'Partie Examen': ['Résumé - Syntaxe Python.pdf'] 
+    }
+  }
+};
+
+// Initialize the application
+document.addEventListener('DOMContentLoaded', function() {
+  // Add event listener for search input
+  document.getElementById('searchInput').addEventListener('keyup', function(event) {
+    if (event.key === 'Enter') {
+      performSearch();
+    }
+  });
+});
+
+// Breadcrumb functions
+function showSectionWithBreadcrumb(id, name) {
+  if (!breadcrumbList.find(b => b.id === id)) {
+    breadcrumbList.push({id: id, name: name});
+  }
+  updateBreadcrumb();
+  showSection(id);
+}
+
+function selectSubjectWithBreadcrumb(subject) {
+  currentSubject = subject;
+  const id = 'subject-' + subject;
+  if (!breadcrumbList.find(b => b.id === id)) {
+    breadcrumbList.push({id: id, name: subject});
+  }
+  updateBreadcrumb();
+  showSection('fileTypes');
+
+  const grid = document.getElementById('fileTypesGrid');
+  const title = document.getElementById('fileTypesTitle');
+  title.textContent = `Types de fichiers disponibles - ${subject}`;
+  grid.innerHTML = '';
+  const subjectFiles = filesData[subject];
+  
+  for (const type in subjectFiles) {
+    if (type !== 'Cours') {
+      const div = document.createElement('div');
+      div.className = 'card';
+      
+      // Add appropriate icon based on file type
+      let iconClass = 'fas fa-file';
+      if (type === 'TD') iconClass = 'fas fa-pen-alt';
+      if (type === 'Devoirs') iconClass = 'fas fa-tasks';
+      if (type === 'Examens') iconClass = 'fas fa-file-alt';
+      
+      div.innerHTML = `
+        <i class="${iconClass}"></i>
+        <div class="card-title">${type}</div>
+      `;
+      div.onclick = () => showFiles(type);
+      grid.appendChild(div);
+    } else {
+      const div = document.createElement('div');
+      div.className = 'card';
+      div.innerHTML = `
+        <i class="fas fa-book"></i>
+        <div class="card-title">Cours</div>
+      `;
+      div.onclick = () => showSectionWithBreadcrumb('coursParts', 'Cours');
+      grid.appendChild(div);
+    }
+  }
+}
+
+function updateBreadcrumb() {
+  const container = document.getElementById('breadcrumbContent');
+  container.innerHTML = '';
+  
+  // Always show home button
+  const homeSpan = document.createElement('span');
+  homeSpan.innerHTML = '<i class="fas fa-home"></i> Accueil';
+  homeSpan.onclick = goHome;
+  container.appendChild(homeSpan);
+  
+  // Add other breadcrumbs
+  breadcrumbList.forEach((b, index) => {
+    const span = document.createElement('span');
+    span.textContent = b.name;
+    span.onclick = () => {
+      breadcrumbList = breadcrumbList.slice(0, index + 1);
+      updateBreadcrumb();
+      let sectionId = b.id;
+      if (sectionId.startsWith('subject-')) sectionId = 'fileTypes';
+      showSection(sectionId);
+    };
+    container.appendChild(span);
+  });
+}
+
+// Show sections and files
+function showSection(id) {
+  document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
+  const sec = document.getElementById(id);
+  if(sec) sec.classList.add("active");
+  
+  // Scroll to top when changing sections
+  window.scrollTo(0, 0);
+}
+
+function goHome() {
+  breadcrumbList = [];
+  updateBreadcrumb();
+  showSection('years');
+}
+
+function showCoursFiles(part) {
+  const container = document.getElementById('fileListContainer');
+  const title = document.getElementById('filesListTitle');
+  title.textContent = `${currentSubject} - ${part}`;
+  container.innerHTML = '';
+  
+  const cours = filesData[currentSubject]['Cours'][part];
+  if (cours && cours.length > 0) {
+    cours.forEach(file => {
+      const fileItem = createFileItem(file, part);
+      container.appendChild(fileItem);
+    });
+  } else {
+    container.innerHTML = `
+      <div class="empty-state">
+        <i class="fas fa-folder-open"></i>
+        <h3>Aucun fichier disponible</h3>
+        <p>Il n'y a pas encore de fichiers pour ${part} en ${currentSubject}.</p>
+      </div>
+    `;
+  }
+  showSection('filesList');
+}
+
+function showFiles(type) {
+  const container = document.getElementById('fileListContainer');
+  const title = document.getElementById('filesListTitle');
+  title.textContent = `${currentSubject} - ${type}`;
+  container.innerHTML = '';
+  
+  const files = filesData[currentSubject][type];
+  if (files && files.length > 0) {
+    files.forEach(file => {
+      const fileItem = createFileItem(file, type);
+      container.appendChild(fileItem);
+    });
+  } else {
+    container.innerHTML = `
+      <div class="empty-state">
+        <i class="fas fa-folder-open"></i>
+        <h3>Aucun fichier disponible</h3>
+        <p>Il n'y a pas encore de fichiers pour ${type} en ${currentSubject}.</p>
+      </div>
+    `;
+  }
+  showSection('filesList');
+}
+
+function createFileItem(fileName, category) {
+  const li = document.createElement('div');
+  li.className = 'file-item';
+  
+  // Determine file icon based on extension
+  let fileIcon = 'fas fa-file';
+  if (fileName.toLowerCase().includes('.pdf')) fileIcon = 'fas fa-file-pdf';
+  if (fileName.toLowerCase().includes('.doc')) fileIcon = 'fas fa-file-word';
+  if (fileName.toLowerCase().includes('.ppt')) fileIcon = 'fas fa-file-powerpoint';
+  if (fileName.toLowerCase().includes('.xls')) fileIcon = 'fas fa-file-excel';
+  
+  // Check if file is favorited
+  const isFavorited = favorites.includes(fileName);
+  const favoriteIcon = isFavorited ? 'fas fa-star favorite' : 'far fa-star';
+  
+  li.innerHTML = `
+    <div class="file-info">
+      <i class="${fileIcon} file-icon"></i>
+      <div class="file-name">${fileName}</div>
+    </div>
+    <div class="file-actions">
+      <button class="file-action favorite-btn" onclick="toggleFavorite('${fileName}', this)">
+        <i class="${favoriteIcon}"></i>
+      </button>
+      <button class="file-action" onclick="downloadFile('${fileName}')">
+        <i class="fas fa-download"></i>
+      </button>
+    </div>
+  `;
+  
+  li.onclick = () => openFile(fileName);
+  return li;
+}
+
+function openFile(fileName) {
+  // In a real application, this would open the actual file
+  // For demo purposes, we'll just show an alert
+  alert(`Ouverture du fichier: ${fileName}\n\nDans une application réelle, ce fichier serait téléchargé ou ouvert dans une visionneuse.`);
+}
+
+function downloadFile(fileName) {
+  // In a real application, this would trigger the download
+  // For demo purposes, we'll just show an alert
+  alert(`Téléchargement du fichier: ${fileName}\n\nDans une application réelle, ce fichier serait téléchargé sur votre appareil.`);
+}
+
+function toggleFavorite(fileName, button) {
+  const icon = button.querySelector('i');
+  
+  if (favorites.includes(fileName)) {
+    // Remove from favorites
+    favorites = favorites.filter(f => f !== fileName);
+    icon.className = 'far fa-star';
+  } else {
+    // Add to favorites
+    favorites.push(fileName);
+    icon.className = 'fas fa-star favorite';
+  }
+  
+  // Save to localStorage
+  localStorage.setItem('favorites', JSON.stringify(favorites));
+}
+
+function performSearch() {
+  const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
+  
+  if (searchTerm === '') {
+    alert('Veuillez entrer un terme de recherche.');
+    return;
+  }
+  
+  const resultsContainer = document.getElementById('searchResultsContainer');
+  resultsContainer.innerHTML = '';
+  
+  let foundResults = false;
+  
+  // Search through all files
+  for (const subject in filesData) {
+    for (const category in filesData[subject]) {
+      if (category === 'Cours') {
+        // Handle Cours subcategories
+        for (const subcategory in filesData[subject][category]) {
+          const files = filesData[subject][category][subcategory];
+          files.forEach(file => {
+            if (file.toLowerCase().includes(searchTerm) || 
+                subject.toLowerCase().includes(searchTerm) ||
+                category.toLowerCase().includes(searchTerm) ||
+                subcategory.toLowerCase().includes(searchTerm)) {
+              foundResults = true;
+              const resultItem = createSearchResultItem(file, subject, `${category} - ${subcategory}`);
+              resultsContainer.appendChild(resultItem);
+            }
+          });
+        }
+      } else {
+        // Handle regular categories
+        const files = filesData[subject][category];
+        files.forEach(file => {
+          if (file.toLowerCase().includes(searchTerm) || 
+              subject.toLowerCase().includes(searchTerm) ||
+              category.toLowerCase().includes(searchTerm)) {
+            foundResults = true;
+            const resultItem = createSearchResultItem(file, subject, category);
+            resultsContainer.appendChild(resultItem);
+          }
+        });
+      }
+    }
+  }
+  
+  if (!foundResults) {
+    resultsContainer.innerHTML = `
+      <div class="empty-state">
+        <i class="fas fa-search"></i>
+        <h3>Aucun résultat trouvé</h3>
+        <p>Aucun fichier ne correspond à votre recherche pour "${searchTerm}".</p>
+      </div>
+    `;
+  }
+  
+  showSection('searchResults');
+}
+
+function createSearchResultItem(fileName, subject, category) {
+  const div = document.createElement('div');
+  div.className = 'file-item';
+  
+  // Determine file icon based on extension
+  let fileIcon = 'fas fa-file';
+  if (fileName.toLowerCase().includes('.pdf')) fileIcon = 'fas fa-file-pdf';
+  
+  div.innerHTML = `
+    <div class="file-info">
+      <i class="${fileIcon} file-icon"></i>
+      <div>
+        <div class="file-name">${fileName}</div>
+        <div style="font-size: 0.8rem; color: var(--text-light);">${subject} - ${category}</div>
+      </div>
+    </div>
+    <div class="file-actions">
+      <button class="file-action" onclick="downloadFile('${fileName}')">
+        <i class="fas fa-download"></i>
+      </button>
+    </div>
+  `;
+  
+  div.onclick = () => {
+    // Navigate to the file's location
+    currentSubject = subject;
+    breadcrumbList = [
+      {id: 'semesters', name: 'L1'},
+      {id: 'subjects', name: 'S1'},
+      {id: `subject-${subject}`, name: subject}
+    ];
+    updateBreadcrumb();
+    
+    if (category.includes('Cours')) {
+      const part = category.split(' - ')[1];
+      showCoursFiles(part);
+    } else {
+      showFiles(category);
+    }
+  };
+  
+  return div;
+}
+
+function showComingSoon() {
+  alert('Cette fonctionnalité sera bientôt disponible !\n\nRevenez prochainement pour découvrir les nouvelles ressources.');
+}
+</script>
+
+</body>
+  </html>
