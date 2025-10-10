@@ -399,7 +399,7 @@
   <!-- Search Bar -->
   <div class="search-container">
     <div class="search-box">
-      <input type="text" id="searchInput" placeholder="Rechercher un fichier, une matière...">
+      <input type="text" id="searchInput" placeholder="Rechercher une matière (ex: Math, Physique, PPV...)">
       <button onclick="performSearch()"><i class="fas fa-search"></i></button>
     </div>
   </div>
@@ -413,23 +413,24 @@
   <section id="years" class="active">
     <h2 class="section-title">Sélectionnez votre année</h2>
     <div class="grid">
-      <div class="card" onclick="showSectionWithBreadcrumb('semesters', 'L1')">
+      <div class="card" onclick="showSectionWithBreadcrumb('semestersL1', 'L1')">
         <i class="fas fa-calendar-alt"></i>
         <div class="card-title">L1</div>
       </div>
-      <div class="card" onclick="showComingSoon()">
+      <div class="card" onclick="showSectionWithBreadcrumb('semestersL2', 'L2')">
         <i class="fas fa-calendar-alt"></i>
         <div class="card-title">L2</div>
       </div>
-      <div class="card" onclick="showComingSoon()">
+      <div class="card" onclick="showComingSoon('L3')">
         <i class="fas fa-calendar-alt"></i>
         <div class="card-title">L3</div>
       </div>
     </div>
   </section>
 
-  <section id="semesters">
-    <h2 class="section-title">Sélectionnez votre semestre</h2>
+  <!-- L1 Semesters -->
+  <section id="semestersL1">
+    <h2 class="section-title">L1 - Sélectionnez votre semestre</h2>
     <div class="grid">
       <div class="card" onclick="showSectionWithBreadcrumb('subjectsS1', 'S1')">
         <i class="fas fa-book"></i>
@@ -438,6 +439,48 @@
       <div class="card" onclick="showSectionWithBreadcrumb('subjectsS2', 'S2')">
         <i class="fas fa-book"></i>
         <div class="card-title">S2</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- L2 Semesters -->
+  <section id="semestersL2">
+    <h2 class="section-title">L2 - Sélectionnez votre semestre</h2>
+    <div class="grid">
+      <div class="card" onclick="showSectionWithBreadcrumb('departments', 'S3')">
+        <i class="fas fa-book"></i>
+        <div class="card-title">S3</div>
+      </div>
+      <div class="card" onclick="showComingSoon('S4')">
+        <i class="fas fa-book"></i>
+        <div class="card-title">S4</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Departments Section -->
+  <section id="departments">
+    <h2 class="section-title">S3 - Sélectionnez votre département</h2>
+    <div class="grid">
+      <div class="card" onclick="selectDepartmentWithBreadcrumb('PPV')">
+        <i class="fas fa-leaf"></i>
+        <div class="card-title">PPV</div>
+      </div>
+      <div class="card" onclick="selectDepartmentWithBreadcrumb('GEM')">
+        <i class="fas fa-cogs"></i>
+        <div class="card-title">GEM</div>
+      </div>
+      <div class="card" onclick="selectDepartmentWithBreadcrumb('GAB')">
+        <i class="fas fa-industry"></i>
+        <div class="card-title">GAB</div>
+      </div>
+      <div class="card" onclick="selectDepartmentWithBreadcrumb('PSA')">
+        <i class="fa-cow"></i>
+        <div class="card-title">PSA</div>
+      </div>
+      <div class="card" onclick="selectDepartmentWithBreadcrumb('STA')">
+        <i class="fas fa-chart-bar"></i>
+        <div class="card-title">STA</div>
       </div>
     </div>
   </section>
@@ -528,6 +571,45 @@
     </div>
   </section>
 
+  <!-- PPV Subjects (S3) -->
+  <section id="subjectsPPV">
+    <h2 class="section-title">PPV (S3) - Sélectionnez une matière</h2>
+    <div class="grid">
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Français 3', 'S3')">
+        <i class="fas fa-font"></i>
+        <div class="card-title">Français 3</div>
+      </div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Économie et Gestion', 'S3')">
+        <i class="fas fa-chart-line"></i>
+        <div class="card-title">Introduction à l'Économie et la Gestion</div>
+      </div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Agronomie', 'S3')">
+        <i class="fas fa-seedling"></i>
+        <div class="card-title">Principes généraux d'agronomie</div>
+      </div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Horticulture', 'S3')">
+        <i class="fas fa-spa"></i>
+        <div class="card-title">Principes généraux d'horticulture</div>
+      </div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Pesticides', 'S3')">
+        <i class="fas fa-skull-crossbones"></i>
+        <div class="card-title">Introduction aux pesticides agricoles</div>
+      </div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Entomologie', 'S3')">
+        <i class="fas fa-bug"></i>
+        <div class="card-title">Entomologie 1 et Nematologie 1</div>
+      </div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Science des Sols', 'S3')">
+        <i class="fas fa-mountain"></i>
+        <div class="card-title">Introduction à la science des sols</div>
+      </div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Science des Plantes', 'S3')">
+        <i class="fas fa-leaf"></i>
+        <div class="card-title">Introduction à la science des plantes</div>
+      </div>
+    </div>
+  </section>
+
   <section id="fileTypes">
     <h2 class="section-title" id="fileTypesTitle">Types de fichiers disponibles</h2>
     <div class="grid" id="fileTypesGrid"></div>
@@ -579,169 +661,236 @@ let currentSubject = '';
 let currentSemester = '';
 let breadcrumbList = [];
 
+// Sample files data - you can add more files here
 const filesData = {
   // S1 Subjects
   'Math': { 
-    'TD': [], 
-    'Devoirs': [], 
-    'Examens': [],
+    'TD': ['TD1 Mathématiques.pdf', 'TD2 Mathématiques.pdf'], 
+    'Devoirs': ['Devoir 1 Mathématiques.pdf'], 
+    'Examens': ['Examen Mathématiques S1 2022.pdf'],
     'Cours': { 
-      'Partie Devoirs': [], 
-      'Partie Examen': [] 
+      'Partie Devoirs': ['Cours Mathématiques Partie 1.pdf', 'Cours Mathématiques Partie 2.pdf'], 
+      'Partie Examen': ['Résumé Mathématiques pour examen.pdf'] 
     }
   },
   'Physique': { 
-    'TD': [], 
-    'Devoirs': [], 
-    'Examens': [],
+    'TD': ['TD1 Physique.pdf'], 
+    'Devoirs': ['Devoir Physique.pdf'], 
+    'Examens': ['Examen Physique S1 2022.pdf'],
     'Cours': { 
-      'Partie Devoirs': [], 
-      'Partie Examen': [] 
+      'Partie Devoirs': ['Cours Physique Partie 1.pdf'], 
+      'Partie Examen': ['Résumé Physique pour examen.pdf'] 
     }
   },
   'Chimie': { 
-    'TD': [], 
-    'Devoirs': [], 
-    'Examens': [],
+    'TD': ['TD1 Chimie.pdf', 'TD2 Chimie.pdf'], 
+    'Devoirs': ['Devoir Chimie.pdf'], 
+    'Examens': ['Examen Chimie S1 2022.pdf'],
     'Cours': { 
-      'Partie Devoirs': [], 
-      'Partie Examen': [] 
+      'Partie Devoirs': ['Cours Chimie Partie 1.pdf', 'Cours Chimie Partie 2.pdf'], 
+      'Partie Examen': ['Résumé Chimie pour examen.pdf'] 
     }
   },
   'Anglais': { 
-    'TD': [], 
-    'Devoirs': [], 
-    'Examens': [],
+    'TD': ['TD1 Anglais.pdf'], 
+    'Devoirs': ['Devoir Anglais.pdf'], 
+    'Examens': ['Examen Anglais S1 2022.pdf'],
     'Cours': { 
-      'Partie Devoirs': [], 
-      'Partie Examen': [] 
+      'Partie Devoirs': ['Cours Anglais.pdf'], 
+      'Partie Examen': ['Vocabulaire Anglais pour examen.pdf'] 
     }
   },
   'Français': { 
-    'TD': [], 
-    'Devoirs': [], 
-    'Examens': [],
+    'TD': ['TD1 Français.pdf'], 
+    'Devoirs': ['Devoir Français.pdf'], 
+    'Examens': ['Examen Français S1 2022.pdf'],
     'Cours': { 
-      'Partie Devoirs': [], 
-      'Partie Examen': [] 
+      'Partie Devoirs': ['Cours Français.pdf'], 
+      'Partie Examen': ['Grammaire Française pour examen.pdf'] 
     }
   },
   'Statistique': { 
-    'TD': [], 
-    'Devoirs': [], 
-    'Examens': [],
+    'TD': ['TD1 Statistique.pdf'], 
+    'Devoirs': ['Devoir Statistique.pdf'], 
+    'Examens': ['Examen Statistique S1 2022.pdf'],
     'Cours': { 
-      'Partie Devoirs': [], 
-      'Partie Examen': [] 
+      'Partie Devoirs': ['Cours Statistique Partie 1.pdf'], 
+      'Partie Examen': ['Résumé Statistique pour examen.pdf'] 
     }
   },
   'Biologie': { 
     'Cours': { 
-      'Partie Devoirs': [], 
-      'Partie Examen': [] 
+      'Partie Devoirs': ['Cours Biologie Cellulaire.pdf'], 
+      'Partie Examen': ['Résumé Biologie pour examen.pdf'] 
     }, 
-    'Devoirs': [], 
-    'Examens': []
+    'Devoirs': ['Devoir Biologie.pdf'], 
+    'Examens': ['Examen Biologie S1 2022.pdf']
   },
   'Microbiologie': { 
     'Cours': { 
-      'Partie Devoirs': [], 
-      'Partie Examen': [] 
+      'Partie Devoirs': ['Cours Microbiologie.pdf'], 
+      'Partie Examen': ['Résumé Microbiologie pour examen.pdf'] 
     }, 
-    'Devoirs': [], 
-    'Examens': []
+    'Devoirs': ['Devoir Microbiologie.pdf'], 
+    'Examens': ['Examen Microbiologie S1 2022.pdf']
   },
   'Génétique': { 
     'Cours': { 
-      'Partie Devoirs': [], 
-      'Partie Examen': [] 
+      'Partie Devoirs': ['Cours Génétique.pdf'], 
+      'Partie Examen': ['Résumé Génétique pour examen.pdf'] 
     }, 
-    'TD': [], 
-    'Devoirs': [], 
-    'Examens': []
+    'TD': ['TD1 Génétique.pdf'], 
+    'Devoirs': ['Devoir Génétique.pdf'], 
+    'Examens': ['Examen Génétique S1 2022.pdf']
   },
   'Informatique': { 
-    'TD': [], 
-    'Devoirs': [], 
-    'Examens': [],
+    'TD': ['TD1 Informatique.pdf'], 
+    'Devoirs': ['Devoir Informatique.pdf'], 
+    'Examens': ['Examen Informatique S1 2022.pdf'],
     'Cours': { 
-      'Partie Devoirs': [], 
-      'Partie Examen': [] 
+      'Partie Devoirs': ['Cours Algorithmique.pdf'], 
+      'Partie Examen': ['Résumé Informatique pour examen.pdf'] 
     }
   },
 
   // S2 Subjects
   'Français 2': { 
-    'TD': [], 
-    'Devoirs': [], 
-    'Examens': [],
+    'TD': ['TD1 Français 2.pdf'], 
+    'Devoirs': ['Devoir Français 2.pdf'], 
+    'Examens': ['Examen Français S2 2022.pdf'],
     'Cours': { 
-      'Partie Devoirs': [], 
-      'Partie Examen': [] 
+      'Partie Devoirs': ['Cours Français 2.pdf'], 
+      'Partie Examen': ['Résumé Français 2 pour examen.pdf'] 
     }
   },
   'Anglais 2': { 
-    'TD': [], 
-    'Devoirs': [], 
-    'Examens': [],
+    'TD': ['TD1 Anglais 2.pdf'], 
+    'Devoirs': ['Devoir Anglais 2.pdf'], 
+    'Examens': ['Examen Anglais S2 2022.pdf'],
     'Cours': { 
-      'Partie Devoirs': [], 
-      'Partie Examen': [] 
+      'Partie Devoirs': ['Cours Anglais 2.pdf'], 
+      'Partie Examen': ['Résumé Anglais 2 pour examen.pdf'] 
     }
   },
   'GEM': {
     'Dessin': {
-      'Cours': [],
-      'TD': [],
-      'Devoirs': [],
-      'Examens': []
+      'Cours': ['Cours Dessin Technique.pdf'],
+      'TD': ['TD1 Dessin.pdf'],
+      'Devoirs': ['Devoir Dessin.pdf'],
+      'Examens': ['Examen Dessin S2 2022.pdf']
     },
     'Électricité': {
-      'Cours': [],
-      'TD': [],
-      'Devoirs': [],
-      'Examens': []
+      'Cours': ['Cours Électricité.pdf'],
+      'TD': ['TD1 Électricité.pdf'],
+      'Devoirs': ['Devoir Électricité.pdf'],
+      'Examens': ['Examen Électricité S2 2022.pdf']
     }
   },
   'GAB': { 
-    'Devoirs': [], 
-    'Examens': [],
+    'Devoirs': ['Devoir GAB.pdf'], 
+    'Examens': ['Examen GAB S2 2022.pdf'],
     'Cours': { 
-      'Partie Devoirs': [], 
-      'Partie Examen': [] 
+      'Partie Devoirs': ['Cours GAB Partie 1.pdf', 'Cours GAB Partie 2.pdf'], 
+      'Partie Examen': ['Résumé GAB pour examen.pdf'] 
     }
   },
   'PPV': { 
-    'Devoirs': [], 
-    'Examens': [],
+    'Devoirs': ['Devoir PPV.pdf'], 
+    'Examens': ['Examen PPV S2 2022.pdf'],
     'Cours': { 
-      'Partie Devoirs': [], 
-      'Partie Examen': [] 
+      'Partie Devoirs': ['Cours PPV Partie 1.pdf'], 
+      'Partie Examen': ['Résumé PPV pour examen.pdf'] 
     }
   },
   'TIC': { 
-    'TD': [], 
-    'Devoirs': [], 
-    'Examens': [],
+    'TD': ['TD1 TIC.pdf'], 
+    'Devoirs': ['Devoir TIC.pdf'], 
+    'Examens': ['Examen TIC S2 2022.pdf'],
     'Cours': { 
-      'Partie Devoirs': [], 
-      'Partie Examen': [] 
+      'Partie Devoirs': ['Cours TIC Partie 1.pdf'], 
+      'Partie Examen': ['Résumé TIC pour examen.pdf'] 
     }
   },
   'STA': { 
-    'Devoirs': [], 
-    'Examens': [],
+    'Devoirs': ['Devoir STA.pdf'], 
+    'Examens': ['Examen STA S2 2022.pdf'],
     'Cours': { 
-      'Partie Devoirs': [], 
-      'Partie Examen': [] 
+      'Partie Devoirs': ['Cours STA Partie 1.pdf'], 
+      'Partie Examen': ['Résumé STA pour examen.pdf'] 
     }
   },
   'PSA': { 
-    'Devoirs': [], 
-    'Examens': [],
+    'Devoirs': ['Devoir PSA.pdf'], 
+    'Examens': ['Examen PSA S2 2022.pdf'],
     'Cours': { 
-      'Partie Devoirs': [], 
-      'Partie Examen': [] 
+      'Partie Devoirs': ['Cours PSA Partie 1.pdf'], 
+      'Partie Examen': ['Résumé PSA pour examen.pdf'] 
+    }
+  },
+
+  // S3 PPV Subjects
+  'Français 3': { 
+    'Devoirs': ['Devoir Français 3.pdf'], 
+    'Examens': ['Examen Français S3 2022.pdf'],
+    'Cours': { 
+      'Partie Devoirs': ['Cours Français 3.pdf'], 
+      'Partie Examen': ['Résumé Français 3 pour examen.pdf'] 
+    }
+  },
+  'Économie et Gestion': { 
+    'Devoirs': ['Devoir Économie et Gestion.pdf'], 
+    'Examens': ['Examen Économie et Gestion S3 2022.pdf'],
+    'Cours': { 
+      'Partie Devoirs': ['Cours Économie et Gestion.pdf'], 
+      'Partie Examen': ['Résumé Économie et Gestion pour examen.pdf'] 
+    }
+  },
+  'Agronomie': { 
+    'Devoirs': ['Devoir Agronomie.pdf'], 
+    'Examens': ['Examen Agronomie S3 2022.pdf'],
+    'Cours': { 
+      'Partie Devoirs': ['Cours Agronomie Partie 1.pdf', 'Cours Agronomie Partie 2.pdf'], 
+      'Partie Examen': ['Résumé Agronomie pour examen.pdf'] 
+    }
+  },
+  'Horticulture': { 
+    'Devoirs': ['Devoir Horticulture.pdf'], 
+    'Examens': ['Examen Horticulture S3 2022.pdf'],
+    'Cours': { 
+      'Partie Devoirs': ['Cours Horticulture.pdf'], 
+      'Partie Examen': ['Résumé Horticulture pour examen.pdf'] 
+    }
+  },
+  'Pesticides': { 
+    'Devoirs': ['Devoir Pesticides.pdf'], 
+    'Examens': ['Examen Pesticides S3 2022.pdf'],
+    'Cours': { 
+      'Partie Devoirs': ['Cours Pesticides.pdf'], 
+      'Partie Examen': ['Résumé Pesticides pour examen.pdf'] 
+    }
+  },
+  'Entomologie': { 
+    'Devoirs': ['Devoir Entomologie.pdf'], 
+    'Examens': ['Examen Entomologie S3 2022.pdf'],
+    'Cours': { 
+      'Partie Devoirs': ['Cours Entomologie.pdf'], 
+      'Partie Examen': ['Résumé Entomologie pour examen.pdf'] 
+    }
+  },
+  'Science des Sols': { 
+    'Devoirs': ['Devoir Science des Sols.pdf'], 
+    'Examens': ['Examen Science des Sols S3 2022.pdf'],
+    'Cours': { 
+      'Partie Devoirs': ['Cours Science des Sols.pdf'], 
+      'Partie Examen': ['Résumé Science des Sols pour examen.pdf'] 
+    }
+  },
+  'Science des Plantes': { 
+    'Devoirs': ['Devoir Science des Plantes.pdf'], 
+    'Examens': ['Examen Science des Plantes S3 2022.pdf'],
+    'Cours': { 
+      'Partie Devoirs': ['Cours Science des Plantes.pdf'], 
+      'Partie Examen': ['Résumé Science des Plantes pour examen.pdf'] 
     }
   }
 };
@@ -762,7 +911,7 @@ document.addEventListener('DOMContentLoaded', function() {
       updateBreadcrumb();
       const lastSection = breadcrumbList[breadcrumbList.length - 1];
       let sectionId = lastSection.id;
-      if (sectionId.startsWith('subject-') || sectionId.startsWith('gem-')) sectionId = 'fileTypes';
+      if (sectionId.startsWith('subject-') || sectionId.startsWith('gem-') || sectionId.startsWith('dept-')) sectionId = 'fileTypes';
       showSection(sectionId);
     } else {
       goHome();
@@ -791,7 +940,7 @@ function selectSubjectWithBreadcrumb(subject, semester) {
   }
   updateBreadcrumb();
   
-  if (subject === 'GEM') {
+  if (subject === 'GEM' && semester === 'S2') {
     showSection('gemParts');
   } else {
     showSection('fileTypes');
@@ -800,6 +949,24 @@ function selectSubjectWithBreadcrumb(subject, semester) {
   
   // Update browser history
   window.history.pushState({section: 'fileTypes'}, '', `#${id}`);
+}
+
+function selectDepartmentWithBreadcrumb(department) {
+  const id = 'dept-' + department;
+  if (!breadcrumbList.find(b => b.id === id)) {
+    breadcrumbList.push({id: id, name: department});
+  }
+  updateBreadcrumb();
+  
+  if (department === 'PPV') {
+    showSection('subjectsPPV');
+  } else {
+    // For other departments, show coming soon message
+    showComingSoon(department + ' (S3)');
+  }
+  
+  // Update browser history
+  window.history.pushState({section: id}, '', `#${id}`);
 }
 
 function selectGEMAspect(aspect) {
@@ -820,7 +987,7 @@ function updateFileTypesGrid() {
   const grid = document.getElementById('fileTypesGrid');
   const title = document.getElementById('fileTypesTitle');
   
-  if (currentSubject === 'GEM') {
+  if (currentSubject === 'GEM' && currentSemester === 'S2') {
     const currentAspect = breadcrumbList[breadcrumbList.length - 1].name;
     title.textContent = `GEM - ${currentAspect} - Types de fichiers`;
     grid.innerHTML = '';
@@ -896,7 +1063,7 @@ function updateBreadcrumb() {
       breadcrumbList = breadcrumbList.slice(0, index + 1);
       updateBreadcrumb();
       let sectionId = b.id;
-      if (sectionId.startsWith('subject-') || sectionId.startsWith('gem-')) sectionId = 'fileTypes';
+      if (sectionId.startsWith('subject-') || sectionId.startsWith('gem-') || sectionId.startsWith('dept-')) sectionId = 'fileTypes';
       showSection(sectionId);
     };
     container.appendChild(span);
@@ -930,7 +1097,7 @@ function goBack() {
     updateBreadcrumb();
     const lastSection = breadcrumbList[breadcrumbList.length - 1];
     let sectionId = lastSection.id;
-    if (sectionId.startsWith('subject-') || sectionId.startsWith('gem-')) sectionId = 'fileTypes';
+    if (sectionId.startsWith('subject-') || sectionId.startsWith('gem-') || sectionId.startsWith('dept-')) sectionId = 'fileTypes';
     showSection(sectionId);
     window.history.back();
   } else {
@@ -966,7 +1133,7 @@ function showFiles(type) {
   const container = document.getElementById('fileListContainer');
   const title = document.getElementById('filesListTitle');
   
-  if (currentSubject === 'GEM') {
+  if (currentSubject === 'GEM' && currentSemester === 'S2') {
     const currentAspect = breadcrumbList[breadcrumbList.length - 1].name;
     title.textContent = `GEM - ${currentAspect} - ${type}`;
     container.innerHTML = '';
@@ -1057,54 +1224,62 @@ function performSearch() {
   
   let foundResults = false;
   
-  // Search through all files
+  // Search for subjects matching the search term
   for (const subject in filesData) {
-    for (const category in filesData[subject]) {
-      if (category === 'Cours') {
-        // Handle Cours subcategories
-        for (const subcategory in filesData[subject][category]) {
-          const files = filesData[subject][category][subcategory];
-          files.forEach(file => {
-            if (file.toLowerCase().includes(searchTerm) || 
-                subject.toLowerCase().includes(searchTerm) ||
-                category.toLowerCase().includes(searchTerm) ||
-                subcategory.toLowerCase().includes(searchTerm)) {
-              foundResults = true;
+    if (subject.toLowerCase().includes(searchTerm)) {
+      foundResults = true;
+      
+      // Create a header for the subject
+      const subjectHeader = document.createElement('h3');
+      subjectHeader.className = 'search-category';
+      subjectHeader.textContent = subject;
+      resultsContainer.appendChild(subjectHeader);
+      
+      // Collect all files for this subject
+      const subjectFiles = filesData[subject];
+      let totalFiles = 0;
+      
+      for (const category in subjectFiles) {
+        if (category === 'Cours') {
+          // Handle Cours subcategories
+          for (const subcategory in subjectFiles[category]) {
+            const files = subjectFiles[category][subcategory];
+            files.forEach(file => {
+              totalFiles++;
               const resultItem = createSearchResultItem(file, subject, `${category} - ${subcategory}`);
               resultsContainer.appendChild(resultItem);
-            }
-          });
-        }
-      } else if (subject === 'GEM') {
-        // Handle GEM aspects
-        for (const aspect in filesData[subject]) {
-          for (const fileType in filesData[subject][aspect]) {
-            const files = filesData[subject][aspect][fileType];
-            files.forEach(file => {
-              if (file.toLowerCase().includes(searchTerm) || 
-                  subject.toLowerCase().includes(searchTerm) ||
-                  aspect.toLowerCase().includes(searchTerm) ||
-                  fileType.toLowerCase().includes(searchTerm)) {
-                foundResults = true;
-                const resultItem = createSearchResultItem(file, `GEM - ${aspect}`, fileType);
-                resultsContainer.appendChild(resultItem);
-              }
             });
           }
-        }
-      } else {
-        // Handle regular categories
-        const files = filesData[subject][category];
-        files.forEach(file => {
-          if (file.toLowerCase().includes(searchTerm) || 
-              subject.toLowerCase().includes(searchTerm) ||
-              category.toLowerCase().includes(searchTerm)) {
-            foundResults = true;
+        } else if (subject === 'GEM') {
+          // Handle GEM aspects
+          for (const aspect in subjectFiles) {
+            for (const fileType in subjectFiles[aspect]) {
+              const files = subjectFiles[aspect][fileType];
+              files.forEach(file => {
+                totalFiles++;
+                const resultItem = createSearchResultItem(file, `GEM - ${aspect}`, fileType);
+                resultsContainer.appendChild(resultItem);
+              });
+            }
+          }
+        } else {
+          // Handle regular categories
+          const files = subjectFiles[category];
+          files.forEach(file => {
+            totalFiles++;
             const resultItem = createSearchResultItem(file, subject, category);
             resultsContainer.appendChild(resultItem);
-          }
-        });
+          });
+        }
       }
+      
+      // Add a summary for the subject
+      const summaryDiv = document.createElement('div');
+      summaryDiv.style.padding = '0.5rem 1rem';
+      summaryDiv.style.fontStyle = 'italic';
+      summaryDiv.style.color = 'var(--text-light)';
+      summaryDiv.textContent = `${totalFiles} fichier(s) trouvé(s) pour ${subject}`;
+      resultsContainer.appendChild(summaryDiv);
     }
   }
   
@@ -1113,7 +1288,7 @@ function performSearch() {
       <div class="empty-state">
         <i class="fas fa-search"></i>
         <h3>Aucun résultat trouvé</h3>
-        <p>Aucun fichier ne correspond à votre recherche pour "${searchTerm}".</p>
+        <p>Aucune matière ne correspond à votre recherche pour "${searchTerm}".</p>
       </div>
     `;
   }
@@ -1143,36 +1318,14 @@ function createSearchResultItem(fileName, subject, category) {
     </div>
   `;
   
-  div.onclick = () => {
-    // Navigate to the file's location
-    if (subject.startsWith('GEM - ')) {
-      const aspect = subject.replace('GEM - ', '');
-      currentSubject = 'GEM';
-      breadcrumbList = [
-        {id: 'semesters', name: 'S2'},
-        {id: 'subject-GEM', name: 'GEM'},
-        {id: `gem-${aspect}`, name: aspect}
-      ];
-    } else {
-      currentSubject = subject;
-      const semester = subject.includes('2') || ['GEM', 'GAB', 'PPV', 'TIC', 'STA', 'PSA'].includes(subject) ? 'S2' : 'S1';
-      breadcrumbList = [
-        {id: 'semesters', name: semester},
-        {id: `subject-${subject}`, name: subject}
-      ];
-    }
-    updateBreadcrumb();
-    showSection('fileTypes');
-    updateFileTypesGrid();
-  };
-  
+  div.onclick = () => openFile(fileName);
   return div;
 }
 
-function showComingSoon() {
-  alert('Cette fonctionnalité sera bientôt disponible !\n\nRevenez prochainement pour découvrir les nouvelles ressources.');
+function showComingSoon(section) {
+  alert(`Plus des contenus seront ajoutées bientôt pour ${section}.\n\nRevenez prochainement pour découvrir les nouvelles ressources.`);
 }
 </script>
 
 </body>
-  </html>
+</html>
