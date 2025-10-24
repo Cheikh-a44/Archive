@@ -1015,7 +1015,16 @@ function updateFileTypesGrid() {
     grid.innerHTML = '';
     const subjectFiles = filesData[currentSubject];
     
+    // Check if the subject has TD and is in S1 or S2
+    const hasTD = subjectFiles.hasOwnProperty('TD');
+    const isS1OrS2 = currentSemester === 'S1' || currentSemester === 'S2';
+    
     for (const type in subjectFiles) {
+      // Skip "Cours" for subjects with TD in S1 or S2
+      if (type === 'Cours' && hasTD && isS1OrS2) {
+        continue;
+      }
+      
       if (type !== 'Cours') {
         const div = document.createElement('div');
         div.className = 'card';
