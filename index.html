@@ -830,20 +830,14 @@ const filesData = {
 
   // S3 PPV Subjects
   'Français 3': { 
+    'TD': ['TD1 Français 3.pdf', 'TD2 Français 3.pdf'], 
     'Devoirs': ['Devoir Français 3.pdf'], 
-    'Examens': ['Examen Français S3 2022.pdf'],
-    'Cours': { 
-      'Partie Devoirs': ['Cours Français 3.pdf'], 
-      'Partie Examen': ['Résumé Français 3 pour examen.pdf'] 
-    }
+    'Examens': ['Examen Français S3 2022.pdf']
   },
   'Économie et Gestion': { 
+    'TD': ['TD1 Économie et Gestion.pdf', 'TD2 Économie et Gestion.pdf'], 
     'Devoirs': ['Devoir Économie et Gestion.pdf'], 
-    'Examens': ['Examen Économie et Gestion S3 2022.pdf'],
-    'Cours': { 
-      'Partie Devoirs': ['Cours Économie et Gestion.pdf'], 
-      'Partie Examen': ['Résumé Économie et Gestion pour examen.pdf'] 
-    }
+    'Examens': ['Examen Économie et Gestion S3 2022.pdf']
   },
   'Agronomie': { 
     'Devoirs': ['Devoir Agronomie.pdf'], 
@@ -1025,30 +1019,50 @@ function updateFileTypesGrid() {
         continue;
       }
       
-      if (type !== 'Cours') {
-        const div = document.createElement('div');
-        div.className = 'card';
-        
-        let iconClass = 'fas fa-file';
-        if (type === 'TD') iconClass = 'fas fa-pen-alt';
-        if (type === 'Devoirs') iconClass = 'fas fa-tasks';
-        if (type === 'Examens') iconClass = 'fas fa-file-alt';
-        
-        div.innerHTML = `
-          <i class="${iconClass}"></i>
-          <div class="card-title">${type}</div>
-        `;
-        div.onclick = () => showFiles(type);
-        grid.appendChild(div);
+      // For S3 PPV subjects, show only TD, Devoirs, and Examens
+      if (currentSemester === 'S3' && (currentSubject === 'Français 3' || currentSubject === 'Économie et Gestion')) {
+        if (type === 'TD' || type === 'Devoirs' || type === 'Examens') {
+          const div = document.createElement('div');
+          div.className = 'card';
+          
+          let iconClass = 'fas fa-file';
+          if (type === 'TD') iconClass = 'fas fa-pen-alt';
+          if (type === 'Devoirs') iconClass = 'fas fa-tasks';
+          if (type === 'Examens') iconClass = 'fas fa-file-alt';
+          
+          div.innerHTML = `
+            <i class="${iconClass}"></i>
+            <div class="card-title">${type}</div>
+          `;
+          div.onclick = () => showFiles(type);
+          grid.appendChild(div);
+        }
       } else {
-        const div = document.createElement('div');
-        div.className = 'card';
-        div.innerHTML = `
-          <i class="fas fa-book"></i>
-          <div class="card-title">Cours</div>
-        `;
-        div.onclick = () => showSectionWithBreadcrumb('coursParts', 'Cours');
-        grid.appendChild(div);
+        if (type !== 'Cours') {
+          const div = document.createElement('div');
+          div.className = 'card';
+          
+          let iconClass = 'fas fa-file';
+          if (type === 'TD') iconClass = 'fas fa-pen-alt';
+          if (type === 'Devoirs') iconClass = 'fas fa-tasks';
+          if (type === 'Examens') iconClass = 'fas fa-file-alt';
+          
+          div.innerHTML = `
+            <i class="${iconClass}"></i>
+            <div class="card-title">${type}</div>
+          `;
+          div.onclick = () => showFiles(type);
+          grid.appendChild(div);
+        } else {
+          const div = document.createElement('div');
+          div.className = 'card';
+          div.innerHTML = `
+            <i class="fas fa-book"></i>
+            <div class="card-title">Cours</div>
+          `;
+          div.onclick = () => showSectionWithBreadcrumb('coursParts', 'Cours');
+          grid.appendChild(div);
+        }
       }
     }
   }
