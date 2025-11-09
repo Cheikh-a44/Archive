@@ -187,11 +187,6 @@
     transform: scale(0.97);
   }
 
-  .card i {
-    font-size: 1.5rem;
-    color: var(--primary);
-  }
-
   .card-title {
     font-weight: 600;
     font-size: 0.9rem;
@@ -321,16 +316,6 @@
     transform: scale(1.1);
   }
 
-  /* Animal Icon */
-  .fa-cow {
-    display: inline-block;
-    width: 1.5rem;
-    height: 1.5rem;
-    background: linear-gradient(45deg, var(--primary), var(--secondary));
-    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 512'%3E%3Cpath d='M64 224v-16c0-35.3 28.7-64 64-64h128c35.3 0 64 28.7 64 64v16 64 32c0 17.7-14.3 32-32 32s-32-14.3-32-32V288H128v32c0 17.7-14.3 32-32 32s-32-14.3-32-32V288 224zm384-64h64c35.3 0 64 28.7 64 64v16 64 32c0 17.7-14.3 32-32 32s-32-14.3-32-32V288H512v32c0 17.7-14.3 32-32 32s-32-14.3-32-32V288 224 160c0-35.3 28.7-64 64-64zM224 448h64V400c0-26.5-21.5-48-48-48s-48 21.5-48 48v48zm-96 0h64V400c0-44.2 35.8-80 80-80s80 35.8 80 80v48h64V400c0-61.9-50.1-112-112-112s-112 50.1-112 112v48zm352-48c0-26.5-21.5-48-48-48s-48 21.5-48 48v48h64V400zm96 0c0-44.2-35.8-80-80-80s-80 35.8-80 80v48h64 64V400z'/%3E%3C/svg%3E") no-repeat center;
-    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 512'%3E%3Cpath d='M64 224v-16c0-35.3 28.7-64 64-64h128c35.3 0 64 28.7 64 64v16 64 32c0 17.7-14.3 32-32 32s-32-14.3-32-32V288H128v32c0 17.7-14.3 32-32 32s-32-14.3-32-32V288 224zm384-64h64c35.3 0 64 28.7 64 64v16 64 32c0 17.7-14.3 32-32 32s-32-14.3-32-32V288H512v32c0 17.7-14.3 32-32 32s-32-14.3-32-32V288 224 160c0-35.3 28.7-64 64-64zM224 448h64V400c0-26.5-21.5-48-48-48s-48 21.5-48 48v48zm-96 0h64V400c0-44.2 35.8-80 80-80s80 35.8 80 80v48h64V400c0-61.9-50.1-112-112-112s-112 50.1-112 112v48zm352-48c0-26.5-21.5-48-48-48s-48 21.5-48 48v48h64V400zm96 0c0-44.2-35.8-80-80-80s-80 35.8-80 80v48h64 64V400z'/%3E%3C/svg%3E") no-repeat center;
-  }
-
   /* Responsive */
   @media (max-width: 768px) {
     .grid {
@@ -363,10 +348,6 @@
     
     .card {
       padding: 0.8rem 0.5rem;
-    }
-    
-    .card i {
-      font-size: 1.3rem;
     }
     
     header h1 {
@@ -414,15 +395,12 @@
     <h2 class="section-title">Sélectionnez votre année</h2>
     <div class="grid">
       <div class="card" onclick="showSectionWithBreadcrumb('semestersL1', 'L1')">
-        <i class="fas fa-calendar-alt"></i>
         <div class="card-title">L1</div>
       </div>
       <div class="card" onclick="showSectionWithBreadcrumb('semestersL2', 'L2')">
-        <i class="fas fa-calendar-alt"></i>
         <div class="card-title">L2</div>
       </div>
       <div class="card" onclick="showComingSoon('L3')">
-        <i class="fas fa-calendar-alt"></i>
         <div class="card-title">L3</div>
       </div>
     </div>
@@ -433,11 +411,9 @@
     <h2 class="section-title">L1 - Sélectionnez votre semestre</h2>
     <div class="grid">
       <div class="card" onclick="showSectionWithBreadcrumb('subjectsS1', 'S1')">
-        <i class="fas fa-book"></i>
         <div class="card-title">S1</div>
       </div>
       <div class="card" onclick="showSectionWithBreadcrumb('subjectsS2', 'S2')">
-        <i class="fas fa-book"></i>
         <div class="card-title">S2</div>
       </div>
     </div>
@@ -448,11 +424,9 @@
     <h2 class="section-title">L2 - Sélectionnez votre semestre</h2>
     <div class="grid">
       <div class="card" onclick="showSectionWithBreadcrumb('departments', 'S3')">
-        <i class="fas fa-book"></i>
         <div class="card-title">S3</div>
       </div>
       <div class="card" onclick="showComingSoon('S4')">
-        <i class="fas fa-book"></i>
         <div class="card-title">S4</div>
       </div>
     </div>
@@ -463,23 +437,18 @@
     <h2 class="section-title">S3 - Sélectionnez votre département</h2>
     <div class="grid">
       <div class="card" onclick="selectDepartmentWithBreadcrumb('PPV')">
-        <i class="fas fa-leaf"></i>
         <div class="card-title">PPV</div>
       </div>
       <div class="card" onclick="selectDepartmentWithBreadcrumb('GEM')">
-        <i class="fas fa-cogs"></i>
         <div class="card-title">GEM</div>
       </div>
       <div class="card" onclick="selectDepartmentWithBreadcrumb('GAB')">
-        <i class="fas fa-industry"></i>
         <div class="card-title">GAB</div>
       </div>
       <div class="card" onclick="selectDepartmentWithBreadcrumb('PSA')">
-        <i class="fa-cow"></i>
         <div class="card-title">PSA</div>
       </div>
       <div class="card" onclick="selectDepartmentWithBreadcrumb('STA')">
-        <i class="fas fa-chart-bar"></i>
         <div class="card-title">STA</div>
       </div>
     </div>
@@ -490,43 +459,33 @@
     <h2 class="section-title">S1 - Sélectionnez une matière</h2>
     <div class="grid">
       <div class="card" onclick="selectSubjectWithBreadcrumb('Math', 'S1')">
-        <i class="fas fa-square-root-alt"></i>
         <div class="card-title">Mathématiques</div>
       </div>
       <div class="card" onclick="selectSubjectWithBreadcrumb('Physique', 'S1')">
-        <i class="fas fa-atom"></i>
         <div class="card-title">Physique</div>
       </div>
       <div class="card" onclick="selectSubjectWithBreadcrumb('Chimie', 'S1')">
-        <i class="fas fa-flask"></i>
         <div class="card-title">Chimie</div>
       </div>
       <div class="card" onclick="selectSubjectWithBreadcrumb('Anglais', 'S1')">
-        <i class="fas fa-language"></i>
         <div class="card-title">Anglais</div>
       </div>
       <div class="card" onclick="selectSubjectWithBreadcrumb('Français', 'S1')">
-        <i class="fas fa-font"></i>
         <div class="card-title">Français</div>
       </div>
       <div class="card" onclick="selectSubjectWithBreadcrumb('Biologie', 'S1')">
-        <i class="fas fa-dna"></i>
         <div class="card-title">Biologie</div>
       </div>
       <div class="card" onclick="selectSubjectWithBreadcrumb('Microbiologie', 'S1')">
-        <i class="fas fa-microscope"></i>
         <div class="card-title">Microbiologie</div>
       </div>
       <div class="card" onclick="selectSubjectWithBreadcrumb('Génétique', 'S1')">
-        <i class="fas fa-dna"></i>
         <div class="card-title">Génétique</div>
       </div>
       <div class="card" onclick="selectSubjectWithBreadcrumb('Informatique', 'S1')">
-        <i class="fas fa-laptop-code"></i>
         <div class="card-title">Informatique</div>
       </div>
       <div class="card" onclick="selectSubjectWithBreadcrumb('Statistique', 'S1')">
-        <i class="fas fa-chart-bar"></i>
         <div class="card-title">Statistique</div>
       </div>
     </div>
@@ -537,35 +496,27 @@
     <h2 class="section-title">S2 - Sélectionnez une matière</h2>
     <div class="grid">
       <div class="card" onclick="selectSubjectWithBreadcrumb('Français 2', 'S2')">
-        <i class="fas fa-font"></i>
         <div class="card-title">Français 2</div>
       </div>
       <div class="card" onclick="selectSubjectWithBreadcrumb('Anglais 2', 'S2')">
-        <i class="fas fa-language"></i>
         <div class="card-title">Anglais 2</div>
       </div>
       <div class="card" onclick="selectSubjectWithBreadcrumb('GEM', 'S2')">
-        <i class="fas fa-cogs"></i>
         <div class="card-title">GEM</div>
       </div>
       <div class="card" onclick="selectSubjectWithBreadcrumb('GAB', 'S2')">
-        <i class="fas fa-industry"></i>
         <div class="card-title">GAB</div>
       </div>
       <div class="card" onclick="selectSubjectWithBreadcrumb('PPV', 'S2')">
-        <i class="fas fa-leaf"></i>
         <div class="card-title">PPV</div>
       </div>
       <div class="card" onclick="selectSubjectWithBreadcrumb('TIC', 'S2')">
-        <i class="fas fa-laptop-code"></i>
         <div class="card-title">TIC</div>
       </div>
       <div class="card" onclick="selectSubjectWithBreadcrumb('STA', 'S2')">
-        <i class="fas fa-chart-bar"></i>
         <div class="card-title">STA</div>
       </div>
       <div class="card" onclick="selectSubjectWithBreadcrumb('PSA', 'S2')">
-        <i class="fa-cow"></i>
         <div class="card-title">PSA</div>
       </div>
     </div>
@@ -576,35 +527,27 @@
     <h2 class="section-title">PPV (S3) - Sélectionnez une matière</h2>
     <div class="grid">
       <div class="card" onclick="selectSubjectWithBreadcrumb('Français 3', 'S3')">
-        <i class="fas fa-font"></i>
         <div class="card-title">Français 3</div>
       </div>
       <div class="card" onclick="selectSubjectWithBreadcrumb('Économie et Gestion', 'S3')">
-        <i class="fas fa-chart-line"></i>
         <div class="card-title">Introduction à l'Économie et la Gestion</div>
       </div>
       <div class="card" onclick="selectSubjectWithBreadcrumb('Agronomie', 'S3')">
-        <i class="fas fa-seedling"></i>
         <div class="card-title">Principes généraux d'agronomie</div>
       </div>
       <div class="card" onclick="selectSubjectWithBreadcrumb('Horticulture', 'S3')">
-        <i class="fas fa-spa"></i>
         <div class="card-title">Principes généraux d'horticulture</div>
       </div>
       <div class="card" onclick="selectSubjectWithBreadcrumb('Pesticides', 'S3')">
-        <i class="fas fa-skull-crossbones"></i>
         <div class="card-title">Introduction aux pesticides agricoles</div>
       </div>
       <div class="card" onclick="selectSubjectWithBreadcrumb('Entomologie', 'S3')">
-        <i class="fas fa-bug"></i>
         <div class="card-title">Entomologie 1 et Nematologie 1</div>
       </div>
       <div class="card" onclick="selectSubjectWithBreadcrumb('Science des Sols', 'S3')">
-        <i class="fas fa-mountain"></i>
         <div class="card-title">Introduction à la science des sols</div>
       </div>
       <div class="card" onclick="selectSubjectWithBreadcrumb('Science des Plantes', 'S3')">
-        <i class="fas fa-leaf"></i>
         <div class="card-title">Introduction à la science des plantes</div>
       </div>
     </div>
@@ -619,11 +562,9 @@
     <h2 class="section-title">Sélectionnez une partie du cours</h2>
     <div class="grid">
       <div class="card" onclick="showCoursFiles('Partie Devoirs')">
-        <i class="fas fa-tasks"></i>
         <div class="card-title">Partie Devoirs</div>
       </div>
       <div class="card" onclick="showCoursFiles('Partie Examen')">
-        <i class="fas fa-file-alt"></i>
         <div class="card-title">Partie Examen</div>
       </div>
     </div>
@@ -634,11 +575,9 @@
     <h2 class="section-title">GEM - Sélectionnez un aspect</h2>
     <div class="grid">
       <div class="card" onclick="selectGEMAspect('Dessin')">
-        <i class="fas fa-pencil-alt"></i>
         <div class="card-title">Dessin</div>
       </div>
       <div class="card" onclick="selectGEMAspect('Électricité')">
-        <i class="fas fa-bolt"></i>
         <div class="card-title">Électricité</div>
       </div>
     </div>
@@ -991,14 +930,7 @@ function updateFileTypesGrid() {
       const div = document.createElement('div');
       div.className = 'card';
       
-      let iconClass = 'fas fa-file';
-      if (type === 'TD') iconClass = 'fas fa-pen-alt';
-      if (type === 'Devoirs') iconClass = 'fas fa-tasks';
-      if (type === 'Examens') iconClass = 'fas fa-file-alt';
-      if (type === 'Cours') iconClass = 'fas fa-book';
-      
       div.innerHTML = `
-        <i class="${iconClass}"></i>
         <div class="card-title">${type}</div>
       `;
       div.onclick = () => showFiles(type);
@@ -1025,13 +957,7 @@ function updateFileTypesGrid() {
           const div = document.createElement('div');
           div.className = 'card';
           
-          let iconClass = 'fas fa-file';
-          if (type === 'TD') iconClass = 'fas fa-pen-alt';
-          if (type === 'Devoirs') iconClass = 'fas fa-tasks';
-          if (type === 'Examens') iconClass = 'fas fa-file-alt';
-          
           div.innerHTML = `
-            <i class="${iconClass}"></i>
             <div class="card-title">${type}</div>
           `;
           div.onclick = () => showFiles(type);
@@ -1042,13 +968,7 @@ function updateFileTypesGrid() {
           const div = document.createElement('div');
           div.className = 'card';
           
-          let iconClass = 'fas fa-file';
-          if (type === 'TD') iconClass = 'fas fa-pen-alt';
-          if (type === 'Devoirs') iconClass = 'fas fa-tasks';
-          if (type === 'Examens') iconClass = 'fas fa-file-alt';
-          
           div.innerHTML = `
-            <i class="${iconClass}"></i>
             <div class="card-title">${type}</div>
           `;
           div.onclick = () => showFiles(type);
@@ -1057,7 +977,6 @@ function updateFileTypesGrid() {
           const div = document.createElement('div');
           div.className = 'card';
           div.innerHTML = `
-            <i class="fas fa-book"></i>
             <div class="card-title">Cours</div>
           `;
           div.onclick = () => showSectionWithBreadcrumb('coursParts', 'Cours');
