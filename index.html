@@ -558,31 +558,6 @@
     <div class="grid" id="fileTypesGrid"></div>
   </section>
 
-  <section id="coursParts">
-    <h2 class="section-title">Sélectionnez une partie du cours</h2>
-    <div class="grid">
-      <div class="card" onclick="showCoursFiles('Partie Devoirs')">
-        <div class="card-title">Partie Devoirs</div>
-      </div>
-      <div class="card" onclick="showCoursFiles('Partie Examen')">
-        <div class="card-title">Partie Examen</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- GEM Sections -->
-  <section id="gemParts">
-    <h2 class="section-title">GEM - Sélectionnez un aspect</h2>
-    <div class="grid">
-      <div class="card" onclick="selectGEMAspect('Dessin')">
-        <div class="card-title">Dessin</div>
-      </div>
-      <div class="card" onclick="selectGEMAspect('Électricité')">
-        <div class="card-title">Électricité</div>
-      </div>
-    </div>
-  </section>
-
   <section id="filesList">
     <h2 class="section-title" id="filesListTitle">Fichiers disponibles</h2>
     <div class="file-list-container" id="fileListContainer"></div>
@@ -604,224 +579,158 @@ let breadcrumbList = [];
 const filesData = {
   // S1 Subjects
   'Math': { 
-    'TD': ['TD1 Mathématiques.pdf', 'TD2 Mathématiques.pdf'], 
-    'Devoirs': ['Devoir 1 Mathématiques.pdf'], 
-    'Examens': ['Examen Mathématiques S1 2022.pdf'],
-    'Cours': { 
-      'Partie Devoirs': ['Cours Mathématiques Partie 1.pdf', 'Cours Mathématiques Partie 2.pdf'], 
-      'Partie Examen': ['Résumé Mathématiques pour examen.pdf'] 
-    }
+    'TD': [], 
+    'Devoirs': [], 
+    'Examens': [],
+    'Cours': []
   },
   'Physique': { 
-    'TD': ['TD1 Physique.pdf'], 
-    'Devoirs': ['Devoir Physique.pdf'], 
-    'Examens': ['Examen Physique S1 2022.pdf'],
-    'Cours': { 
-      'Partie Devoirs': ['Cours Physique Partie 1.pdf'], 
-      'Partie Examen': ['Résumé Physique pour examen.pdf'] 
-    }
+    'TD': [], 
+    'Devoirs': [], 
+    'Examens': [],
+    'Cours': []
   },
   'Chimie': { 
-    'TD': ['TD1 Chimie.pdf', 'TD2 Chimie.pdf'], 
-    'Devoirs': ['Devoir Chimie.pdf'], 
-    'Examens': ['Examen Chimie S1 2022.pdf'],
-    'Cours': { 
-      'Partie Devoirs': ['Cours Chimie Partie 1.pdf', 'Cours Chimie Partie 2.pdf'], 
-      'Partie Examen': ['Résumé Chimie pour examen.pdf'] 
-    }
+    'TD': [], 
+    'Devoirs': [], 
+    'Examens': [],
+    'Cours': []
   },
   'Anglais': { 
-    'TD': ['TD1 Anglais.pdf'], 
-    'Devoirs': ['Devoir Anglais.pdf'], 
-    'Examens': ['Examen Anglais S1 2022.pdf'],
-    'Cours': { 
-      'Partie Devoirs': ['Cours Anglais.pdf'], 
-      'Partie Examen': ['Vocabulaire Anglais pour examen.pdf'] 
-    }
+    'TD': [], 
+    'Devoirs': [], 
+    'Examens': [],
+    'Cours': []
   },
   'Français': { 
-    'TD': ['TD1 Français.pdf'], 
-    'Devoirs': ['Devoir Français.pdf'], 
-    'Examens': ['Examen Français S1 2022.pdf'],
-    'Cours': { 
-      'Partie Devoirs': ['Cours Français.pdf'], 
-      'Partie Examen': ['Grammaire Française pour examen.pdf'] 
-    }
+    'TD': [], 
+    'Devoirs': [], 
+    'Examens': [],
+    'Cours': []
   },
   'Statistique': { 
-    'TD': ['TD1 Statistique.pdf'], 
-    'Devoirs': ['Devoir Statistique.pdf'], 
-    'Examens': ['Examen Statistique S1 2022.pdf'],
-    'Cours': { 
-      'Partie Devoirs': ['Cours Statistique Partie 1.pdf'], 
-      'Partie Examen': ['Résumé Statistique pour examen.pdf'] 
-    }
+    'TD': [], 
+    'Devoirs': [], 
+    'Examens': [],
+    'Cours': []
   },
   'Biologie': { 
-    'Cours': { 
-      'Partie Devoirs': ['Cours Biologie Cellulaire.pdf'], 
-      'Partie Examen': ['Résumé Biologie pour examen.pdf'] 
-    }, 
-    'Devoirs': ['Devoir Biologie.pdf'], 
-    'Examens': ['Examen Biologie S1 2022.pdf']
+    'Cours': [], 
+    'Devoirs': [], 
+    'Examens': []
   },
   'Microbiologie': { 
-    'Cours': { 
-      'Partie Devoirs': ['Cours Microbiologie.pdf'], 
-      'Partie Examen': ['Résumé Microbiologie pour examen.pdf'] 
-    }, 
-    'Devoirs': ['Devoir Microbiologie.pdf'], 
-    'Examens': ['Examen Microbiologie S1 2022.pdf']
+    'Cours': [], 
+    'Devoirs': [], 
+    'Examens': []
   },
   'Génétique': { 
-    'Cours': { 
-      'Partie Devoirs': ['Cours Génétique.pdf'], 
-      'Partie Examen': ['Résumé Génétique pour examen.pdf'] 
-    }, 
-    'TD': ['TD1 Génétique.pdf'], 
-    'Devoirs': ['Devoir Génétique.pdf'], 
-    'Examens': ['Examen Génétique S1 2022.pdf']
+    'Cours': [], 
+    'TD': [], 
+    'Devoirs': [], 
+    'Examens': []
   },
   'Informatique': { 
-    'TD': ['TD1 Informatique.pdf'], 
-    'Devoirs': ['Devoir Informatique.pdf'], 
-    'Examens': ['Examen Informatique S1 2022.pdf'],
-    'Cours': { 
-      'Partie Devoirs': ['Cours Algorithmique.pdf'], 
-      'Partie Examen': ['Résumé Informatique pour examen.pdf'] 
-    }
+    'TD': [], 
+    'Devoirs': [], 
+    'Examens': [],
+    'Cours': []
   },
 
   // S2 Subjects
   'Français 2': { 
-    'TD': ['TD1 Français 2.pdf'], 
-    'Devoirs': ['Devoir Français 2.pdf'], 
-    'Examens': ['Examen Français S2 2022.pdf'],
-    'Cours': { 
-      'Partie Devoirs': ['Cours Français 2.pdf'], 
-      'Partie Examen': ['Résumé Français 2 pour examen.pdf'] 
-    }
+    'TD': [], 
+    'Devoirs': [], 
+    'Examens': [],
+    'Cours': []
   },
   'Anglais 2': { 
-    'TD': ['TD1 Anglais 2.pdf'], 
-    'Devoirs': ['Devoir Anglais 2.pdf'], 
-    'Examens': ['Examen Anglais S2 2022.pdf'],
-    'Cours': { 
-      'Partie Devoirs': ['Cours Anglais 2.pdf'], 
-      'Partie Examen': ['Résumé Anglais 2 pour examen.pdf'] 
-    }
+    'TD': [], 
+    'Devoirs': [], 
+    'Examens': [],
+    'Cours': []
   },
   'GEM': {
     'Dessin': {
-      'Cours': ['Cours Dessin Technique.pdf'],
-      'TD': ['TD1 Dessin.pdf'],
-      'Devoirs': ['Devoir Dessin.pdf'],
-      'Examens': ['Examen Dessin S2 2022.pdf']
+      'Cours': [],
+      'TD': [],
+      'Devoirs': [],
+      'Examens': []
     },
     'Électricité': {
-      'Cours': ['Cours Électricité.pdf'],
-      'TD': ['TD1 Électricité.pdf'],
-      'Devoirs': ['Devoir Électricité.pdf'],
-      'Examens': ['Examen Électricité S2 2022.pdf']
+      'Cours': [],
+      'TD': [],
+      'Devoirs': [],
+      'Examens': []
     }
   },
   'GAB': { 
-    'Devoirs': ['Devoir GAB.pdf'], 
-    'Examens': ['Examen GAB S2 2022.pdf'],
-    'Cours': { 
-      'Partie Devoirs': ['Cours GAB Partie 1.pdf', 'Cours GAB Partie 2.pdf'], 
-      'Partie Examen': ['Résumé GAB pour examen.pdf'] 
-    }
+    'Devoirs': [], 
+    'Examens': [],
+    'Cours': []
   },
   'PPV': { 
-    'Devoirs': ['Devoir PPV.pdf'], 
-    'Examens': ['Examen PPV S2 2022.pdf'],
-    'Cours': { 
-      'Partie Devoirs': ['Cours PPV Partie 1.pdf'], 
-      'Partie Examen': ['Résumé PPV pour examen.pdf'] 
-    }
+    'Devoirs': [], 
+    'Examens': [],
+    'Cours': []
   },
   'TIC': { 
-    'TD': ['TD1 TIC.pdf'], 
-    'Devoirs': ['Devoir TIC.pdf'], 
-    'Examens': ['Examen TIC S2 2022.pdf'],
-    'Cours': { 
-      'Partie Devoirs': ['Cours TIC Partie 1.pdf'], 
-      'Partie Examen': ['Résumé TIC pour examen.pdf'] 
-    }
+    'TD': [], 
+    'Devoirs': [], 
+    'Examens': [],
+    'Cours': []
   },
   'STA': { 
-    'Devoirs': ['Devoir STA.pdf'], 
-    'Examens': ['Examen STA S2 2022.pdf'],
-    'Cours': { 
-      'Partie Devoirs': ['Cours STA Partie 1.pdf'], 
-      'Partie Examen': ['Résumé STA pour examen.pdf'] 
-    }
+    'Devoirs': [], 
+    'Examens': [],
+    'Cours': []
   },
   'PSA': { 
-    'Devoirs': ['Devoir PSA.pdf'], 
-    'Examens': ['Examen PSA S2 2022.pdf'],
-    'Cours': { 
-      'Partie Devoirs': ['Cours PSA Partie 1.pdf'], 
-      'Partie Examen': ['Résumé PSA pour examen.pdf'] 
-    }
+    'Devoirs': [], 
+    'Examens': [],
+    'Cours': []
   },
 
   // S3 PPV Subjects
   'Français 3': { 
-    'TD': ['TD1 Français 3.pdf', 'TD2 Français 3.pdf'], 
-    'Devoirs': ['Devoir Français 3.pdf'], 
-    'Examens': ['Examen Français S3 2022.pdf']
+    'TD': [], 
+    'Devoirs': [], 
+    'Examens': []
   },
   'Économie et Gestion': { 
-    'TD': ['TD1 Économie et Gestion.pdf', 'TD2 Économie et Gestion.pdf'], 
-    'Devoirs': ['Devoir Économie et Gestion.pdf'], 
-    'Examens': ['Examen Économie et Gestion S3 2022.pdf']
+    'TD': [], 
+    'Devoirs': [], 
+    'Examens': []
   },
   'Agronomie': { 
-    'Devoirs': ['Devoir Agronomie.pdf'], 
-    'Examens': ['Examen Agronomie S3 2022.pdf'],
-    'Cours': { 
-      'Partie Devoirs': ['Cours Agronomie Partie 1.pdf', 'Cours Agronomie Partie 2.pdf'], 
-      'Partie Examen': ['Résumé Agronomie pour examen.pdf'] 
-    }
+    'Devoirs': [], 
+    'Examens': [],
+    'Cours': []
   },
   'Horticulture': { 
-    'Devoirs': ['Devoir Horticulture.pdf'], 
-    'Examens': ['Examen Horticulture S3 2022.pdf'],
-    'Cours': { 
-      'Partie Devoirs': ['Cours Horticulture.pdf'], 
-      'Partie Examen': ['Résumé Horticulture pour examen.pdf'] 
-    }
+    'Devoirs': [], 
+    'Examens': [],
+    'Cours': []
   },
   'Pesticides': { 
-    'Devoirs': ['Devoir Pesticides.pdf'], 
-    'Examens': ['Examen Pesticides S3 2022.pdf'],
-    'Cours': { 
-      'Partie Devoirs': ['Cours Pesticides.pdf'], 
-      'Partie Examen': ['Résumé Pesticides pour examen.pdf'] 
-    }
+    'Devoirs': [], 
+    'Examens': [],
+    'Cours': []
   },
   'Entomologie': { 
-    'Devoirs': ['Devoir Entomologie.pdf'], 
-    'Examens': ['Examen Entomologie S3 2022.pdf'],
-    'Cours': { 
-      'Partie Devoirs': ['Cours Entomologie.pdf'], 
-      'Partie Examen': ['Résumé Entomologie pour examen.pdf'] 
-    }
+    'Devoirs': [], 
+    'Examens': [],
+    'Cours': []
   },
   'Science des Sols': { 
-    'Devoirs': ['Devoir Science des Sols.pdf'], 
-    'Examens': ['Examen Science des Sols S3 2022.pdf'],
-    'Cours': ['pedcours1.pdf']
+    'Devoirs': [], 
+    'Examens': [],
+    'Cours': [cours ped 1.pdf]
   },
   'Science des Plantes': { 
-    'Devoirs': ['Devoir Science des Plantes.pdf'], 
-    'Examens': ['Examen Science des Plantes S3 2022.pdf'],
-    'Cours': { 
-      'Partie Devoirs': ['Cours Science des Plantes.pdf'], 
-      'Partie Examen': ['Résumé Science des Plantes pour examen.pdf'] 
-    }
+    'Devoirs': [], 
+    'Examens': [],
+    'Cours': []
   }
 };
 
@@ -938,48 +847,15 @@ function updateFileTypesGrid() {
     grid.innerHTML = '';
     const subjectFiles = filesData[currentSubject];
     
-    // Check if the subject has TD and is in S1 or S2
-    const hasTD = subjectFiles.hasOwnProperty('TD');
-    const isS1OrS2 = currentSemester === 'S1' || currentSemester === 'S2';
-    
     for (const type in subjectFiles) {
-      // Skip "Cours" for subjects with TD in S1 or S2
-      if (type === 'Cours' && hasTD && isS1OrS2) {
-        continue;
-      }
+      const div = document.createElement('div');
+      div.className = 'card';
       
-      // For S3 PPV subjects, show only TD, Devoirs, and Examens
-      if (currentSemester === 'S3' && (currentSubject === 'Français 3' || currentSubject === 'Économie et Gestion')) {
-        if (type === 'TD' || type === 'Devoirs' || type === 'Examens') {
-          const div = document.createElement('div');
-          div.className = 'card';
-          
-          div.innerHTML = `
-            <div class="card-title">${type}</div>
-          `;
-          div.onclick = () => showFiles(type);
-          grid.appendChild(div);
-        }
-      } else {
-        if (type !== 'Cours') {
-          const div = document.createElement('div');
-          div.className = 'card';
-          
-          div.innerHTML = `
-            <div class="card-title">${type}</div>
-          `;
-          div.onclick = () => showFiles(type);
-          grid.appendChild(div);
-        } else {
-          const div = document.createElement('div');
-          div.className = 'card';
-          div.innerHTML = `
-            <div class="card-title">Cours</div>
-          `;
-          div.onclick = () => showSectionWithBreadcrumb('coursParts', 'Cours');
-          grid.appendChild(div);
-        }
-      }
+      div.innerHTML = `
+        <div class="card-title">${type}</div>
+      `;
+      div.onclick = () => showFiles(type);
+      grid.appendChild(div);
     }
   }
 }
@@ -1042,30 +918,6 @@ function goBack() {
   } else {
     goHome();
   }
-}
-
-function showCoursFiles(part) {
-  const container = document.getElementById('fileListContainer');
-  const title = document.getElementById('filesListTitle');
-  title.textContent = `${currentSubject} - ${part}`;
-  container.innerHTML = '';
-  
-  const cours = filesData[currentSubject]['Cours'][part];
-  if (cours && cours.length > 0) {
-    cours.forEach(file => {
-      const fileItem = createFileItem(file, part);
-      container.appendChild(fileItem);
-    });
-  } else {
-    container.innerHTML = `
-      <div class="empty-state">
-        <i class="fas fa-folder-open"></i>
-        <h3>Aucun fichier disponible</h3>
-        <p>Il n'y a pas encore de fichiers pour ${part} en ${currentSubject}.</p>
-      </div>
-    `;
-  }
-  showSection('filesList');
 }
 
 function showFiles(type) {
@@ -1179,17 +1031,7 @@ function performSearch() {
       let totalFiles = 0;
       
       for (const category in subjectFiles) {
-        if (category === 'Cours') {
-          // Handle Cours subcategories
-          for (const subcategory in subjectFiles[category]) {
-            const files = subjectFiles[category][subcategory];
-            files.forEach(file => {
-              totalFiles++;
-              const resultItem = createSearchResultItem(file, subject, `${category} - ${subcategory}`);
-              resultsContainer.appendChild(resultItem);
-            });
-          }
-        } else if (subject === 'GEM') {
+        if (subject === 'GEM') {
           // Handle GEM aspects
           for (const aspect in subjectFiles) {
             for (const fileType in subjectFiles[aspect]) {
