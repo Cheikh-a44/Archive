@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Archive ISET Améliorée</title>
+<title>Archive ISET</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
   :root {
@@ -11,352 +11,81 @@
     --primary-dark: #005f87;
     --primary-light: #caf0f8;
     --secondary: #0096c7;
-    --accent: #00b4d8;
     --light: #f5f7fa;
     --white: #ffffff;
     --text: #333333;
     --text-light: #666666;
-    --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --shadow: 0 4px 12px rgba(0,0,0,0.1);
     --radius: 10px;
     --transition: all 0.3s ease;
   }
-
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif; background:var(--light); color:var(--text); line-height:1.6; }
+  header { background:linear-gradient(135deg,var(--primary),var(--secondary)); color:var(--white); padding:1.5rem 1rem; text-align:center; box-shadow:var(--shadow); }
+  header h1 { font-size:2.2rem; margin-bottom:0.5rem; display:flex; align-items:center; justify-content:center; gap:0.5rem; }
+  header p { font-size:1.1rem; opacity:0.9; max-width:600px; margin:0 auto; }
+  .container { max-width:1200px; margin:0 auto; padding:0 1rem; }
+  #breadcrumb { padding:1rem; background:var(--white); border-bottom:1px solid rgba(0,0,0,0.05); margin-bottom:1rem; box-shadow:0 2px 4px rgba(0,0,0,0.05); }
+  #breadcrumbContent { display:flex; flex-wrap:wrap; gap:0.5rem; }
+  #breadcrumbContent span { font-weight:600; cursor:pointer; background:var(--primary); color:var(--white); padding:0.5rem 1rem; border-radius:var(--radius); display:inline-flex; align-items:center; gap:0.5rem; font-size:0.9rem; user-select:none; transition:var(--transition); box-shadow:0 2px 4px rgba(0,0,0,0.1); }
+  #breadcrumbContent span:hover { background:var(--primary-dark); transform:translateY(-2px); }
+  .search-container { padding:1rem; background:var(--white); border-radius:var(--radius); margin:1rem; box-shadow:var(--shadow); }
+  .search-box { display:flex; max-width:600px; margin:0 auto; }
+  .search-box input { flex:1; padding:0.8rem 1rem; border:2px solid var(--primary-light); border-radius:var(--radius) 0 0 var(--radius); font-size:1rem; outline:none; transition:var(--transition); }
+  .search-box input:focus { border-color:var(--primary); }
+  .search-box button { background:var(--primary); color:var(--white); border:none; padding:0 1.5rem; border-radius:0 var(--radius) var(--radius) 0; cursor:pointer; transition:var(--transition); font-size:1rem; min-width:60px; }
+  .search-box button:hover { background:var(--primary-dark); }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:10px; padding:20px; }
+  .card { background:var(--white); padding:1em; border-radius:var(--radius); text-align:center; cursor:pointer; box-shadow:var(--shadow); transition:var(--transition); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.5rem; min-height:100px; }
+  .card:hover { background:var(--primary-light); transform:translateY(-5px); box-shadow:0 8px 16px rgba(0,0,0,0.15); }
+  .card-title { font-weight:600; font-size:0.9rem; }
+  section { display:none; }
+  section.active { display:block; animation:fadeIn 0.3s ease; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+  .section-title { padding:1rem 1rem 0; font-size:1.2rem; color:var(--primary); }
+  .file-list-container { padding:1rem; }
+  .file-item { background:var(--white); margin:0.8rem 0; padding:1rem 1.5rem; border-radius:var(--radius); box-shadow:var(--shadow); cursor:pointer; display:flex; align-items:center; justify-content:space-between; transition:var(--transition); }
+  .file-item:hover { background:var(--primary-light); transform:translateX(5px); }
+  .file-info { display:flex; align-items:center; gap:1rem; }
+  .file-icon { font-size:1.5rem; color:var(--primary); }
+  .file-name { font-weight:500; }
+  .file-actions { display:flex; gap:0.5rem; }
+  .file-action { background:none; border:none; font-size:1.2rem; cursor:pointer; color:var(--text-light); transition:var(--transition); padding:0.3rem; border-radius:50%; }
+  .file-action:hover { color:var(--primary); background:rgba(0,0,0,0.05); }
+  .file-action.delete:hover { color:#e63946; }
+  .empty-state { text-align:center; padding:3rem 1rem; color:var(--text-light); }
+  .empty-state i { font-size:3rem; margin-bottom:1rem; color:var(--primary-light); display:block; }
+  .loading { text-align:center; padding:2rem; color:var(--text-light); }
+  .loading i { font-size:2rem; animation:spin 1s linear infinite; display:block; margin-bottom:0.5rem; }
+  @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+  .back-button { position:fixed; bottom:20px; left:20px; background:var(--primary); color:white; border:none; padding:12px; border-radius:50%; cursor:pointer; box-shadow:var(--shadow); transition:var(--transition); z-index:1000; }
+  .back-button:hover { background:var(--primary-dark); transform:scale(1.1); }
+  .admin-toggle { position:fixed; bottom:20px; right:20px; background:#2d6a4f; color:white; border:none; padding:12px 16px; border-radius:50px; cursor:pointer; box-shadow:var(--shadow); transition:var(--transition); z-index:1000; display:flex; align-items:center; gap:0.5rem; font-size:0.9rem; font-weight:600; }
+  .admin-toggle:hover { background:#1b4332; transform:scale(1.05); }
+  .admin-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:2000; }
+  .admin-overlay.active { display:flex; align-items:center; justify-content:center; padding:1rem; }
+  .admin-panel { background:var(--white); border-radius:var(--radius); padding:2rem; width:100%; max-width:500px; box-shadow:0 20px 40px rgba(0,0,0,0.3); max-height:90vh; overflow-y:auto; }
+  .admin-panel h2 { color:var(--primary); margin-bottom:1.5rem; display:flex; align-items:center; gap:0.5rem; }
+  .admin-form label { display:block; font-weight:600; margin-bottom:0.3rem; color:var(--text); font-size:0.9rem; }
+  .admin-form select, .admin-form input { width:100%; padding:0.7rem 1rem; border:2px solid var(--primary-light); border-radius:var(--radius); font-size:1rem; margin-bottom:1rem; outline:none; transition:var(--transition); background:var(--white); }
+  .admin-form select:focus, .admin-form input:focus { border-color:var(--primary); }
+  .admin-btn { width:100%; padding:0.8rem; background:var(--primary); color:white; border:none; border-radius:var(--radius); font-size:1rem; font-weight:600; cursor:pointer; transition:var(--transition); margin-bottom:0.5rem; }
+  .admin-btn:hover { background:var(--primary-dark); }
+  .admin-btn.cancel { background:#aaa; }
+  .admin-btn.cancel:hover { background:#888; }
+  .admin-success { background:#d4edda; color:#155724; padding:0.7rem 1rem; border-radius:var(--radius); margin-bottom:1rem; display:none; font-weight:600; }
+  .admin-error { background:#f8d7da; color:#721c24; padding:0.7rem 1rem; border-radius:var(--radius); margin-bottom:1rem; display:none; font-weight:600; }
+  .gem-sub-row { display:none; }
+  @media (max-width:768px) {
+    .grid { grid-template-columns:repeat(auto-fill,minmax(110px,1fr)); }
+    header h1 { font-size:1.8rem; }
+    .file-item { flex-direction:column; align-items:flex-start; gap:1rem; }
+    .file-actions { align-self:flex-end; }
   }
-
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: var(--light);
-    color: var(--text);
-    line-height: 1.6;
-  }
-
-  header {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    color: var(--white);
-    padding: 1.5rem 1rem;
-    text-align: center;
-    box-shadow: var(--shadow);
-  }
-
-  header h1 {
-    font-size: 2.2rem;
-    margin-bottom: 0.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-  }
-
-  header p {
-    font-size: 1.1rem;
-    opacity: 0.9;
-    max-width: 600px;
-    margin: 0 auto;
-  }
-
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
-  }
-
-  /* Breadcrumb */
-  #breadcrumb {
-    padding: 1rem;
-    background: var(--white);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    margin-bottom: 1rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  }
-
-  #breadcrumbContent {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  #breadcrumbContent span {
-    font-weight: 600;
-    cursor: pointer;
-    background: var(--primary);
-    color: var(--white);
-    padding: 0.5rem 1rem;
-    border-radius: var(--radius);
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.9rem;
-    user-select: none;
-    transition: var(--transition);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  #breadcrumbContent span:hover {
-    background: var(--primary-dark);
-    transform: translateY(-2px);
-  }
-
-  #breadcrumbContent span:active {
-    transform: scale(0.97);
-  }
-
-  #breadcrumbContent span i {
-    font-size: 0.8rem;
-  }
-
-  /* Search Bar */
-  .search-container {
-    padding: 1rem;
-    background: var(--white);
-    border-radius: var(--radius);
-    margin: 1rem;
-    box-shadow: var(--shadow);
-  }
-
-  .search-box {
-    display: flex;
-    max-width: 600px;
-    margin: 0 auto;
-  }
-
-  .search-box input {
-    flex: 1;
-    padding: 0.8rem 1rem;
-    border: 2px solid var(--primary-light);
-    border-radius: var(--radius) 0 0 var(--radius);
-    font-size: 1rem;
-    outline: none;
-    transition: var(--transition);
-  }
-
-  .search-box input:focus {
-    border-color: var(--primary);
-  }
-
-  .search-box button {
-    background: var(--primary);
-    color: var(--white);
-    border: none;
-    padding: 0 1.5rem;
-    border-radius: 0 var(--radius) var(--radius) 0;
-    cursor: pointer;
-    transition: var(--transition);
-    font-size: 1rem;
-    min-width: 60px;
-  }
-
-  .search-box button:hover {
-    background: var(--primary-dark);
-  }
-
-  /* Grid / Cards */
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 10px;
-    padding: 20px;
-  }
-
-  .card {
-    background: var(--white);
-    padding: 1em;
-    border-radius: var(--radius);
-    text-align: center;
-    cursor: pointer;
-    box-shadow: var(--shadow);
-    transition: var(--transition);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    min-height: 100px;
-  }
-
-  .card:hover {
-    background: var(--primary-light);
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-  }
-
-  .card:active {
-    transform: scale(0.97);
-  }
-
-  .card-title {
-    font-weight: 600;
-    font-size: 0.9rem;
-  }
-
-  /* Sections */
-  section {
-    display: none;
-  }
-
-  section.active {
-    display: block;
-    animation: fadeIn 0.3s ease;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* File List */
-  .file-list-container {
-    padding: 1rem;
-  }
-
-  .file-item {
-    background: var(--white);
-    margin: 0.8rem 0;
-    padding: 1rem 1.5rem;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    transition: var(--transition);
-  }
-
-  .file-item:hover {
-    background: var(--primary-light);
-    transform: translateX(5px);
-  }
-
-  .file-item:active {
-    transform: scale(0.98);
-  }
-
-  .file-info {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  .file-icon {
-    font-size: 1.5rem;
-    color: var(--primary);
-  }
-
-  .file-name {
-    font-weight: 500;
-  }
-
-  .file-actions {
-    display: flex;
-    gap: 0.5rem;
-  }
-
-  .file-action {
-    background: none;
-    border: none;
-    font-size: 1.2rem;
-    cursor: pointer;
-    color: var(--text-light);
-    transition: var(--transition);
-    padding: 0.3rem;
-    border-radius: 50%;
-  }
-
-  .file-action:hover {
-    color: var(--primary);
-    background: rgba(0, 0, 0, 0.05);
-  }
-
-  /* Info messages */
-  .info {
-    text-align: center;
-    color: var(--text-light);
-    margin: 1.5rem 0;
-    font-style: italic;
-    padding: 1rem;
-    background: var(--white);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-  }
-
-  /* Empty state */
-  .empty-state {
-    text-align: center;
-    padding: 3rem 1rem;
-    color: var(--text-light);
-  }
-
-  .empty-state i {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    color: var(--primary-light);
-  }
-
-  /* Back Button */
-  .back-button {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    background: var(--primary);
-    color: white;
-    border: none;
-    padding: 12px;
-    border-radius: 50%;
-    cursor: pointer;
-    box-shadow: var(--shadow);
-    transition: var(--transition);
-    z-index: 1000;
-  }
-
-  .back-button:hover {
-    background: var(--primary-dark);
-    transform: scale(1.1);
-  }
-
-  /* Responsive */
-  @media (max-width: 768px) {
-    .grid {
-      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-    }
-    
-    header h1 {
-      font-size: 1.8rem;
-    }
-    
-    .file-item {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 1rem;
-    }
-    
-    .file-actions {
-      align-self: flex-end;
-    }
-    
-    .search-box {
-      max-width: 100%;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .grid {
-      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    }
-    
-    .card {
-      padding: 0.8rem 0.5rem;
-    }
-    
-    header h1 {
-      font-size: 1.6rem;
-    }
-    
-    header p {
-      font-size: 1rem;
-    }
+  @media (max-width:480px) {
+    .grid { grid-template-columns:repeat(auto-fill,minmax(100px,1fr)); }
+    .card { padding:0.8rem 0.5rem; }
+    header h1 { font-size:1.6rem; }
   }
 </style>
 </head>
@@ -370,191 +99,200 @@
 </header>
 
 <div class="container">
-  <!-- Breadcrumb -->
   <div id="breadcrumb">
     <div id="breadcrumbContent">
       <span onclick="goHome()"><i class="fas fa-home"></i> Accueil</span>
     </div>
   </div>
 
-  <!-- Search Bar -->
   <div class="search-container">
     <div class="search-box">
-      <input type="text" id="searchInput" placeholder="Rechercher une matière (ex: Math, Physique, PPV...)">
+      <input type="text" id="searchInput" placeholder="Rechercher une matière ou un nom de fichier...">
       <button onclick="performSearch()"><i class="fas fa-search"></i></button>
     </div>
   </div>
 
-  <!-- Back Button -->
-  <button class="back-button" onclick="goBack()" style="display: none;">
+  <button class="back-button" onclick="goBack()" style="display:none;">
     <i class="fas fa-arrow-left"></i>
   </button>
 
-  <!-- Main Content Sections -->
+  <button class="admin-toggle" onclick="openAdmin()">
+    <i class="fas fa-cog"></i> Admin
+  </button>
+
+  <!-- Admin -->
+  <div class="admin-overlay" id="adminOverlay">
+    <div class="admin-panel">
+      <!-- Password -->
+      <div id="passwordScreen">
+        <h2><i class="fas fa-lock"></i> Accès Admin</h2>
+        <div class="admin-error" id="passwordError">❌ Mot de passe incorrect !</div>
+        <div class="admin-form">
+          <label>Mot de passe</label>
+          <input type="password" id="passwordInput" placeholder="••••••••" onkeyup="if(event.key==='Enter') checkPassword()">
+          <button class="admin-btn" onclick="checkPassword()"><i class="fas fa-sign-in-alt"></i> Entrer</button>
+          <button class="admin-btn cancel" onclick="closeAdmin()">Annuler</button>
+        </div>
+      </div>
+      <!-- Form -->
+      <div id="adminForm" style="display:none;">
+        <h2><i class="fas fa-folder-plus"></i> Ajouter un fichier</h2>
+        <div class="admin-success" id="adminSuccess">✅ Fichier ajouté avec succès !</div>
+        <div class="admin-error" id="adminFormError">❌ Erreur, veuillez réessayer.</div>
+        <div class="admin-form">
+          <label>Semestre</label>
+          <select id="adminSemester" onchange="updateAdminSubjects()">
+            <option value="">-- Choisir --</option>
+            <option value="S1">S1</option>
+            <option value="S2">S2</option>
+            <option value="S3-PPV">S3 - PPV</option>
+            <option value="S4-PPV">S4 - PPV</option>
+          </select>
+          <label>Matière</label>
+          <select id="adminSubject" onchange="updateAdminGEM()">
+            <option value="">-- Choisir le semestre d'abord --</option>
+          </select>
+          <div class="gem-sub-row" id="gemSubRow">
+            <label>Aspect GEM</label>
+            <select id="adminGEMAspect">
+              <option value="Dessin">Dessin</option>
+              <option value="Electricite">Électricité</option>
+            </select>
+          </div>
+          <label>Type</label>
+          <select id="adminType">
+            <option value="Cours">Cours</option>
+            <option value="TD">TD</option>
+            <option value="Devoirs">Devoirs</option>
+            <option value="Examens">Examens</option>
+          </select>
+          <label>Nom du fichier (ex: cours1.pdf)</label>
+          <input type="text" id="adminFileName" placeholder="nom_du_fichier.pdf">
+          <label>Lien Google Drive</label>
+          <input type="text" id="adminFileURL" placeholder="https://drive.google.com/...">
+          <button class="admin-btn" onclick="addFileAdmin()"><i class="fas fa-plus"></i> Ajouter</button>
+          <button class="admin-btn cancel" onclick="closeAdmin()">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sections -->
   <section id="years" class="active">
     <h2 class="section-title">Sélectionnez votre année</h2>
     <div class="grid">
-      <div class="card" onclick="showSectionWithBreadcrumb('semestersL1', 'L1')">
-        <div class="card-title">L1</div>
-      </div>
-      <div class="card" onclick="showSectionWithBreadcrumb('semestersL2', 'L2')">
-        <div class="card-title">L2</div>
-      </div>
-      <div class="card" onclick="showComingSoon('L3')">
-        <div class="card-title">L3</div>
-      </div>
+      <div class="card" onclick="showSectionWithBreadcrumb('semestersL1','L1')"><div class="card-title">L1</div></div>
+      <div class="card" onclick="showSectionWithBreadcrumb('semestersL2','L2')"><div class="card-title">L2</div></div>
+      <div class="card" onclick="showComingSoon('L3')"><div class="card-title">L3</div></div>
     </div>
   </section>
 
-  <!-- L1 Semesters -->
   <section id="semestersL1">
     <h2 class="section-title">L1 - Sélectionnez votre semestre</h2>
     <div class="grid">
-      <div class="card" onclick="showSectionWithBreadcrumb('subjectsS1', 'S1')">
-        <div class="card-title">S1</div>
-      </div>
-      <div class="card" onclick="showSectionWithBreadcrumb('subjectsS2', 'S2')">
-        <div class="card-title">S2</div>
-      </div>
+      <div class="card" onclick="showSectionWithBreadcrumb('subjectsS1','S1')"><div class="card-title">S1</div></div>
+      <div class="card" onclick="showSectionWithBreadcrumb('subjectsS2','S2')"><div class="card-title">S2</div></div>
     </div>
   </section>
 
-  <!-- L2 Semesters -->
   <section id="semestersL2">
     <h2 class="section-title">L2 - Sélectionnez votre semestre</h2>
     <div class="grid">
-      <div class="card" onclick="showSectionWithBreadcrumb('departments', 'S3')">
-        <div class="card-title">S3</div>
-      </div>
-      <div class="card" onclick="showComingSoon('S4')">
-        <div class="card-title">S4</div>
-      </div>
+      <div class="card" onclick="showSectionWithBreadcrumb('departments','S3')"><div class="card-title">S3</div></div>
+      <div class="card" onclick="showSectionWithBreadcrumb('departmentsS4','S4')"><div class="card-title">S4</div></div>
     </div>
   </section>
 
-  <!-- Departments Section -->
   <section id="departments">
     <h2 class="section-title">S3 - Sélectionnez votre département</h2>
     <div class="grid">
-      <div class="card" onclick="selectDepartmentWithBreadcrumb('PPV')">
-        <div class="card-title">PPV</div>
-      </div>
-      <div class="card" onclick="selectDepartmentWithBreadcrumb('GEM')">
-        <div class="card-title">GEM</div>
-      </div>
-      <div class="card" onclick="selectDepartmentWithBreadcrumb('GAB')">
-        <div class="card-title">GAB</div>
-      </div>
-      <div class="card" onclick="selectDepartmentWithBreadcrumb('PSA')">
-        <div class="card-title">PSA</div>
-      </div>
-      <div class="card" onclick="selectDepartmentWithBreadcrumb('STA')">
-        <div class="card-title">STA</div>
-      </div>
+      <div class="card" onclick="selectDepartmentWithBreadcrumb('PPV','S3')"><div class="card-title">PPV</div></div>
+      <div class="card" onclick="selectDepartmentWithBreadcrumb('GEM','S3')"><div class="card-title">GEM</div></div>
+      <div class="card" onclick="selectDepartmentWithBreadcrumb('GAB','S3')"><div class="card-title">GAB</div></div>
+      <div class="card" onclick="selectDepartmentWithBreadcrumb('PSA','S3')"><div class="card-title">PSA</div></div>
+      <div class="card" onclick="selectDepartmentWithBreadcrumb('STA','S3')"><div class="card-title">STA</div></div>
     </div>
   </section>
 
-  <!-- S1 Subjects -->
+  <section id="departmentsS4">
+    <h2 class="section-title">S4 - Sélectionnez votre département</h2>
+    <div class="grid">
+      <div class="card" onclick="selectDepartmentWithBreadcrumb('PPV','S4')"><div class="card-title">PPV</div></div>
+      <div class="card" onclick="showComingSoon('GEM (S4)')"><div class="card-title">GEM</div></div>
+      <div class="card" onclick="showComingSoon('GAB (S4)')"><div class="card-title">GAB</div></div>
+      <div class="card" onclick="showComingSoon('PSA (S4)')"><div class="card-title">PSA</div></div>
+      <div class="card" onclick="showComingSoon('STA (S4)')"><div class="card-title">STA</div></div>
+    </div>
+  </section>
+
   <section id="subjectsS1">
     <h2 class="section-title">S1 - Sélectionnez une matière</h2>
     <div class="grid">
-      <div class="card" onclick="selectSubjectWithBreadcrumb('Math', 'S1')">
-        <div class="card-title">Mathématiques</div>
-      </div>
-      <div class="card" onclick="selectSubjectWithBreadcrumb('Physique', 'S1')">
-        <div class="card-title">Physique</div>
-      </div>
-      <div class="card" onclick="selectSubjectWithBreadcrumb('Chimie', 'S1')">
-        <div class="card-title">Chimie</div>
-      </div>
-      <div class="card" onclick="selectSubjectWithBreadcrumb('Anglais', 'S1')">
-        <div class="card-title">Anglais</div>
-      </div>
-      <div class="card" onclick="selectSubjectWithBreadcrumb('Français', 'S1')">
-        <div class="card-title">Français</div>
-      </div>
-      <div class="card" onclick="selectSubjectWithBreadcrumb('Biologie', 'S1')">
-        <div class="card-title">Biologie</div>
-      </div>
-      <div class="card" onclick="selectSubjectWithBreadcrumb('Microbiologie', 'S1')">
-        <div class="card-title">Microbiologie</div>
-      </div>
-      <div class="card" onclick="selectSubjectWithBreadcrumb('Génétique', 'S1')">
-        <div class="card-title">Génétique</div>
-      </div>
-      <div class="card" onclick="selectSubjectWithBreadcrumb('Informatique', 'S1')">
-        <div class="card-title">Informatique</div>
-      </div>
-      <div class="card" onclick="selectSubjectWithBreadcrumb('Statistique', 'S1')">
-        <div class="card-title">Statistique</div>
-      </div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Math','S1')"><div class="card-title">Mathématiques</div></div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Physique','S1')"><div class="card-title">Physique</div></div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Chimie','S1')"><div class="card-title">Chimie</div></div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Anglais','S1')"><div class="card-title">Anglais</div></div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Francais','S1')"><div class="card-title">Français</div></div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Biologie','S1')"><div class="card-title">Biologie</div></div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Microbiologie','S1')"><div class="card-title">Microbiologie</div></div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Genetique','S1')"><div class="card-title">Génétique</div></div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Informatique','S1')"><div class="card-title">Informatique</div></div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Statistique','S1')"><div class="card-title">Statistique</div></div>
     </div>
   </section>
 
-  <!-- S2 Subjects -->
   <section id="subjectsS2">
     <h2 class="section-title">S2 - Sélectionnez une matière</h2>
     <div class="grid">
-      <div class="card" onclick="selectSubjectWithBreadcrumb('Français 2', 'S2')">
-        <div class="card-title">Français 2</div>
-      </div>
-      <div class="card" onclick="selectSubjectWithBreadcrumb('Anglais 2', 'S2')">
-        <div class="card-title">Anglais 2</div>
-      </div>
-      <div class="card" onclick="selectSubjectWithBreadcrumb('GEM', 'S2')">
-        <div class="card-title">GEM</div>
-      </div>
-      <div class="card" onclick="selectSubjectWithBreadcrumb('GAB', 'S2')">
-        <div class="card-title">GAB</div>
-      </div>
-      <div class="card" onclick="selectSubjectWithBreadcrumb('PPV', 'S2')">
-        <div class="card-title">PPV</div>
-      </div>
-      <div class="card" onclick="selectSubjectWithBreadcrumb('TIC', 'S2')">
-        <div class="card-title">TIC</div>
-      </div>
-      <div class="card" onclick="selectSubjectWithBreadcrumb('STA', 'S2')">
-        <div class="card-title">STA</div>
-      </div>
-      <div class="card" onclick="selectSubjectWithBreadcrumb('PSA', 'S2')">
-        <div class="card-title">PSA</div>
-      </div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Francais2','S2')"><div class="card-title">Français 2</div></div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Anglais2','S2')"><div class="card-title">Anglais 2</div></div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('GEM','S2')"><div class="card-title">GEM</div></div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('GAB','S2')"><div class="card-title">GAB</div></div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('PPV','S2')"><div class="card-title">PPV</div></div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('TIC','S2')"><div class="card-title">TIC</div></div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('STA','S2')"><div class="card-title">STA</div></div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('PSA','S2')"><div class="card-title">PSA</div></div>
     </div>
   </section>
 
-  <!-- PPV Subjects (S3) -->
-  <section id="subjectsPPV">
+  <section id="subjectsPPV_S3">
     <h2 class="section-title">PPV (S3) - Sélectionnez une matière</h2>
     <div class="grid">
-      <div class="card" onclick="selectSubjectWithBreadcrumb('Français 3', 'S3')">
-        <div class="card-title">Français 3</div>
-      </div>
-      <div class="card" onclick="selectSubjectWithBreadcrumb('Économie et Gestion', 'S3')">
-        <div class="card-title">Introduction à l'Économie et la Gestion</div>
-      </div>
-      <div class="card" onclick="selectSubjectWithBreadcrumb('Agronomie', 'S3')">
-        <div class="card-title">Principes généraux d'agronomie</div>
-      </div>
-      <div class="card" onclick="selectSubjectWithBreadcrumb('Horticulture', 'S3')">
-        <div class="card-title">Principes généraux d'horticulture</div>
-      </div>
-      <div class="card" onclick="selectSubjectWithBreadcrumb('Pesticides', 'S3')">
-        <div class="card-title">Introduction aux pesticides agricoles</div>
-      </div>
-      <div class="card" onclick="selectSubjectWithBreadcrumb('Entomologie', 'S3')">
-        <div class="card-title">Entomologie 1 et Nematologie 1</div>
-      </div>
-      <div class="card" onclick="selectSubjectWithBreadcrumb('Science des Sols', 'S3')">
-        <div class="card-title">Introduction à la science des sols</div>
-      </div>
-      <div class="card" onclick="selectSubjectWithBreadcrumb('Science des Plantes', 'S3')">
-        <div class="card-title">Introduction à la science des plantes</div>
-      </div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Francais3','S3')"><div class="card-title">Français 3</div></div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('EconomieGestion','S3')"><div class="card-title">Économie et Gestion</div></div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Agronomie','S3')"><div class="card-title">Agronomie</div></div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Horticulture','S3')"><div class="card-title">Horticulture</div></div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Pesticides','S3')"><div class="card-title">Pesticides</div></div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Entomologie','S3')"><div class="card-title">Entomologie</div></div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('ScienceSols','S3')"><div class="card-title">Science des Sols</div></div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('SciencePlantes','S3')"><div class="card-title">Science des Plantes</div></div>
+    </div>
+  </section>
+
+  <section id="subjectsPPV_S4">
+    <h2 class="section-title">PPV (S4) - Sélectionnez une matière</h2>
+    <div class="grid">
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Vulgarisation','S4')"><div class="card-title">Vulgarisation</div></div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('TechniquePropagation','S4')"><div class="card-title">Technique de propagation</div></div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('TechniqueIrrigation','S4')"><div class="card-title">Technique d'irrigation</div></div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Ecophysiologie','S4')"><div class="card-title">Ecophysiologie végétale</div></div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('BiochimieStructurale','S4')"><div class="card-title">Biochimie structurale</div></div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('FertiliteSol','S4')"><div class="card-title">Fertilité du sol</div></div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('MethodesDiagnostic','S4')"><div class="card-title">Méthodes de diagnostic</div></div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('Malherbologie','S4')"><div class="card-title">Malherbologie</div></div>
+    </div>
+  </section>
+
+  <section id="gemParts">
+    <h2 class="section-title">GEM (S2) - Sélectionnez un aspect</h2>
+    <div class="grid">
+      <div class="card" onclick="selectGEMAspect('Dessin')"><div class="card-title">Dessin</div></div>
+      <div class="card" onclick="selectGEMAspect('Electricite')"><div class="card-title">Électricité</div></div>
     </div>
   </section>
 
   <section id="fileTypes">
-    <h2 class="section-title" id="fileTypesTitle">Types de fichiers disponibles</h2>
+    <h2 class="section-title" id="fileTypesTitle">Types de fichiers</h2>
     <div class="grid" id="fileTypesGrid"></div>
   </section>
 
@@ -569,544 +307,377 @@
   </section>
 </div>
 
-<script>
-// Data structure for files
-let currentSubject = '';
-let currentSemester = '';
-let breadcrumbList = [];
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getDatabase, ref, push, remove, get, child } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-// Sample files data - you can add more files here
-const filesData = {
-  // S1 Subjects
-  'Math': { 
-    'TD': [], 
-    'Devoirs': [], 
-    'Examens': [],
-    'Cours': []
-  },
-  'Physique': { 
-    'TD': [], 
-    'Devoirs': [], 
-    'Examens': [],
-    'Cours': []
-  },
-  'Chimie': { 
-    'TD': [], 
-    'Devoirs': [], 
-    'Examens': [],
-    'Cours': []
-  },
-  'Anglais': { 
-    'TD': [], 
-    'Devoirs': [], 
-    'Examens': [],
-    'Cours': []
-  },
-  'Français': { 
-    'TD': [], 
-    'Devoirs': [], 
-    'Examens': [],
-    'Cours': []
-  },
-  'Statistique': { 
-    'TD': [], 
-    'Devoirs': [], 
-    'Examens': [],
-    'Cours': []
-  },
-  'Biologie': { 
-    'Cours': [], 
-    'Devoirs': [], 
-    'Examens': []
-  },
-  'Microbiologie': { 
-    'Cours': [], 
-    'Devoirs': [], 
-    'Examens': []
-  },
-  'Génétique': { 
-    'Cours': [], 
-    'TD': [], 
-    'Devoirs': [], 
-    'Examens': []
-  },
-  'Informatique': { 
-    'TD': [], 
-    'Devoirs': [], 
-    'Examens': [],
-    'Cours': []
-  },
+  const firebaseConfig = {
+    apiKey: "AIzaSyDnrW6WnmbEFpbWzlW9IGglxAafajt2Kyo",
+    authDomain: "iset-b9974.firebaseapp.com",
+    projectId: "iset-b9974",
+    storageBucket: "iset-b9974.firebasestorage.app",
+    messagingSenderId: "1054170284751",
+    appId: "1:1054170284751:web:8f02232478430d5ae2adba",
+    databaseURL: "https://iset-b9974-default-rtdb.firebaseio.com/"
+  };
 
-  // S2 Subjects
-  'Français 2': { 
-    'TD': [], 
-    'Devoirs': [], 
-    'Examens': [],
-    'Cours': []
-  },
-  'Anglais 2': { 
-    'TD': [], 
-    'Devoirs': [], 
-    'Examens': [],
-    'Cours': []
-  },
-  'GEM': {
-    'Dessin': {
-      'Cours': [],
-      'TD': [],
-      'Devoirs': [],
-      'Examens': []
-    },
-    'Électricité': {
-      'Cours': [],
-      'TD': [],
-      'Devoirs': [],
-      'Examens': []
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  // ===== STATE =====
+  const ADMIN_PASSWORD = "iset2024";
+  let currentSubject = '';
+  let currentFileType = '';
+  let currentGEMAspect = '';
+  let breadcrumbList = [];
+
+  const FILE_TYPES = ['Cours','TD','Devoirs','Examens'];
+
+  // Subject display names mapping
+  const subjectNames = {
+    'Math':'Mathématiques','Physique':'Physique','Chimie':'Chimie','Anglais':'Anglais',
+    'Francais':'Français','Biologie':'Biologie','Microbiologie':'Microbiologie',
+    'Genetique':'Génétique','Informatique':'Informatique','Statistique':'Statistique',
+    'Francais2':'Français 2','Anglais2':'Anglais 2','GEM':'GEM','GAB':'GAB',
+    'PPV':'PPV','TIC':'TIC','STA':'STA','PSA':'PSA',
+    'Francais3':'Français 3','EconomieGestion':'Économie et Gestion',
+    'Agronomie':'Agronomie','Horticulture':'Horticulture','Pesticides':'Pesticides',
+    'Entomologie':'Entomologie','ScienceSols':'Science des Sols','SciencePlantes':'Science des Plantes',
+    'Vulgarisation':'Vulgarisation','TechniquePropagation':'Technique de propagation',
+    'TechniqueIrrigation':"Technique d'irrigation",'Ecophysiologie':'Ecophysiologie végétale',
+    'BiochimieStructurale':'Biochimie structurale','FertiliteSol':'Fertilité du sol',
+    'MethodesDiagnostic':'Méthodes de diagnostic','Malherbologie':'Malherbologie'
+  };
+
+  const semesterSubjects = {
+    'S1': ['Math','Physique','Chimie','Anglais','Francais','Biologie','Microbiologie','Genetique','Informatique','Statistique'],
+    'S2': ['Francais2','Anglais2','GEM','GAB','PPV','TIC','STA','PSA'],
+    'S3-PPV': ['Francais3','EconomieGestion','Agronomie','Horticulture','Pesticides','Entomologie','ScienceSols','SciencePlantes'],
+    'S4-PPV': ['Vulgarisation','TechniquePropagation','TechniqueIrrigation','Ecophysiologie','BiochimieStructurale','FertiliteSol','MethodesDiagnostic','Malherbologie']
+  };
+
+  // ===== FIREBASE =====
+  function getPath(subject, type, gemAspect) {
+    if (subject === 'GEM' && gemAspect) return `files/GEM/${gemAspect}/${type}`;
+    return `files/${subject}/${type}`;
+  }
+
+  async function loadFiles(subject, type, gemAspect) {
+    const path = getPath(subject, type, gemAspect);
+    const snapshot = await get(child(ref(db), path));
+    const files = [];
+    if (snapshot.exists()) {
+      snapshot.forEach(child => {
+        files.push({ key: child.key, ...child.val() });
+      });
     }
-  },
-  'GAB': { 
-    'Devoirs': [], 
-    'Examens': [],
-    'Cours': []
-  },
-  'PPV': { 
-    'Devoirs': [], 
-    'Examens': [],
-    'Cours': []
-  },
-  'TIC': { 
-    'TD': [], 
-    'Devoirs': [], 
-    'Examens': [],
-    'Cours': []
-  },
-  'STA': { 
-    'Devoirs': [], 
-    'Examens': [],
-    'Cours': []
-  },
-  'PSA': { 
-    'Devoirs': [], 
-    'Examens': [],
-    'Cours': []
-  },
-
-  // S3 PPV Subjects
-  'Français 3': { 
-    'TD': [], 
-    'Devoirs': [], 
-    'Examens': []
-  },
-  'Économie et Gestion': { 
-    'TD': [], 
-    'Devoirs': [], 
-    'Examens': []
-  },
-  'Agronomie': { 
-    'Devoirs': [], 
-    'Examens': [],
-    'Cours': []
-  },
-  'Horticulture': { 
-    'Devoirs': [], 
-    'Examens': [],
-    'Cours': []
-  },
-  'Pesticides': { 
-    'Devoirs': [], 
-    'Examens': [],
-    'Cours': []
-  },
-  'Entomologie': { 
-    'Devoirs': [], 
-    'Examens': [],
-    'Cours': []
-  },
-  'Science des Sols': { 
-    'Devoirs': [], 
-    'Examens': [],
-    'Cours': ["pédologie1.pdf"]
-  },
-  'Science des Plantes': { 
-    'Devoirs': [], 
-    'Examens': [],
-    'Cours': []
+    return files;
   }
-};
 
-// Initialize the application
-document.addEventListener('DOMContentLoaded', function() {
-  // Add event listener for search input
-  document.getElementById('searchInput').addEventListener('keyup', function(event) {
-    if (event.key === 'Enter') {
-      performSearch();
-    }
-  });
-
-  // Handle browser back button
-  window.addEventListener('popstate', function(event) {
-    if (breadcrumbList.length > 1) {
-      breadcrumbList.pop();
-      updateBreadcrumb();
-      const lastSection = breadcrumbList[breadcrumbList.length - 1];
-      let sectionId = lastSection.id;
-      if (sectionId.startsWith('subject-') || sectionId.startsWith('gem-') || sectionId.startsWith('dept-')) sectionId = 'fileTypes';
-      showSection(sectionId);
-    } else {
-      goHome();
-    }
-  });
-});
-
-// Navigation functions
-function showSectionWithBreadcrumb(id, name) {
-  if (!breadcrumbList.find(b => b.id === id)) {
-    breadcrumbList.push({id: id, name: name});
+  async function saveFile(subject, type, gemAspect, name, url) {
+    const path = getPath(subject, type, gemAspect);
+    await push(ref(db, path), { name, url });
   }
-  updateBreadcrumb();
-  showSection(id);
-  
-  // Update browser history
-  window.history.pushState({section: id}, '', `#${id}`);
-}
 
-function selectSubjectWithBreadcrumb(subject, semester) {
-  currentSubject = subject;
-  currentSemester = semester;
-  const id = 'subject-' + subject;
-  if (!breadcrumbList.find(b => b.id === id)) {
-    breadcrumbList.push({id: id, name: subject});
+  async function deleteFileDB(subject, type, gemAspect, key) {
+    const path = getPath(subject, type, gemAspect) + '/' + key;
+    await remove(ref(db, path));
   }
-  updateBreadcrumb();
-  
-  if (subject === 'GEM' && semester === 'S2') {
-    showSection('gemParts');
-  } else {
-    showSection('fileTypes');
-    updateFileTypesGrid();
+
+  async function loadAllFiles() {
+    const snapshot = await get(child(ref(db), 'files'));
+    return snapshot.exists() ? snapshot.val() : {};
   }
-  
-  // Update browser history
-  window.history.pushState({section: 'fileTypes'}, '', `#${id}`);
-}
 
-function selectDepartmentWithBreadcrumb(department) {
-  const id = 'dept-' + department;
-  if (!breadcrumbList.find(b => b.id === id)) {
-    breadcrumbList.push({id: id, name: department});
-  }
-  updateBreadcrumb();
-  
-  if (department === 'PPV') {
-    showSection('subjectsPPV');
-  } else {
-    // For other departments, show coming soon message
-    showComingSoon(department + ' (S3)');
-  }
-  
-  // Update browser history
-  window.history.pushState({section: id}, '', `#${id}`);
-}
+  // ===== NAVIGATION =====
+  window.showSectionWithBreadcrumb = (id, name) => {
+    if (!breadcrumbList.find(b => b.id === id)) breadcrumbList.push({id, name});
+    updateBreadcrumb(); showSection(id);
+  };
 
-function selectGEMAspect(aspect) {
-  currentSubject = 'GEM';
-  const id = 'gem-' + aspect;
-  if (!breadcrumbList.find(b => b.id === id)) {
-    breadcrumbList.push({id: id, name: aspect});
-  }
-  updateBreadcrumb();
-  showSection('fileTypes');
-  updateFileTypesGrid();
-  
-  // Update browser history
-  window.history.pushState({section: 'fileTypes'}, '', `#${id}`);
-}
-
-function updateFileTypesGrid() {
-  const grid = document.getElementById('fileTypesGrid');
-  const title = document.getElementById('fileTypesTitle');
-  
-  if (currentSubject === 'GEM' && currentSemester === 'S2') {
-    const currentAspect = breadcrumbList[breadcrumbList.length - 1].name;
-    title.textContent = `GEM - ${currentAspect} - Types de fichiers`;
-    grid.innerHTML = '';
-    
-    const aspectFiles = filesData['GEM'][currentAspect];
-    for (const type in aspectFiles) {
-      const div = document.createElement('div');
-      div.className = 'card';
-      
-      div.innerHTML = `
-        <div class="card-title">${type}</div>
-      `;
-      div.onclick = () => showFiles(type);
-      grid.appendChild(div);
-    }
-  } else {
-    title.textContent = `${currentSubject} - Types de fichiers disponibles`;
-    grid.innerHTML = '';
-    const subjectFiles = filesData[currentSubject];
-    
-    for (const type in subjectFiles) {
-      const div = document.createElement('div');
-      div.className = 'card';
-      
-      div.innerHTML = `
-        <div class="card-title">${type}</div>
-      `;
-      div.onclick = () => showFiles(type);
-      grid.appendChild(div);
-    }
-  }
-}
-
-function updateBreadcrumb() {
-  const container = document.getElementById('breadcrumbContent');
-  container.innerHTML = '';
-  
-  // Always show home button
-  const homeSpan = document.createElement('span');
-  homeSpan.innerHTML = '<i class="fas fa-home"></i> Accueil';
-  homeSpan.onclick = goHome;
-  container.appendChild(homeSpan);
-  
-  // Add other breadcrumbs
-  breadcrumbList.forEach((b, index) => {
-    const span = document.createElement('span');
-    span.textContent = b.name;
-    span.onclick = () => {
-      breadcrumbList = breadcrumbList.slice(0, index + 1);
-      updateBreadcrumb();
-      let sectionId = b.id;
-      if (sectionId.startsWith('subject-') || sectionId.startsWith('gem-') || sectionId.startsWith('dept-')) sectionId = 'fileTypes';
-      showSection(sectionId);
-    };
-    container.appendChild(span);
-  });
-  
-  // Show/hide back button
-  const backButton = document.querySelector('.back-button');
-  backButton.style.display = breadcrumbList.length > 1 ? 'block' : 'none';
-}
-
-// Show sections and files
-function showSection(id) {
-  document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
-  const sec = document.getElementById(id);
-  if(sec) sec.classList.add("active");
-  
-  // Scroll to top when changing sections
-  window.scrollTo(0, 0);
-}
-
-function goHome() {
-  breadcrumbList = [];
-  updateBreadcrumb();
-  showSection('years');
-  window.history.pushState({section: 'years'}, '', '#years');
-}
-
-function goBack() {
-  if (breadcrumbList.length > 1) {
-    breadcrumbList.pop();
+  window.selectSubjectWithBreadcrumb = (subject, semester) => {
+    currentSubject = subject; currentGEMAspect = '';
+    const id = 'subj-' + subject;
+    const displayName = subjectNames[subject] || subject;
+    if (!breadcrumbList.find(b => b.id === id)) breadcrumbList.push({id, name: displayName});
     updateBreadcrumb();
-    const lastSection = breadcrumbList[breadcrumbList.length - 1];
-    let sectionId = lastSection.id;
-    if (sectionId.startsWith('subject-') || sectionId.startsWith('gem-') || sectionId.startsWith('dept-')) sectionId = 'fileTypes';
-    showSection(sectionId);
-    window.history.back();
-  } else {
-    goHome();
-  }
-}
+    if (subject === 'GEM' && semester === 'S2') { showSection('gemParts'); return; }
+    showSection('fileTypes'); updateFileTypesGrid();
+  };
 
-function showFiles(type) {
-  const container = document.getElementById('fileListContainer');
-  const title = document.getElementById('filesListTitle');
-  
-  if (currentSubject === 'GEM' && currentSemester === 'S2') {
-    const currentAspect = breadcrumbList[breadcrumbList.length - 1].name;
-    title.textContent = `GEM - ${currentAspect} - ${type}`;
+  window.selectDepartmentWithBreadcrumb = (dept, semester) => {
+    const id = 'dept-' + dept + '-' + semester;
+    if (!breadcrumbList.find(b => b.id === id)) breadcrumbList.push({id, name: dept});
+    updateBreadcrumb();
+    if (dept === 'PPV' && semester === 'S3') showSection('subjectsPPV_S3');
+    else if (dept === 'PPV' && semester === 'S4') showSection('subjectsPPV_S4');
+    else showComingSoon(dept + ' (' + semester + ')');
+  };
+
+  window.selectGEMAspect = (aspect) => {
+    currentSubject = 'GEM'; currentGEMAspect = aspect;
+    const id = 'gem-' + aspect;
+    if (!breadcrumbList.find(b => b.id === id)) breadcrumbList.push({id, name: aspect});
+    updateBreadcrumb(); showSection('fileTypes'); updateFileTypesGrid();
+  };
+
+  function updateFileTypesGrid() {
+    const grid = document.getElementById('fileTypesGrid');
+    const title = document.getElementById('fileTypesTitle');
+    grid.innerHTML = '';
+    const label = currentSubject === 'GEM' && currentGEMAspect
+      ? `GEM - ${currentGEMAspect}`
+      : (subjectNames[currentSubject] || currentSubject);
+    title.textContent = label + ' - Types de fichiers';
+    FILE_TYPES.forEach(type => {
+      const div = document.createElement('div');
+      div.className = 'card';
+      div.innerHTML = `<div class="card-title">${type}</div>`;
+      div.onclick = () => showFiles(type);
+      grid.appendChild(div);
+    });
+  }
+
+  function updateBreadcrumb() {
+    const container = document.getElementById('breadcrumbContent');
     container.innerHTML = '';
-    
-    const files = filesData['GEM'][currentAspect][type];
-    if (files && files.length > 0) {
-      files.forEach(file => {
-        const fileItem = createFileItem(file, type);
-        container.appendChild(fileItem);
-      });
-    } else {
-      container.innerHTML = `
-        <div class="empty-state">
-          <i class="fas fa-folder-open"></i>
-          <h3>Aucun fichier disponible</h3>
-          <p>Il n'y a pas encore de fichiers pour ${type} en GEM - ${currentAspect}.</p>
-        </div>
-      `;
-    }
-  } else {
-    title.textContent = `${currentSubject} - ${type}`;
+    const home = document.createElement('span');
+    home.innerHTML = '<i class="fas fa-home"></i> Accueil';
+    home.onclick = goHome;
+    container.appendChild(home);
+    breadcrumbList.forEach((b, i) => {
+      const span = document.createElement('span');
+      span.textContent = b.name;
+      span.onclick = () => {
+        breadcrumbList = breadcrumbList.slice(0, i + 1);
+        updateBreadcrumb();
+        let sid = b.id;
+        if (sid.startsWith('subj-') || sid.startsWith('gem-') || sid.startsWith('dept-')) sid = 'fileTypes';
+        showSection(sid);
+      };
+      container.appendChild(span);
+    });
+    document.querySelector('.back-button').style.display = breadcrumbList.length > 0 ? 'block' : 'none';
+  }
+
+  function showSection(id) {
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    const sec = document.getElementById(id);
+    if (sec) sec.classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  window.goHome = () => {
+    breadcrumbList = []; currentSubject = ''; currentGEMAspect = '';
+    updateBreadcrumb(); showSection('years');
+  };
+
+  window.goBack = () => {
+    if (breadcrumbList.length > 1) {
+      breadcrumbList.pop(); updateBreadcrumb();
+      const last = breadcrumbList[breadcrumbList.length - 1];
+      let sid = last.id;
+      if (sid.startsWith('subj-') || sid.startsWith('gem-') || sid.startsWith('dept-')) sid = 'fileTypes';
+      showSection(sid);
+    } else { goHome(); }
+  };
+
+  // ===== FILES =====
+  window.showFiles = async (type) => {
+    currentFileType = type;
+    const container = document.getElementById('fileListContainer');
+    const title = document.getElementById('filesListTitle');
+    const label = currentSubject === 'GEM' && currentGEMAspect
+      ? `GEM - ${currentGEMAspect}` : (subjectNames[currentSubject] || currentSubject);
+    title.textContent = `${label} - ${type}`;
+    container.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>Chargement...</p></div>';
+    showSection('filesList');
+    const files = await loadFiles(currentSubject, type, currentGEMAspect);
     container.innerHTML = '';
-    
-    const files = filesData[currentSubject][type];
-    if (files && files.length > 0) {
-      files.forEach(file => {
-        const fileItem = createFileItem(file, type);
-        container.appendChild(fileItem);
-      });
+    if (files.length > 0) {
+      files.forEach(f => container.appendChild(createFileItem(f)));
     } else {
-      container.innerHTML = `
-        <div class="empty-state">
-          <i class="fas fa-folder-open"></i>
-          <h3>Aucun fichier disponible</h3>
-          <p>Il n'y a pas encore de fichiers pour ${type} en ${currentSubject}.</p>
-        </div>
-      `;
+      container.innerHTML = `<div class="empty-state"><i class="fas fa-folder-open"></i><h3>Aucun fichier disponible</h3><p>Pas encore de fichiers pour ${type}.</p></div>`;
     }
+  };
+
+  function createFileItem(f) {
+    const div = document.createElement('div');
+    div.className = 'file-item';
+    let icon = 'fas fa-file';
+    if (f.name.toLowerCase().endsWith('.pdf')) icon = 'fas fa-file-pdf';
+    else if (f.name.toLowerCase().match(/\.docx?/)) icon = 'fas fa-file-word';
+    else if (f.name.toLowerCase().match(/\.pptx?/)) icon = 'fas fa-file-powerpoint';
+    else if (f.name.toLowerCase().match(/\.xlsx?/)) icon = 'fas fa-file-excel';
+    div.innerHTML = `
+      <div class="file-info">
+        <i class="${icon} file-icon"></i>
+        <div class="file-name">${f.name}</div>
+      </div>
+      <div class="file-actions">
+        <button class="file-action" title="Ouvrir" onclick="event.stopPropagation(); openFile('${f.url}','${f.name}')"><i class="fas fa-external-link-alt"></i></button>
+        <button class="file-action delete" title="Supprimer" onclick="event.stopPropagation(); deleteFile('${f.key}')"><i class="fas fa-trash"></i></button>
+      </div>`;
+    div.onclick = () => openFile(f.url, f.name);
+    return div;
   }
-  showSection('filesList');
-}
 
-function createFileItem(fileName, category) {
-  const li = document.createElement('div');
-  li.className = 'file-item';
-  
-  // Determine file icon based on extension
-  let fileIcon = 'fas fa-file';
-  if (fileName.toLowerCase().includes('.pdf')) fileIcon = 'fas fa-file-pdf';
-  if (fileName.toLowerCase().includes('.doc')) fileIcon = 'fas fa-file-word';
-  if (fileName.toLowerCase().includes('.ppt')) fileIcon = 'fas fa-file-powerpoint';
-  if (fileName.toLowerCase().includes('.xls')) fileIcon = 'fas fa-file-excel';
-  
-  li.innerHTML = `
-    <div class="file-info">
-      <i class="${fileIcon} file-icon"></i>
-      <div class="file-name">${fileName}</div>
-    </div>
-    <div class="file-actions">
-      <button class="file-action" onclick="downloadFile('${fileName}')">
-        <i class="fas fa-download"></i>
-      </button>
-    </div>
-  `;
-  
-  li.onclick = () => openFile(fileName);
-  return li;
-}
+  window.openFile = (url, name) => {
+    if (url && url.trim()) window.open(url, '_blank');
+    else alert('Aucun lien disponible pour: ' + name);
+  };
 
-function openFile(fileName) {
-  alert(`Ouverture du fichier: ${fileName}\n\nDans une application réelle, ce fichier serait téléchargé ou ouvert dans une visionneuse.`);
-}
+  window.deleteFile = async (key) => {
+    if (!confirm('Supprimer ce fichier ?')) return;
+    await deleteFileDB(currentSubject, currentFileType, currentGEMAspect, key);
+    showFiles(currentFileType);
+  };
 
-function downloadFile(fileName) {
-  alert(`Téléchargement du fichier: ${fileName}\n\nDans une application réelle, ce fichier serait téléchargé sur votre appareil.`);
-}
+  // ===== SEARCH (by subject name OR file name) =====
+  window.performSearch = async () => {
+    const term = document.getElementById('searchInput').value.trim().toLowerCase();
+    if (!term) { alert('Veuillez entrer un terme de recherche.'); return; }
 
-function performSearch() {
-  const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
-  
-  if (searchTerm === '') {
-    alert('Veuillez entrer un terme de recherche.');
-    return;
-  }
-  
-  const resultsContainer = document.getElementById('searchResultsContainer');
-  resultsContainer.innerHTML = '';
-  
-  let foundResults = false;
-  
-  // Search for subjects matching the search term
-  for (const subject in filesData) {
-    if (subject.toLowerCase().includes(searchTerm)) {
-      foundResults = true;
-      
-      // Create a header for the subject
-      const subjectHeader = document.createElement('h3');
-      subjectHeader.className = 'search-category';
-      subjectHeader.textContent = subject;
-      resultsContainer.appendChild(subjectHeader);
-      
-      // Collect all files for this subject
-      const subjectFiles = filesData[subject];
-      let totalFiles = 0;
-      
-      for (const category in subjectFiles) {
-        if (subject === 'GEM') {
-          // Handle GEM aspects
-          for (const aspect in subjectFiles) {
-            for (const fileType in subjectFiles[aspect]) {
-              const files = subjectFiles[aspect][fileType];
-              files.forEach(file => {
-                totalFiles++;
-                const resultItem = createSearchResultItem(file, `GEM - ${aspect}`, fileType);
-                resultsContainer.appendChild(resultItem);
-              });
-            }
+    const container = document.getElementById('searchResultsContainer');
+    container.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>Recherche en cours...</p></div>';
+    showSection('searchResults');
+
+    const allData = await loadAllFiles();
+    container.innerHTML = '';
+    let found = false;
+
+    function searchNode(node, subjectKey, gemAspect) {
+      if (!node) return;
+      FILE_TYPES.forEach(type => {
+        const typeData = node[type];
+        if (!typeData) return;
+        Object.entries(typeData).forEach(([key, fileObj]) => {
+          if (!fileObj || !fileObj.name) return;
+          const subjectDisplay = subjectNames[subjectKey] || subjectKey;
+          const subjectMatch = subjectDisplay.toLowerCase().includes(term) || subjectKey.toLowerCase().includes(term);
+          const fileMatch = fileObj.name.toLowerCase().includes(term);
+          if (subjectMatch || fileMatch) {
+            found = true;
+            const label = gemAspect ? `GEM - ${gemAspect}` : subjectDisplay;
+            container.appendChild(createSearchItem(fileObj, label, type));
           }
-        } else {
-          // Handle regular categories
-          const files = subjectFiles[category];
-          files.forEach(file => {
-            totalFiles++;
-            const resultItem = createSearchResultItem(file, subject, category);
-            resultsContainer.appendChild(resultItem);
-          });
-        }
-      }
-      
-      // Add a summary for the subject
-      const summaryDiv = document.createElement('div');
-      summaryDiv.style.padding = '0.5rem 1rem';
-      summaryDiv.style.fontStyle = 'italic';
-      summaryDiv.style.color = 'var(--text-light)';
-      summaryDiv.textContent = `${totalFiles} fichier(s) trouvé(s) pour ${subject}`;
-      resultsContainer.appendChild(summaryDiv);
+        });
+      });
     }
-  }
-  
-  if (!foundResults) {
-    resultsContainer.innerHTML = `
-      <div class="empty-state">
-        <i class="fas fa-search"></i>
-        <h3>Aucun résultat trouvé</h3>
-        <p>Aucune matière ne correspond à votre recherche pour "${searchTerm}".</p>
-      </div>
-    `;
-  }
-  
-  showSection('searchResults');
-}
 
-function createSearchResultItem(fileName, subject, category) {
-  const div = document.createElement('div');
-  div.className = 'file-item';
-  
-  let fileIcon = 'fas fa-file';
-  if (fileName.toLowerCase().includes('.pdf')) fileIcon = 'fas fa-file-pdf';
-  
-  div.innerHTML = `
-    <div class="file-info">
-      <i class="${fileIcon} file-icon"></i>
-      <div>
-        <div class="file-name">${fileName}</div>
-        <div style="font-size: 0.8rem; color: var(--text-light);">${subject} - ${category}</div>
-      </div>
-    </div>
-    <div class="file-actions">
-      <button class="file-action" onclick="downloadFile('${fileName}')">
-        <i class="fas fa-download"></i>
-      </button>
-    </div>
-  `;
-  
-  div.onclick = () => openFile(fileName);
-  return div;
-}
+    Object.entries(allData).forEach(([subjectKey, subjectData]) => {
+      if (subjectKey === 'GEM') {
+        Object.entries(subjectData).forEach(([aspect, aspectData]) => {
+          searchNode(aspectData, 'GEM', aspect);
+        });
+      } else {
+        searchNode(subjectData, subjectKey, null);
+      }
+    });
 
-function showComingSoon(section) {
-  alert(`Plus des contenus seront ajoutées bientôt pour ${section}.\n\nRevenez prochainement pour découvrir les nouvelles ressources.`);
-}
+    if (!found) {
+      container.innerHTML = `<div class="empty-state"><i class="fas fa-search"></i><h3>Aucun résultat</h3><p>Aucun résultat pour "${term}".</p></div>`;
+    }
+  };
+
+  function createSearchItem(f, subject, type) {
+    const div = document.createElement('div');
+    div.className = 'file-item';
+    let icon = 'fas fa-file';
+    if (f.name.toLowerCase().endsWith('.pdf')) icon = 'fas fa-file-pdf';
+    div.innerHTML = `
+      <div class="file-info">
+        <i class="${icon} file-icon"></i>
+        <div>
+          <div class="file-name">${f.name}</div>
+          <div style="font-size:0.8rem;color:var(--text-light);">${subject} — ${type}</div>
+        </div>
+      </div>
+      <div class="file-actions">
+        <button class="file-action" onclick="event.stopPropagation(); openFile('${f.url||''}','${f.name}')"><i class="fas fa-external-link-alt"></i></button>
+      </div>`;
+    div.onclick = () => openFile(f.url || '', f.name);
+    return div;
+  }
+
+  // ===== ADMIN =====
+  window.openAdmin = () => {
+    document.getElementById('adminOverlay').classList.add('active');
+    document.getElementById('passwordScreen').style.display = 'block';
+    document.getElementById('adminForm').style.display = 'none';
+    document.getElementById('passwordError').style.display = 'none';
+    document.getElementById('passwordInput').value = '';
+  };
+
+  window.closeAdmin = () => document.getElementById('adminOverlay').classList.remove('active');
+
+  window.checkPassword = () => {
+    if (document.getElementById('passwordInput').value === ADMIN_PASSWORD) {
+      document.getElementById('passwordScreen').style.display = 'none';
+      document.getElementById('adminForm').style.display = 'block';
+      document.getElementById('adminSuccess').style.display = 'none';
+      document.getElementById('adminFormError').style.display = 'none';
+      document.getElementById('adminFileName').value = '';
+      document.getElementById('adminFileURL').value = '';
+      document.getElementById('adminSemester').value = '';
+      document.getElementById('adminSubject').innerHTML = "<option value=''>-- Choisir le semestre d'abord --</option>";
+      document.getElementById('gemSubRow').style.display = 'none';
+    } else {
+      document.getElementById('passwordError').style.display = 'block';
+    }
+  };
+
+  window.updateAdminSubjects = () => {
+    const sem = document.getElementById('adminSemester').value;
+    const sel = document.getElementById('adminSubject');
+    sel.innerHTML = "<option value=''>-- Choisir --</option>";
+    document.getElementById('gemSubRow').style.display = 'none';
+    if (sem && semesterSubjects[sem]) {
+      semesterSubjects[sem].forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s; opt.textContent = subjectNames[s] || s;
+        sel.appendChild(opt);
+      });
+    }
+  };
+
+  window.updateAdminGEM = () => {
+    document.getElementById('gemSubRow').style.display =
+      document.getElementById('adminSubject').value === 'GEM' ? 'block' : 'none';
+  };
+
+  window.addFileAdmin = async () => {
+    const subject  = document.getElementById('adminSubject').value;
+    const type     = document.getElementById('adminType').value;
+    const name     = document.getElementById('adminFileName').value.trim();
+    const url      = document.getElementById('adminFileURL').value.trim();
+    const gemAspect = document.getElementById('adminGEMAspect').value;
+
+    document.getElementById('adminSuccess').style.display = 'none';
+    document.getElementById('adminFormError').style.display = 'none';
+
+    if (!subject || !name) { alert('Veuillez remplir tous les champs obligatoires.'); return; }
+
+    try {
+      await saveFile(subject, type, subject === 'GEM' ? gemAspect : '', name, url);
+      document.getElementById('adminSuccess').style.display = 'block';
+      document.getElementById('adminFileName').value = '';
+      document.getElementById('adminFileURL').value = '';
+      setTimeout(() => { document.getElementById('adminSuccess').style.display = 'none'; }, 3000);
+    } catch(e) {
+      document.getElementById('adminFormError').style.display = 'block';
+    }
+  };
+
+  window.showComingSoon = (s) => alert(`Plus de contenus seront ajoutés bientôt pour ${s}.`);
+
+  document.getElementById('searchInput').addEventListener('keyup', e => {
+    if (e.key === 'Enter') performSearch();
+  });
+
+  document.getElementById('adminOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeAdmin();
+  });
 </script>
-
 </body>
 </html>
