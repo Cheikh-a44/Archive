@@ -123,7 +123,6 @@
   <!-- Admin -->
   <div class="admin-overlay" id="adminOverlay">
     <div class="admin-panel">
-      <!-- Password -->
       <div id="passwordScreen">
         <h2><i class="fas fa-lock"></i> Accès Admin</h2>
         <div class="admin-error" id="passwordError">❌ Mot de passe incorrect !</div>
@@ -134,7 +133,6 @@
           <button class="admin-btn cancel" onclick="closeAdmin()">Annuler</button>
         </div>
       </div>
-      <!-- Form -->
       <div id="adminForm" style="display:none;">
         <h2><i class="fas fa-folder-plus"></i> Ajouter un fichier</h2>
         <div class="admin-success" id="adminSuccess">✅ Fichier ajouté avec succès !</div>
@@ -280,6 +278,7 @@
       <div class="card" onclick="selectSubjectWithBreadcrumb('FertiliteSol','S4')"><div class="card-title">Fertilité du sol</div></div>
       <div class="card" onclick="selectSubjectWithBreadcrumb('MethodesDiagnostic','S4')"><div class="card-title">Méthodes de diagnostic</div></div>
       <div class="card" onclick="selectSubjectWithBreadcrumb('Malherbologie','S4')"><div class="card-title">Malherbologie</div></div>
+      <div class="card" onclick="selectSubjectWithBreadcrumb('BesoinEau','S4')"><div class="card-title">Besoin en eau</div></div>
     </div>
   </section>
 
@@ -323,17 +322,30 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
+  const ADMIN_PASSWORD = "iset2024";
 
   // ===== STATE =====
-  const ADMIN_PASSWORD = "iset2024";
   let currentSubject = '';
   let currentFileType = '';
   let currentGEMAspect = '';
   let breadcrumbList = [];
 
-  const FILE_TYPES = ['Cours','TD','Devoirs','Examens'];
+  const BASE_FILE_TYPES = ['Cours', 'Devoirs', 'Examens'];
+  
+  // المواد التي لها TD
+  const subjectsWithTD = [
+    'Math', 'Physique', 'Chimie', 'Anglais', 'Francais', 'Genetique',
+    'Informatique', 'TIC', 'GAB', 'EconomieGestion', 'TechniqueIrrigation',
+    'BiochimieStructurale', 'Anglais2', 'Francais2', 'Francais3', 'GEM'
+  ];
 
-  // Subject display names mapping
+  function getFileTypesForSubject(subject) {
+    if (subjectsWithTD.includes(subject)) {
+      return [...BASE_FILE_TYPES, 'TD'];
+    }
+    return [...BASE_FILE_TYPES];
+  }
+
   const subjectNames = {
     'Math':'Mathématiques','Physique':'Physique','Chimie':'Chimie','Anglais':'Anglais',
     'Francais':'Français','Biologie':'Biologie','Microbiologie':'Microbiologie',
@@ -346,14 +358,15 @@
     'Vulgarisation':'Vulgarisation','TechniquePropagation':'Technique de propagation',
     'TechniqueIrrigation':"Technique d'irrigation",'Ecophysiologie':'Ecophysiologie végétale',
     'BiochimieStructurale':'Biochimie structurale','FertiliteSol':'Fertilité du sol',
-    'MethodesDiagnostic':'Méthodes de diagnostic','Malherbologie':'Malherbologie'
+    'MethodesDiagnostic':'Méthodes de diagnostic','Malherbologie':'Malherbologie',
+    'BesoinEau':'Besoin en eau'
   };
 
   const semesterSubjects = {
     'S1': ['Math','Physique','Chimie','Anglais','Francais','Biologie','Microbiologie','Genetique','Informatique','Statistique'],
     'S2': ['Francais2','Anglais2','GEM','GAB','PPV','TIC','STA','PSA'],
     'S3-PPV': ['Francais3','EconomieGestion','Agronomie','Horticulture','Pesticides','Entomologie','ScienceSols','SciencePlantes'],
-    'S4-PPV': ['Vulgarisation','TechniquePropagation','TechniqueIrrigation','Ecophysiologie','BiochimieStructurale','FertiliteSol','MethodesDiagnostic','Malherbologie']
+    'S4-PPV': ['Vulgarisation','TechniquePropagation','TechniqueIrrigation','Ecophysiologie','BiochimieStructurale','FertiliteSol','MethodesDiagnostic','Malherbologie','BesoinEau']
   };
 
   // ===== FIREBASE =====
@@ -429,7 +442,9 @@
       ? `GEM - ${currentGEMAspect}`
       : (subjectNames[currentSubject] || currentSubject);
     title.textContent = label + ' - Types de fichiers';
-    FILE_TYPES.forEach(type => {
+    
+    const fileTypes = getFileTypesForSubject(currentSubject);
+    fileTypes.forEach(type => {
       const div = document.createElement('div');
       div.className = 'card';
       div.innerHTML = `<div class="card-title">${type}</div>`;
@@ -516,24 +531,29 @@
       </div>
       <div class="file-actions">
         <button class="file-action" title="Ouvrir" onclick="event.stopPropagation(); openFile('${f.url}','${f.name}')"><i class="fas fa-external-link-alt"></i></button>
-        <button class="file-action delete" title="Supprimer" onclick="event.stopPropagation(); deleteFile('${f.key}')"><i class="fas fa-trash"></i></button>
+        <button class="file-action delete" title="Supprimer" onclick="event.stopPropagation(); deleteFileWithPassword('${f.key}')"><i class="fas fa-trash"></i></button>
       </div>`;
     div.onclick = () => openFile(f.url, f.name);
     return div;
   }
+
+  window.deleteFileWithPassword = async (key) => {
+    const password = prompt("🔒 Entrez le mot de passe admin pour supprimer ce fichier:");
+    if (password !== ADMIN_PASSWORD) {
+      alert("❌ Mot de passe incorrect ! Suppression annulée.");
+      return;
+    }
+    if (!confirm('⚠️ Êtes-vous sûr de vouloir supprimer ce fichier ?')) return;
+    await deleteFileDB(currentSubject, currentFileType, currentGEMAspect, key);
+    showFiles(currentFileType);
+  };
 
   window.openFile = (url, name) => {
     if (url && url.trim()) window.open(url, '_blank');
     else alert('Aucun lien disponible pour: ' + name);
   };
 
-  window.deleteFile = async (key) => {
-    if (!confirm('Supprimer ce fichier ?')) return;
-    await deleteFileDB(currentSubject, currentFileType, currentGEMAspect, key);
-    showFiles(currentFileType);
-  };
-
-  // ===== SEARCH (by subject name OR file name) =====
+  // ===== SEARCH =====
   window.performSearch = async () => {
     const term = document.getElementById('searchInput').value.trim().toLowerCase();
     if (!term) { alert('Veuillez entrer un terme de recherche.'); return; }
@@ -548,7 +568,8 @@
 
     function searchNode(node, subjectKey, gemAspect) {
       if (!node) return;
-      FILE_TYPES.forEach(type => {
+      const fileTypes = getFileTypesForSubject(subjectKey);
+      fileTypes.forEach(type => {
         const typeData = node[type];
         if (!typeData) return;
         Object.entries(typeData).forEach(([key, fileObj]) => {
