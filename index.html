@@ -199,18 +199,6 @@
   .admin-error { background:#f8d7da; color:#721c24; padding:0.7rem 1rem; border-radius:var(--radius); margin-bottom:1rem; display:none; font-weight:600; }
   .gem-sub-row { display:none; }
   
-  /* English Description */
-  .english-desc {
-    font-size: 0.85rem;
-    opacity: 0.8;
-    margin-top: 5px;
-  }
-  .by-credit {
-    font-size: 0.7rem;
-    margin-top: 8px;
-    opacity: 0.7;
-  }
-  
   @media (max-width:768px) {
     .grid { grid-template-columns:repeat(auto-fill,minmax(110px,1fr)); }
     header h1 { font-size:1.8rem; }
@@ -242,10 +230,10 @@
   </div>
   
   <div class="sidebar-section">
-    <h4><i class="fas fa-info-circle"></i> About</h4>
+    <h4><i class="fas fa-info-circle"></i> À propos</h4>
     <div class="coming-soon">
-      <i class="fas fa-plus-circle"></i> More content will be added soon
-      <div class="by-credit">By Cheikh_A</div>
+      <i class="fas fa-plus-circle"></i> Plus de contenu sera ajouté bientôt
+      <div class="footer-credit" style="margin-top:8px">Par Cheikh_A</div>
     </div>
   </div>
   
@@ -262,17 +250,17 @@
   </div>
   
   <div class="sidebar-section">
-    <h4><i class="fas fa-link"></i> Quick Links</h4>
+    <h4><i class="fas fa-link"></i> Liens rapides</h4>
     <a href="#" onclick="goHome(); closeSidebar();" class="contact-item">
       <i class="fas fa-home"></i>
-      <span>Home</span>
+      <span>Accueil</span>
     </a>
   </div>
   
   <div class="footer-credit">
     <i class="fas fa-graduation-cap"></i> Archive ISET<br>
-    <small>Academic Resources Platform</small>
-    <div class="by-credit">By Cheikh_A</div>
+    <small>Plateforme de ressources académiques</small>
+    <div style="margin-top:5px">Par Cheikh_A</div>
   </div>
 </div>
 
@@ -280,8 +268,6 @@
   <div class="container">
     <h1><i class="fas fa-graduation-cap"></i> Archive ISET</h1>
     <p>Plateforme centralisée de ressources académiques pour les étudiants</p>
-    <div class="english-desc">Centralized academic resource platform for students</div>
-    <div class="by-credit">By Cheikh_A</div>
   </div>
 </header>
 
@@ -362,7 +348,7 @@
     </div>
   </div>
 
-  <!-- Sections (same as before - kept for brevity, but they remain unchanged) -->
+  <!-- Sections -->
   <section id="years" class="active">
     <h2 class="section-title">Sélectionnez votre année</h2>
     <div class="grid">
@@ -516,7 +502,7 @@
   let currentFileType = '';
   let currentGEMAspect = '';
   let breadcrumbList = [];
-  let navigationHistory = []; // للتنقل بين الصفحات
+  let navigationHistory = [];
 
   const BASE_FILE_TYPES = ['Cours', 'Devoirs', 'Examens'];
   
@@ -711,7 +697,6 @@
         goHome();
       }
     } else {
-      // إذا كان في الصفحة الرئيسية، لا يخرج من الموقع
       window.history.pushState({}, '', window.location.href);
     }
   };
@@ -930,12 +915,10 @@
       goBack();
       event.preventDefault();
     } else {
-      // إذا كان في الصفحة الرئيسية، يبقى في الموقع
       window.history.pushState({}, '', window.location.href);
     }
   });
 
-  // إضافة حدث popstate أول مرة
   window.history.pushState({}, '', window.location.href);
 
   document.getElementById('searchInput').addEventListener('keyup', e => {
