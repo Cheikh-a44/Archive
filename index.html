@@ -122,11 +122,14 @@
   /* ===== CONTRIBUTORS IN SIDEBAR ===== */
   .contributors-list { margin-top: 0.5rem; }
   .contributor-item {
-    display: flex; align-items: center; gap: 0.5rem;
+    display: flex; align-items: center; justify-content: space-between;
     padding: 0.4rem 0; border-bottom: 1px solid #eee;
     font-size: 0.9rem; color: var(--text);
   }
-  .contributor-item i { color: var(--primary); font-size: 0.85rem; }
+  .contributor-item .contrib-name { display: flex; align-items: center; gap: 0.5rem; }
+  .contributor-item .contrib-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--primary); flex-shrink: 0; }
+  .contrib-del { background: none; border: none; color: #ccc; cursor: pointer; font-size: 0.9rem; padding: 0.2rem; transition: var(--transition); }
+  .contrib-del:hover { color: #e63946; }
   .contrib-form input[type="text"],
   .contrib-form input[type="password"] {
     width: 100%; padding: 0.55rem; border: 2px solid var(--primary-light);
@@ -233,7 +236,7 @@
     <button class="close-sidebar" onclick="closeSidebar()">&times;</button>
   </div>
 
-  <!-- ===== ANNOUNCE FORM ===== -->
+  <!-- ===== ANNOUNCE FORM + CONTRIB FORM (grouped) ===== -->
   <div class="sidebar-section">
     <h4><i class="fas fa-bullhorn"></i> Publier une annonce</h4>
     <div class="announce-form">
@@ -247,6 +250,15 @@
       <button class="announce-btn" onclick="publishAnnounce()"><i class="fas fa-paper-plane"></i> Publier</button>
       <div class="announce-msg" id="announceMsg"></div>
     </div>
+    <div style="margin-top:1rem;border-top:1px solid #eee;padding-top:0.8rem;">
+      <div style="font-size:0.88rem;font-weight:600;color:var(--primary);margin-bottom:0.5rem;"><i class="fas fa-user-plus"></i> Ajouter un contributeur</div>
+      <div class="contrib-form">
+        <input type="text" id="contribName" placeholder="Nom du contributeur">
+        <input type="password" id="contribPwd" placeholder="&#128274; Mot de passe admin">
+        <button class="contrib-btn" onclick="addContributor()"><i class="fas fa-plus"></i> Ajouter</button>
+        <div class="contrib-msg" id="contribMsg"></div>
+      </div>
+    </div>
   </div>
 
   <div class="sidebar-section">
@@ -259,7 +271,7 @@
   
   <div class="sidebar-section">
     <h4><i class="fas fa-envelope"></i> Contact</h4>
-    <a href="mailto:iset.archive@gmail.com" class="contact-item"><i class="fas fa-envelope"></i><span>iset.archive@gmail.com</span></a>
+    <a href="/cdn-cgi/l/email-protection#3a53495f4e145b485952534c5f7a5d575b535614595557" class="contact-item"><i class="fas fa-envelope"></i><span><span class="__cf_email__" data-cfemail="234a5046570d4251404b4a554663444e424a4f0d404c4e">[email&#160;protected]</span></span></a>
     <a href="https://wa.me/22248050226" class="contact-item"><i class="fab fa-whatsapp"></i><span>WhatsApp</span></a>
     <a href="https://t.me/Cheikh_a44" class="contact-item"><i class="fab fa-telegram-plane"></i><span>Telegram</span></a>
   </div>
@@ -269,18 +281,11 @@
     <a href="#" onclick="goHome(); closeSidebar();" class="contact-item"><i class="fas fa-home"></i><span>Accueil</span></a>
   </div>
 
-  <!-- ===== CONTRIBUTORS ===== -->
+  <!-- ===== CONTRIBUTORS LIST ONLY ===== -->
   <div class="sidebar-section">
     <h4><i class="fas fa-users"></i> تم جمع الملفات من قبل</h4>
     <div class="contributors-list" id="contributorsList">
       <div style="font-size:0.85rem;color:var(--text-light);font-style:italic;">Chargement...</div>
-    </div>
-    <!-- Add contributor form -->
-    <div class="contrib-form" style="margin-top:0.8rem;">
-      <input type="text" id="contribName" placeholder="Nom du contributeur">
-      <input type="password" id="contribPwd" placeholder="🔒 Mot de passe admin">
-      <button class="contrib-btn" onclick="addContributor()"><i class="fas fa-plus"></i> Ajouter</button>
-      <div class="contrib-msg" id="contribMsg"></div>
     </div>
   </div>
 
@@ -508,7 +513,7 @@
 </div>
 
 <!-- ===== ORIGINAL SCRIPT (unchanged) + new announce/contrib functions ===== -->
-<script type="module">
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getDatabase, ref, push, remove, get, child, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
@@ -909,7 +914,7 @@
         snapshot.forEach(c => {
           const item = document.createElement('div');
           item.className = 'contributor-item';
-          item.innerHTML = `<i class="fas fa-user-graduate"></i><span>${c.val().name}</span>`;
+          item.innerHTML = `<div class="contrib-name"><span class="contrib-dot"></span><span>${c.val().name}</span></div><button class="contrib-del" onclick="deleteContributor('${c.key}')" title="Supprimer"><i class="fas fa-times"></i></button>`;
           list.appendChild(item);
         });
       } else {
@@ -940,18 +945,17 @@
     }
   };
 
+  window.deleteContributor = async (key) => {
+    const pwd = prompt('🔒 Mot de passe admin:');
+    if (pwd !== ADMIN_PASSWORD) { alert('❌ Mot de passe incorrect !'); return; }
+    if (!confirm('Supprimer ce contributeur ?')) return;
+    await remove(ref(db, 'contributors/' + key));
+  };
+
   // ===== EVENTS (original) =====
   window.addEventListener('popstate', function(event) {
     if (breadcrumbList.length > 0) { goBack(); event.preventDefault(); }
     else { window.history.pushState({}, '', window.location.href); }
   });
   window.history.pushState({}, '', window.location.href);
-  document.getElementById('searchInput').addEventListener('keyup', e => { if (e.key === 'Enter') performSearch(); });
-  document.getElementById('adminOverlay').addEventListener('click', function(e) { if (e.target === this) closeAdmin(); });
-
-  // Start
-  loadAnnouncements();
-  loadContributors();
-</script>
-</body>
-</html>
+  document.getElementById('searchInput').addEventListener('keyup', e => { i
