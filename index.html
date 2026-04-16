@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Archive ISET</title>
+<title>Archive ISET - أرشيف المعهد</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
@@ -23,7 +23,7 @@
   }
   * { margin:0; padding:0; box-sizing:border-box; }
   body { 
-    font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif; 
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
     background:var(--light); 
     color:var(--text); 
     line-height:1.6;
@@ -145,7 +145,7 @@
   }
   
   header { background:linear-gradient(135deg,var(--primary),var(--secondary)); color:var(--white); padding:1.5rem 1rem; text-align:center; box-shadow:var(--shadow); }
-  header h1 { font-size:2.2rem; margin-bottom:0.5rem; display:flex; align-items:center; justify-content:center; gap:0.5rem; }
+  header h1 { font-size:2.2rem; margin-bottom:0.5rem; display:flex; align-items:center; justify-content:center; gap:0.5rem; flex-wrap:wrap; }
   header p { font-size:1.1rem; opacity:0.9; max-width:600px; margin:0 auto; }
   .container { max-width:1200px; margin:0 auto; padding:0 1rem; }
   #breadcrumb { padding:1rem; background:var(--white); border-bottom:1px solid rgba(0,0,0,0.05); margin-bottom:1rem; box-shadow:0 2px 4px rgba(0,0,0,0.05); }
@@ -165,7 +165,7 @@
   section { display:none; }
   section.active { display:block; animation:fadeIn 0.3s ease; }
   @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
-  .section-title { padding:1rem 1rem 0; font-size:1.2rem; color:var(--primary); }
+  .section-title { padding:1rem 1rem 0; font-size:1.2rem; color:var(--primary); display:flex; align-items:center; gap:0.5rem; }
   .file-list-container { padding:1rem; }
   .file-item { background:var(--white); margin:0.8rem 0; padding:1rem 1.5rem; border-radius:var(--radius); box-shadow:var(--shadow); cursor:pointer; display:flex; align-items:center; justify-content:space-between; transition:var(--transition); }
   .file-item:hover { background:var(--primary-light); transform:translateX(5px); }
@@ -200,6 +200,33 @@
   .admin-error { background:#f8d7da; color:#721c24; padding:0.7rem 1rem; border-radius:var(--radius); margin-bottom:1rem; display:none; font-weight:600; }
   .gem-sub-row { display:none; }
   
+  /* Results Section Styles */
+  .results-admin-section {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px dashed #ccc;
+  }
+  
+  .lang-switch {
+    display: inline-flex;
+    gap: 0.5rem;
+    margin-left: 1rem;
+  }
+  .lang-btn {
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.5);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: var(--transition);
+  }
+  .lang-btn:hover, .lang-btn.active {
+    background: white;
+    color: var(--primary);
+  }
+  
   @media (max-width:768px) {
     .grid { grid-template-columns:repeat(auto-fill,minmax(110px,1fr)); }
     header h1 { font-size:1.8rem; }
@@ -212,15 +239,6 @@
     .grid { grid-template-columns:repeat(auto-fill,minmax(100px,1fr)); }
     .card { padding:0.8rem 0.5rem; }
     header h1 { font-size:1.6rem; }
-  }
-  .admin-toggle:nth-of-type(2) {
-    bottom:20px;
-    right: auto;
-    left: 20px;
-    background: #6c757d;
-  }
-  .admin-toggle:nth-of-type(2):hover{
-    background: #5a6268;
   }
 </style>
 </head>
@@ -235,81 +253,80 @@
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 <div class="sidebar" id="sidebar">
   <div class="sidebar-header">
-    <h3><i class="fas fa-archive"></i> Menu</h3>
+    <h3><i class="fas fa-archive"></i> <span data-lang="menu">القائمة</span></h3>
     <button class="close-sidebar" onclick="closeSidebar()">&times;</button>
   </div>
   
   <div class="sidebar-section">
-    <h4><i class="fas fa-info-circle"></i> À propos</h4>
+    <h4><i class="fas fa-info-circle"></i> <span data-lang="about">حول</span></h4>
     <div class="coming-soon">
-      <i class="fas fa-plus-circle"></i> Plus de contenu sera ajouté bientôt
+      <i class="fas fa-plus-circle"></i> <span data-lang="moreContent">المزيد من المحتوى قريباً</span>
       <div class="footer-credit" style="margin-top:8px">Par Cheikh_A</div>
     </div>
   </div>
   
   <div class="sidebar-section">
-    <h4><i class="fas fa-envelope"></i> Contact</h4>
+    <h4><i class="fas fa-envelope"></i> <span data-lang="contact">اتصل بنا</span></h4>
     <a href="mailto:iset.archive@gmail.com" class="contact-item">
       <i class="fas fa-envelope"></i>
       <span>iset.archive@gmail.com</span>
     </a>
-    <!--<a href="https://wa.me/22248050226" class="contact-item" id="whatsappLink">
-      <i class="fab fa-whatsapp"></i>
-      <span>WhatsApp</span>
-    </a>-->
     <a href="https://t.me/Cheikh_a44" class="contact-item">
-    <i class="fab fa-telegram-plane"></i>
-    <span>Telegram</span>
+      <i class="fab fa-telegram-plane"></i>
+      <span>Telegram</span>
     </a>
   </div>
   
   <div class="sidebar-section">
-    <h4><i class="fas fa-users"></i> Contributeurs</h4>
-    <!--<div class="contact-item" style="border-bottom: none;">
-      <i class="fas fa-user-check"></i>
-      <span>Cheikh_A PPV</span>
-    </div>-->
+    <h4><i class="fas fa-users"></i> <span data-lang="contributors">المساهمون</span></h4>
     <div class="contact-item" style="border-bottom: none;">
       <i class="fas fa-user-plus"></i>
       <span>EL Boukhary PPV</span>
     </div>
     <div class="coming-soon" style="margin-top: 8px; font-size: 0.8rem;">
-      <i class="fas fa-hand-peace"></i> Merci à tous les contributeurs !
+      <i class="fas fa-hand-peace"></i> <span data-lang="thanks">شكراً لجميع المساهمين!</span>
     </div>
   </div>
   
   <div class="sidebar-section">
-    <h4><i class="fas fa-link"></i> Liens rapides</h4>
+    <h4><i class="fas fa-link"></i> <span data-lang="quickLinks">روابط سريعة</span></h4>
     <a href="#" onclick="goHome(); closeSidebar();" class="contact-item">
       <i class="fas fa-home"></i>
-      <span>Accueil</span>
+      <span data-lang="home">الرئيسية</span>
     </a>
   </div>
   
   <div class="footer-credit">
     <i class="fas fa-graduation-cap"></i>Espace ISET<br>
-    <small>Plateforme de ressources académiques</small>
+    <small data-lang="platform">منصة الموارد الأكاديمية</small>
     <div style="margin-top:5px">Par Cheikh_A</div>
   </div>
 </div>
 
 <header>
   <div class="container">
-    <h1><i class="fas fa-graduation-cap"></i>Espace ISET</h1>
-    <p>Plateforme centralisée de ressources académiques pour les étudiants</p>
+    <h1>
+      <i class="fas fa-graduation-cap"></i>
+      <span data-lang="title">فضاء المعهد</span>
+      <span class="lang-switch">
+        <button class="lang-btn active" onclick="setLanguage('fr')">FR</button>
+        <button class="lang-btn" onclick="setLanguage('ar')">عربي</button>
+      </span>
+    </h1>
+    <p data-lang="subtitle">منصة مركزية للموارد الأكاديمية للطلاب</p>
   </div>
 </header>
 
 <div class="container">
   <div id="breadcrumb">
     <div id="breadcrumbContent">
-      <span onclick="goHome()"><i class="fas fa-home"></i> Accueil</span>
+      <span onclick="goHome()"><i class="fas fa-home"></i> <span data-lang="home">الرئيسية</span></span>
     </div>
   </div>
 
   <div class="search-container">
     <div class="search-box">
-      <input type="text" id="searchInput" placeholder="Rechercher une matière ou un nom de fichier...">
+      <input type="text" id="searchInput" data-lang-placeholder="searchPlaceholder" placeholder="بحث عن مادة أو ملف...">
       <button onclick="performSearch()"><i class="fas fa-search"></i></button>
     </div>
   </div>
@@ -320,9 +337,6 @@
 
   <button class="admin-toggle" onclick="openAdmin()">
     <i class="fas fa-cog"></i> Admin
-  </button>
-  <button class="admin-toggle" onclick="openResultatsAdmin()">
-    <i class="fas fa-file-excel"></i> Add Resultats
   </button>
 
   <!-- Admin -->
@@ -382,21 +396,19 @@
 
   <!-- Sections -->
   <section id="years" class="active">
-    <!-- <h2 class="section-title">Sélectionnez votre année</h2> -->
     <div class="grid">
       <div class="card" onclick="showSectionWithBreadcrumb('semestersL1','L1')"><div class="card-title">L1</div></div>
       <div class="card" onclick="showSectionWithBreadcrumb('semestersL2','L2')"><div class="card-title">L2</div></div>
-      <!--<div class="card" onclick="showSectionWithBreadcrumb('semestersL3','L3')"><div class="card-title">L3</div></div>-->
-      <div class="card" onclick="showSectionWithBreadcrumb('resultatsSection','Resultats')"><div class="card-title">Resultats</div></div>
+      <div class="card" onclick="showSectionWithBreadcrumb('resultatsSection','Resultats')"><div class="card-title" data-lang="results">النتائج</div></div>
     </div>
     <div style="text-align:center; margin-top: 25px; padding: 15px; color:var(--primary); font-weight: 500; font-size: 1.1rem; background: var(--primary-light); border-radius: 50px; max-width: 90%; margin-right:auto;">
       <i class="fas fa-hourglass-half" style="margin-right:8px;"></i>
-     Plus de contenu sera ajouté prochainement...
+      <span data-lang="moreContent">المزيد من المحتوى قريباً...</span>
     </div>
   </section>
 
   <section id="semestersL1">
-    <h2 class="section-title">L1 - Sélectionnez votre semestre</h2>
+    <h2 class="section-title">L1 - <span data-lang="selectSemester">اختر الفصل</span></h2>
     <div class="grid">
       <div class="card" onclick="showSectionWithBreadcrumb('subjectsS1','S1')"><div class="card-title">S1</div></div>
       <div class="card" onclick="showSectionWithBreadcrumb('subjectsS2','S2')"><div class="card-title">S2</div></div>
@@ -404,68 +416,29 @@
   </section>
 
   <section id="semestersL2">
-    <h2 class="section-title">L2 - Sélectionnez votre semestre</h2>
+    <h2 class="section-title">L2 - <span data-lang="selectSemester">اختر الفصل</span></h2>
     <div class="grid">
       <div class="card" onclick="showSectionWithBreadcrumb('departments','S3')"><div class="card-title">S3</div></div>
       <div class="card" onclick="showSectionWithBreadcrumb('departmentsS4','S4')"><div class="card-title">S4</div></div>
     </div>
   </section>
 
- <!-- <section id="semestersL3">
-    <h2 class="section-title">L3 - Sélectionnez votre semestre</h2>
-    <div class="grid">
-      <div class="card" onclick="showSectionWithBreadcrumb('departmentsS5','S5')"><div class="card-title">S5</div></div>
-      <div class="card" onclick="showSectionWithBreadcrumb('departmentsS6','S6')"><div class="card-title">S6</div></div>
-    </div>
-  </section>-->
-
   <section id="departments">
-    <h2 class="section-title">S3 - Sélectionnez votre département</h2>
+    <h2 class="section-title">S3 - <span data-lang="selectDepartment">اختر القسم</span></h2>
     <div class="grid">
       <div class="card" onclick="selectDepartmentWithBreadcrumb('PPV','S3')"><div class="card-title">PPV</div></div>
-     <!-- <div class="card" onclick="selectDepartmentWithBreadcrumb('GEM','S3')"><div class="card-title">GEM</div></div>
-      <div class="card" onclick="selectDepartmentWithBreadcrumb('GAB','S3')"><div class="card-title">GAB</div></div>
-      <div class="card" onclick="selectDepartmentWithBreadcrumb('PSA','S3')"><div class="card-title">PSA</div></div>
-      <div class="card" onclick="selectDepartmentWithBreadcrumb('STA','S3')"><div class="card-title">STA</div></div>-->
     </div>
   </section>
 
   <section id="departmentsS4">
-    <h2 class="section-title">S4 - Sélectionnez votre département</h2>
+    <h2 class="section-title">S4 - <span data-lang="selectDepartment">اختر القسم</span></h2>
     <div class="grid">
       <div class="card" onclick="selectDepartmentWithBreadcrumb('PPV','S4')"><div class="card-title">PPV</div></div>
-      <!--<div class="card" onclick="showComingSoon('GEM (S4)')"><div class="card-title">GEM</div></div>
-      <div class="card" onclick="showComingSoon('GAB (S4)')"><div class="card-title">GAB</div></div>
-      <div class="card" onclick="showComingSoon('PSA (S4)')"><div class="card-title">PSA</div></div>
-      <div class="card" onclick="showComingSoon('STA (S4)')"><div class="card-title">STA</div></div>-->
     </div>
   </section>
-
-  <!--<section id="departmentsS5">
-    <h2 class="section-title">S5 - Sélectionnez votre département</h2>
-    <div class="grid">
-      <div class="card" onclick="showComingSoon('PPV (S5)')"><div class="card-title">PPV</div></div>
-      <div class="card" onclick="showComingSoon('GEM (S5)')"><div class="card-title">GEM</div></div>
-      <div class="card" onclick="showComingSoon('GAB (S5)')"><div class="card-title">GAB</div></div>
-      <div class="card" onclick="showComingSoon('PSA (S5)')"><div class="card-title">PSA</div></div>
-      <div class="card" onclick="showComingSoon('STA (S5)')"><div class="card-title">STA</div></div>
-    </div>
-  </section>
-
-<section id="departmentsS6">
-    <h2 class="section-title">S6 - Sélectionnez votre département</h2>
-    <div class="grid">
-      <div class="card" onclick="showComingSoon('PPV (S6)')"><div class="card-title">PPV</div></div>
-      <div class="card" onclick="showComingSoon('GEM (S6)')"><div class="card-title">GEM</div></div>
-      <div class="card" onclick="showComingSoon('GAB (S6)')"><div class="card-title">GAB</div></div>
-      <div class="card" onclick="showComingSoon('PSA (S6)')"><div class="card-title">PSA</div></div>
-      <div class="card" onclick="showComingSoon('STA (S6)')"><div class="card-title">STA</div></div>
-    </div>
-  </section>-->
-
 
   <section id="subjectsS1">
-    <h2 class="section-title">S1 - Sélectionnez une matière</h2>
+    <h2 class="section-title">S1 - <span data-lang="selectSubject">اختر المادة</span></h2>
     <div class="grid">
       <div class="card" onclick="selectSubjectWithBreadcrumb('Math','S1')"><div class="card-title">Mathématiques</div></div>
       <div class="card" onclick="selectSubjectWithBreadcrumb('Physique','S1')"><div class="card-title">Physique</div></div>
@@ -481,7 +454,7 @@
   </section>
 
   <section id="subjectsS2">
-    <h2 class="section-title">S2 - Sélectionnez une matière</h2>
+    <h2 class="section-title">S2 - <span data-lang="selectSubject">اختر المادة</span></h2>
     <div class="grid">
       <div class="card" onclick="selectSubjectWithBreadcrumb('Francais2','S2')"><div class="card-title">Français 2</div></div>
       <div class="card" onclick="selectSubjectWithBreadcrumb('Anglais2','S2')"><div class="card-title">Anglais 2</div></div>
@@ -495,7 +468,7 @@
   </section>
 
   <section id="subjectsPPV_S3">
-    <h2 class="section-title">PPV (S3) - Sélectionnez une matière</h2>
+    <h2 class="section-title">PPV (S3) - <span data-lang="selectSubject">اختر المادة</span></h2>
     <div class="grid">
       <div class="card" onclick="selectSubjectWithBreadcrumb('Francais3','S3')"><div class="card-title">Français 3</div></div>
       <div class="card" onclick="selectSubjectWithBreadcrumb('EconomieGestion','S3')"><div class="card-title">Économie et Gestion</div></div>
@@ -509,7 +482,7 @@
   </section>
 
   <section id="subjectsPPV_S4">
-    <h2 class="section-title">PPV (S4) - Sélectionnez une matière</h2>
+    <h2 class="section-title">PPV (S4) - <span data-lang="selectSubject">اختر المادة</span></h2>
     <div class="grid">
       <div class="card" onclick="selectSubjectWithBreadcrumb('Vulgarisation','S4')"><div class="card-title">Vulgarisation</div></div>
       <div class="card" onclick="selectSubjectWithBreadcrumb('TechniquePropagation','S4')"><div class="card-title">Technique de propagation</div></div>
@@ -542,52 +515,63 @@
   </section>
 
   <section id="searchResults">
-    <h2 class="section-title">Résultats de recherche</h2>
+    <h2 class="section-title"><span data-lang="searchResults">نتائج البحث</span></h2>
     <div class="file-list-container" id="searchResultsContainer"></div>
   </section>
-  <!-- ===== SECTION RÉSULTATS ===== -->
-<section id="resultatsSection">
-  <h2 class="section-title"><i class="fas fa-search"></i> Consulter vos résultats</h2>
-  <div style="max-width: 500px; margin: 20px auto; padding: 20px;">
-    
-    <label style="display: block; margin-bottom: 5px; font-weight: 500;">Département</label>
-    <select id="resultDepartment" style="width: 100%; padding: 10px; border: 2px solid var(--primary-light); border-radius: var(--radius); margin-bottom: 15px; font-size: 1rem;">
-      <option value="">-- Choisir un département --</option>
-      <option value="PPV_L2">PPV L2</option>
-      <option value="PPV_L3">PPV L3</option>
-    </select>
-    
-    <label style="display: block; margin-bottom: 5px; font-weight: 500;">Semestre</label>
-    <select id="semesterSelect" style="width: 100%; padding: 10px; border: 2px solid var(--primary-light); border-radius: var(--radius); margin-bottom: 15px; font-size: 1rem;">
-      <option value="">-- Choisir un semestre --</option>
-      <option value="S3">S3</option>
-      <option value="S4">S4</option>
-      <option value="S5">S5</option>
-      <option value="S6">S6</option>
-    </select>
-    
-    <div class="search-box" style="margin-bottom: 20px;">
-      <input type="text" id="studentIdInput" placeholder="Entrez votre numéro d'étudiant...">
-      <button onclick="searchStudentResult()"><i class="fas fa-search"></i> Rechercher</button>
-    </div>
-    
-    <div id="studentResultContainer" style="background: white; border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); display: none;"></div>
-    <div id="noResultMessage" style="text-align: center; color: var(--text-light); padding: 20px; display: none;">
-      <i class="fas fa-user-graduate" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
-      <p>Aucun résultat trouvé pour ce numéro</p>
-    </div>
 
-    <!-- قسم رفع النتائج للأدمن -->
-    <div style="margin-top: 40px; border-top: 1px dashed #ccc; padding-top: 20px;">
-      <button class="admin-btn" onclick="openResultsUpload()" style="background: #6c757d;">
-        <i class="fas fa-upload"></i> Importer des résultats (Admin)
-      </button>
-      <button class="admin-btn" onclick="showAdminSubjectsPanel()" style="background: #5a231c; margin-top: 10px;">
-        <i class="fas fa-trash-alt"></i> Gerer les résultats (Admin)
-      </button>
+  <!-- ===== SECTION RÉSULTATS ===== -->
+  <section id="resultatsSection">
+    <h2 class="section-title"><i class="fas fa-search"></i> <span data-lang="consultResults">استشارة النتائج</span></h2>
+    <div style="max-width: 500px; margin: 20px auto; padding: 20px;">
+      
+      <label style="display: block; margin-bottom: 5px; font-weight: 500;"><span data-lang="department">القسم</span></label>
+      <select id="resultDepartment" style="width: 100%; padding: 10px; border: 2px solid var(--primary-light); border-radius: var(--radius); margin-bottom: 15px; font-size: 1rem;">
+        <option value="">-- <span data-lang="chooseDepartment">اختر القسم</span> --</option>
+        <option value="PPV_L2">PPV L2</option>
+        <option value="PPV_L3">PPV L3</option>
+      </select>
+      
+      <label style="display: block; margin-bottom: 5px; font-weight: 500;"><span data-lang="semester">الفصل</span></label>
+      <select id="semesterSelect" style="width: 100%; padding: 10px; border: 2px solid var(--primary-light); border-radius: var(--radius); margin-bottom: 15px; font-size: 1rem;">
+        <option value="">-- <span data-lang="chooseSemester">اختر الفصل</span> --</option>
+        <option value="S3">S3</option>
+        <option value="S4">S4</option>
+        <option value="S5">S5</option>
+        <option value="S6">S6</option>
+      </select>
+      
+      <div class="search-box" style="margin-bottom: 20px;">
+        <input type="text" id="studentIdInput" data-lang-placeholder="enterStudentId" placeholder="أدخل رقم الطالب...">
+        <button onclick="searchStudentResult()"><i class="fas fa-search"></i> <span data-lang="search">بحث</span></button>
+      </div>
+      
+      <div id="studentResultContainer" style="background: white; border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); display: none;"></div>
+      <div id="noResultMessage" style="text-align: center; color: var(--text-light); padding: 20px; display: none;">
+        <i class="fas fa-user-graduate" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
+        <p data-lang="noResult">لا توجد نتيجة لهذا الرقم</p>
+      </div>
+
+      <!-- Admin Results Section - Hidden by default, shown after password -->
+      <div id="adminResultsSection" style="display: none;" class="results-admin-section">
+        <button class="admin-btn" onclick="openResultsUpload()" style="background: #6c757d;">
+          <i class="fas fa-upload"></i> <span data-lang="importResults">استيراد النتائج</span>
+        </button>
+        <button class="admin-btn" onclick="showAdminSubjectsPanel()" style="background: #5a231c; margin-top: 10px;">
+          <i class="fas fa-trash-alt"></i> <span data-lang="manageResults">إدارة النتائج</span>
+        </button>
+        <button class="admin-btn cancel" onclick="hideAdminResults()" style="margin-top: 5px;">
+          <i class="fas fa-sign-out-alt"></i> <span data-lang="exitAdminMode">الخروج من وضع الأدمن</span>
+        </button>
+      </div>
+      
+      <!-- Button to show admin login -->
+      <div id="showAdminLoginBtn" style="margin-top: 30px; text-align: center;">
+        <button class="admin-btn" onclick="showResultsAdminLogin()" style="background: #2d6a4f; max-width: 250px;">
+          <i class="fas fa-lock"></i> <span data-lang="adminAccess">دخول الأدمن</span>
+        </button>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 </div>
 
 <script type="module">
@@ -606,13 +590,127 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
-  const ADMIN_PASSWORD_HASH = "7688541f015722ea762564c84fcb5032567bdc32cb165d0e4d73436b7e6abd43";//mp hash
+  
+  // IMPORTANT: Changez ce mot de passe et mettez des règles Firebase strictes!
+  const ADMIN_PASSWORD_HASH = "7688541f015722ea762564c84fcb5032567bdc32cb165d0e4d73436b7e6abd43";
+  
   async function hashPassword(password) {
-  const msgBuffer = new TextEncoder().encode(password);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-}
+    const msgBuffer = new TextEncoder().encode(password);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  // ===== MULTILINGUE =====
+  const translations = {
+    fr: {
+      title: "Espace ISET",
+      subtitle: "Plateforme centralisée de ressources académiques pour les étudiants",
+      home: "Accueil",
+      menu: "Menu",
+      about: "À propos",
+      contact: "Contact",
+      contributors: "Contributeurs",
+      quickLinks: "Liens rapides",
+      moreContent: "Plus de contenu sera ajouté bientôt",
+      thanks: "Merci à tous les contributeurs !",
+      platform: "Plateforme de ressources académiques",
+      results: "Résultats",
+      selectSemester: "Sélectionnez votre semestre",
+      selectDepartment: "Sélectionnez votre département",
+      selectSubject: "Sélectionnez une matière",
+      searchResults: "Résultats de recherche",
+      searchPlaceholder: "Rechercher une matière ou un nom de fichier...",
+      consultResults: "Consulter vos résultats",
+      department: "Département",
+      semester: "Semestre",
+      chooseDepartment: "Choisir un département",
+      chooseSemester: "Choisir un semestre",
+      enterStudentId: "Entrez votre numéro d'étudiant...",
+      search: "Rechercher",
+      noResult: "Aucun résultat trouvé pour ce numéro",
+      importResults: "Importer des résultats",
+      manageResults: "Gérer les résultats",
+      exitAdminMode: "Quitter le mode admin",
+      adminAccess: "Accès Admin"
+    },
+    ar: {
+      title: "فضاء المعهد",
+      subtitle: "منصة مركزية للموارد الأكاديمية للطلاب",
+      home: "الرئيسية",
+      menu: "القائمة",
+      about: "حول",
+      contact: "اتصل بنا",
+      contributors: "المساهمون",
+      quickLinks: "روابط سريعة",
+      moreContent: "المزيد من المحتوى قريباً",
+      thanks: "شكراً لجميع المساهمين!",
+      platform: "منصة الموارد الأكاديمية",
+      results: "النتائج",
+      selectSemester: "اختر الفصل",
+      selectDepartment: "اختر القسم",
+      selectSubject: "اختر المادة",
+      searchResults: "نتائج البحث",
+      searchPlaceholder: "بحث عن مادة أو ملف...",
+      consultResults: "استشارة النتائج",
+      department: "القسم",
+      semester: "الفصل",
+      chooseDepartment: "اختر القسم",
+      chooseSemester: "اختر الفصل",
+      enterStudentId: "أدخل رقم الطالب...",
+      search: "بحث",
+      noResult: "لا توجد نتيجة لهذا الرقم",
+      importResults: "استيراد النتائج",
+      manageResults: "إدارة النتائج",
+      exitAdminMode: "الخروج من وضع الأدمن",
+      adminAccess: "دخول الأدمن"
+    }
+  };
+
+  let currentLang = 'fr';
+
+  window.setLanguage = (lang) => {
+    currentLang = lang;
+    
+    // Update active button
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.remove('active');
+      if ((lang === 'fr' && btn.textContent === 'FR') || (lang === 'ar' && btn.textContent === 'عربي')) {
+        btn.classList.add('active');
+      }
+    });
+    
+    // Update all translatable elements
+    document.querySelectorAll('[data-lang]').forEach(el => {
+      const key = el.getAttribute('data-lang');
+      if (translations[lang] && translations[lang][key]) {
+        el.textContent = translations[lang][key];
+      }
+    });
+    
+    // Update placeholders
+    document.querySelectorAll('[data-lang-placeholder]').forEach(el => {
+      const key = el.getAttribute('data-lang-placeholder');
+      if (translations[lang] && translations[lang][key]) {
+        el.placeholder = translations[lang][key];
+      }
+    });
+    
+    // Update document direction for Arabic
+    if (lang === 'ar') {
+      document.documentElement.setAttribute('dir', 'rtl');
+      document.documentElement.setAttribute('lang', 'ar');
+    } else {
+      document.documentElement.setAttribute('dir', 'ltr');
+      document.documentElement.setAttribute('lang', 'fr');
+    }
+    
+    localStorage.setItem('preferredLanguage', lang);
+  };
+
+  // Load saved language preference
+  const savedLang = localStorage.getItem('preferredLanguage') || 'fr';
+  setLanguage(savedLang);
 
   // ===== STATE =====
   let currentSubject = '';
@@ -620,6 +718,7 @@
   let currentGEMAspect = '';
   let breadcrumbList = [];
   let navigationHistory = [];
+  let isResultsAdmin = false;
 
   const BASE_FILE_TYPES = ['Cours', 'Devoirs', 'Examens'];
   
@@ -769,7 +868,7 @@
     const container = document.getElementById('breadcrumbContent');
     container.innerHTML = '';
     const home = document.createElement('span');
-    home.innerHTML = '<i class="fas fa-home"></i> Accueil';
+    home.innerHTML = '<i class="fas fa-home"></i> ' + translations[currentLang].home;
     home.onclick = goHome;
     container.appendChild(home);
     breadcrumbList.forEach((b, i) => {
@@ -832,13 +931,13 @@
     const files = await loadFiles(currentSubject, type, currentGEMAspect);
     container.innerHTML = '';
     if (files.length > 0) {
-      files.forEach(f => container.appendChild(createFileItem(f)));
+      files.forEach(f => container.appendChild(createFileItem(f, currentSubject, type, currentGEMAspect)));
     } else {
       container.innerHTML = `<div class="empty-state"><i class="fas fa-folder-open"></i><h3>Aucun fichier disponible</h3><p>Pas encore de fichiers pour ${type}.</p></div>`;
     }
   };
 
-  function createFileItem(f) {
+  function createFileItem(f, subject = null, type = null, gemAspect = null) {
     const div = document.createElement('div');
     div.className = 'file-item';
     let icon = 'fas fa-file';
@@ -846,6 +945,11 @@
     else if (f.name.toLowerCase().match(/\.docx?/)) icon = 'fas fa-file-word';
     else if (f.name.toLowerCase().match(/\.pptx?/)) icon = 'fas fa-file-powerpoint';
     else if (f.name.toLowerCase().match(/\.xlsx?/)) icon = 'fas fa-file-excel';
+    
+    const subj = subject || currentSubject;
+    const typ = type || currentFileType;
+    const aspect = gemAspect || currentGEMAspect;
+    
     div.innerHTML = `
       <div class="file-info">
         <i class="${icon} file-icon"></i>
@@ -854,46 +958,48 @@
       <div class="file-actions">
         <button class="file-action" title="Ouvrir" onclick="event.stopPropagation(); openFile('${f.url}','${f.name}')"><i class="fas fa-external-link-alt"></i></button>
         <button class="file-action" title="Telecharger" onclick="event.stopPropagation(); downloadFile('${f.url}','${f.name}')"><i class="fas fa-download"></i></button>
-        <button class="file-action delete" title="Supprimer" onclick="event.stopPropagation(); deleteFileWithPassword('${f.key}')"><i class="fas fa-trash"></i></button>
+        <button class="file-action delete" title="Supprimer" onclick="event.stopPropagation(); deleteFileWithPassword('${f.key}', '${subj}', '${typ}', '${aspect}')"><i class="fas fa-trash"></i></button>
       </div>`;
-      //الضغط على الملف يفتح
     div.onclick = () => openFile(f.url, f.name);
     return div;
   }
 
- window.deleteFileWithPassword = async (key) => {
-  const password = prompt("🔒 Entrez le mot de passe admin pour supprimer ce fichier:");
-  const inputHash = await hashPassword(password);
-  
-  if (inputHash !== ADMIN_PASSWORD_HASH) {
-    alert("❌ Mot de passe incorrect ! Suppression annulée.");
-    return;
-  }
-  if (!confirm('⚠️ Êtes-vous sûr de vouloir supprimer ce fichier ?')) return;
-  await deleteFileDB(currentSubject, currentFileType, currentGEMAspect, key);
-  showFiles(currentFileType);
-};
+  window.deleteFileWithPassword = async (key, subject, type, gemAspect) => {
+    const password = prompt("🔒 Entrez le mot de passe admin pour supprimer ce fichier:");
+    const inputHash = await hashPassword(password);
+    
+    if (inputHash !== ADMIN_PASSWORD_HASH) {
+      alert("❌ Mot de passe incorrect ! Suppression annulée.");
+      return;
+    }
+    if (!confirm('⚠️ Êtes-vous sûr de vouloir supprimer ce fichier ?')) return;
+    await deleteFileDB(subject, type, gemAspect, key);
+    
+    // Refresh the current view
+    if (document.getElementById('searchResults').classList.contains('active')) {
+      performSearch();
+    } else {
+      showFiles(type);
+    }
+  };
 
   window.openFile = (url, name) => {
     if (url && url.trim()) window.open(url, '_blank');
     else alert('Aucun lien disponible pour: ' + name);
   };
-  // دالة التنزيل المباشر
+
   window.downloadFile = (url, name) => {
     if (!url || !url.trim()) {
-    alert('Aucun lien disponible pour: ' + name);
-    return;
-  }
-
-    let downloadUrl = url;
-
-  // تحويل رابط Google Drive إلى رابط تحميل مباشر
-    const driveMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)\//);
-    if (driveMatch && driveMatch[1]) {
-    downloadUrl = `https://drive.google.com/uc?export=download&id=${driveMatch[1]}`;
+      alert('Aucun lien disponible pour: ' + name);
+      return;
     }
 
-    // إنشاء رابط وهمي للتنزيل
+    let downloadUrl = url;
+    const driveMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)\//);
+    if (driveMatch && driveMatch[1]) {
+      downloadUrl = `https://drive.google.com/uc?export=download&id=${driveMatch[1]}`;
+    }
+
     const link = document.createElement('a');
     link.href = downloadUrl;
     link.download = name;
@@ -906,10 +1012,14 @@
   // ===== SEARCH =====
   window.performSearch = async () => {
     const term = document.getElementById('searchInput').value.trim().toLowerCase();
-    if (!term) { alert('Veuillez entrer un terme de recherche.'); return; }
+    if (!term) { 
+      alert(currentLang === 'ar' ? 'الرجاء إدخال مصطلح البحث' : 'Veuillez entrer un terme de recherche.'); 
+      return; 
+    }
 
     const container = document.getElementById('searchResultsContainer');
-    container.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>Recherche en cours...</p></div>';
+    container.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>' + 
+      (currentLang === 'ar' ? 'جاري البحث...' : 'Recherche en cours...') + '</p></div>';
     showSection('searchResults');
     addToHistory('searchResults');
 
@@ -931,7 +1041,7 @@
           if (subjectMatch || fileMatch) {
             found = true;
             const label = gemAspect ? `GEM - ${gemAspect}` : subjectDisplay;
-            container.appendChild(createSearchItem(fileObj, label, type));
+            container.appendChild(createSearchItem(fileObj, label, type, subjectKey, gemAspect));
           }
         });
       });
@@ -948,11 +1058,15 @@
     });
 
     if (!found) {
-      container.innerHTML = `<div class="empty-state"><i class="fas fa-search"></i><h3>Aucun résultat</h3><p>Aucun résultat pour "${term}".</p></div>`;
+      container.innerHTML = `<div class="empty-state"><i class="fas fa-search"></i><h3>${
+        currentLang === 'ar' ? 'لا توجد نتائج' : 'Aucun résultat'
+      }</h3><p>${
+        currentLang === 'ar' ? `لا توجد نتائج لـ "${term}"` : `Aucun résultat pour "${term}".`
+      }</p></div>`;
     }
   };
 
-  function createSearchItem(f, subject, type) {
+  function createSearchItem(f, subject, type, subjectKey, gemAspect) {
     const div = document.createElement('div');
     div.className = 'file-item';
     let icon = 'fas fa-file';
@@ -968,8 +1082,8 @@
       <div class="file-actions">
         <button class="file-action" onclick="event.stopPropagation(); openFile('${f.url||''}','${f.name}')"><i class="fas fa-external-link-alt"></i></button>
         <button class="file-action" title="Telecharger" onclick="event.stopPropagation(); downloadFile('${f.url}','${f.name}')"><i class="fas fa-download"></i></button>
-        <button class="file-action delete" title="Supprimer" onclick="event.stopPropagation(); deleteFileWithPassword('${f.key}')"><i class="fas fa-trash"></i></button>
-        </div>`;
+        <button class="file-action delete" title="Supprimer" onclick="event.stopPropagation(); deleteFileWithPassword('${f.key}', '${subjectKey}', '${type}', '${gemAspect || ''}')"><i class="fas fa-trash"></i></button>
+      </div>`;
     div.onclick = () => openFile(f.url || '', f.name);
     return div;
   }
@@ -986,23 +1100,23 @@
   window.closeAdmin = () => document.getElementById('adminOverlay').classList.remove('active');
 
   window.checkPassword = async () => {
-  const inputPassword = document.getElementById('passwordInput').value;
-  const inputHash = await hashPassword(inputPassword);
-  
-  if (inputHash === ADMIN_PASSWORD_HASH) {
-    document.getElementById('passwordScreen').style.display = 'none';
-    document.getElementById('adminForm').style.display = 'block';
-    document.getElementById('adminSuccess').style.display = 'none';
-    document.getElementById('adminFormError').style.display = 'none';
-    document.getElementById('adminFileName').value = '';
-    document.getElementById('adminFileURL').value = '';
-    document.getElementById('adminSemester').value = '';
-    document.getElementById('adminSubject').innerHTML = "<option value=''>-- Choisir le semestre d'abord --</option>";
-    document.getElementById('gemSubRow').style.display = 'none';
-  } else {
-    document.getElementById('passwordError').style.display = 'block';
-  }
-};
+    const inputPassword = document.getElementById('passwordInput').value;
+    const inputHash = await hashPassword(inputPassword);
+    
+    if (inputHash === ADMIN_PASSWORD_HASH) {
+      document.getElementById('passwordScreen').style.display = 'none';
+      document.getElementById('adminForm').style.display = 'block';
+      document.getElementById('adminSuccess').style.display = 'none';
+      document.getElementById('adminFormError').style.display = 'none';
+      document.getElementById('adminFileName').value = '';
+      document.getElementById('adminFileURL').value = '';
+      document.getElementById('adminSemester').value = '';
+      document.getElementById('adminSubject').innerHTML = "<option value=''>-- Choisir le semestre d'abord --</option>";
+      document.getElementById('gemSubRow').style.display = 'none';
+    } else {
+      document.getElementById('passwordError').style.display = 'block';
+    }
+  };
 
   window.updateAdminSubjects = () => {
     const sem = document.getElementById('adminSemester').value;
@@ -1033,7 +1147,10 @@
     document.getElementById('adminSuccess').style.display = 'none';
     document.getElementById('adminFormError').style.display = 'none';
 
-    if (!subject || !name) { alert('Veuillez remplir tous les champs obligatoires.'); return; }
+    if (!subject || !name) { 
+      alert(currentLang === 'ar' ? 'الرجاء ملء جميع الحقول المطلوبة' : 'Veuillez remplir tous les champs obligatoires.'); 
+      return; 
+    }
 
     try {
       await saveFile(subject, type, subject === 'GEM' ? gemAspect : '', name, url);
@@ -1059,7 +1176,311 @@
     document.getElementById('sidebarOverlay').classList.remove('active');
   };
 
-  // ===== BACK BUTTON HANDLER (Phone) =====
+  // ===== RESULTS SYSTEM =====
+  
+  // Show admin login for results
+  window.showResultsAdminLogin = async () => {
+    const password = prompt(currentLang === 'ar' ? "🔒 أدخل كلمة مرور الأدمن:" : "🔒 Entrez le mot de passe administrateur:");
+    if (!password) return;
+    
+    const inputHash = await hashPassword(password);
+    if (inputHash === ADMIN_PASSWORD_HASH) {
+      isResultsAdmin = true;
+      document.getElementById('adminResultsSection').style.display = 'block';
+      document.getElementById('showAdminLoginBtn').style.display = 'none';
+    } else {
+      alert(currentLang === 'ar' ? "❌ كلمة المرور غير صحيحة!" : "❌ Mot de passe incorrect !");
+    }
+  };
+  
+  window.hideAdminResults = () => {
+    isResultsAdmin = false;
+    document.getElementById('adminResultsSection').style.display = 'none';
+    document.getElementById('showAdminLoginBtn').style.display = 'block';
+  };
+  
+  window.openResultsUpload = async () => {
+    if (!isResultsAdmin) {
+      await showResultsAdminLogin();
+      if (!isResultsAdmin) return;
+    }
+    
+    // Create modal
+    const modal = document.createElement('div');
+    modal.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; display:flex; align-items:center; justify-content:center;';
+    modal.innerHTML = `
+      <div style="background:white; padding:30px; border-radius:15px; width:400px; max-width:90%;">
+        <h3 style="margin-bottom:20px; color:var(--primary);">
+          <i class="fas fa-file-excel"></i> 
+          ${currentLang === 'ar' ? 'استيراد النتائج' : 'Importer des résultats'}
+        </h3>
+        
+        <label style="display:block; margin-bottom:5px;">${currentLang === 'ar' ? 'القسم' : 'Département'}</label>
+        <select id="modalDepartment" style="width:100%; padding:10px; border:2px solid #ddd; border-radius:8px; margin-bottom:15px;">
+          <option value="">-- ${currentLang === 'ar' ? 'اختر' : 'Choisir'} --</option>
+          <option value="PPV_L2">PPV L2</option>
+          <option value="PPV_L3">PPV L3</option>
+        </select>
+        
+        <label style="display:block; margin-bottom:5px;">${currentLang === 'ar' ? 'الفصل' : 'Semestre'}</label>
+        <select id="modalSemester" style="width:100%; padding:10px; border:2px solid #ddd; border-radius:8px; margin-bottom:15px;">
+          <option value="">-- ${currentLang === 'ar' ? 'اختر' : 'Choisir'} --</option>
+          <option value="S3">S3</option>
+          <option value="S4">S4</option>
+          <option value="S5">S5</option>
+          <option value="S6">S6</option>
+        </select>
+        
+        <label style="display:block; margin-bottom:5px;">${currentLang === 'ar' ? 'نوع التقييم' : "Type d'évaluation"}</label>
+        <select id="modalType" style="width:100%; padding:10px; border:2px solid #ddd; border-radius:8px; margin-bottom:15px;">
+          <option value="Examen">${currentLang === 'ar' ? 'امتحان' : 'Examen'}</option>
+          <option value="Contrôle continu">${currentLang === 'ar' ? 'مراقبة مستمرة' : 'Contrôle continu'}</option>
+          <option value="Rattrapage">${currentLang === 'ar' ? 'استدراك' : 'Rattrapage'}</option>
+        </select>
+        
+        <label style="display:block; margin-bottom:5px;">${currentLang === 'ar' ? 'اسم المادة' : 'Nom de la matière'}</label>
+        <input type="text" id="modalSubject" placeholder="${currentLang === 'ar' ? 'مثال: وقاية النبات 1' : 'Ex: Phytoprotection 1'}" style="width:100%; padding:10px; border:2px solid #ddd; border-radius:8px; margin-bottom:15px;">
+        
+        <label style="display:block; margin-bottom:5px;">${currentLang === 'ar' ? 'ملف Excel' : 'Fichier Excel'}</label>
+        <input type="file" id="modalFile" accept=".xlsx, .xls, .csv" style="width:100%; padding:10px; border:2px solid #ddd; border-radius:8px; margin-bottom:20px; background:white;">
+        
+        <div style="display:flex; gap:10px;">
+          <button id="modalConfirm" style="flex:1; padding:12px; background:var(--primary); color:white; border:none; border-radius:8px; cursor:pointer;">
+            ${currentLang === 'ar' ? 'استيراد' : 'Importer'}
+          </button>
+          <button id="modalCancel" style="flex:1; padding:12px; background:#aaa; color:white; border:none; border-radius:8px; cursor:pointer;">
+            ${currentLang === 'ar' ? 'إلغاء' : 'Annuler'}
+          </button>
+        </div>
+      </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    document.getElementById('modalCancel').onclick = () => modal.remove();
+    
+    document.getElementById('modalConfirm').onclick = async () => {
+      const department = document.getElementById('modalDepartment').value;
+      const semester = document.getElementById('modalSemester').value;
+      const type = document.getElementById('modalType').value;
+      const subject = document.getElementById('modalSubject').value.trim();
+      const fileInput = document.getElementById('modalFile');
+      const file = fileInput.files[0];
+      
+      if (!department || !semester || !subject || !file) {
+        alert(currentLang === 'ar' ? 'الرجاء ملء جميع الحقول واختيار ملف' : 'Veuillez remplir tous les champs et choisir un fichier');
+        return;
+      }
+      
+      modal.remove();
+      await processResultsFile(file, department, semester, subject, type);
+    };
+  };
+  
+  async function processResultsFile(file, department, semester, subject, type) {
+    const reader = new FileReader();
+    reader.onload = async function(event) {
+      const data = new Uint8Array(event.target.result);
+      const workbook = XLSX.read(data, { type: 'array' });
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+      const jsonData = XLSX.utils.sheet_to_json(worksheet);
+      
+      const results = {};
+      jsonData.forEach(row => {
+        let studentId = row.NUMERO || row.Numero || row.numero || row.ID || row.id || row.Matricule || row.matricule;
+        if (studentId) studentId = String(studentId).trim();
+        
+        const studentName = row['NOM & PRENOM'] || row['Nom et Prenom'] || row.Nom || row.nom || '';
+        
+        let grade = row['NOTE/20'] || row['Note/20'] || row.Note || row.note || row.Grade || row.grade || row.Moyenne || row.moyenne;
+        if (grade) grade = parseFloat(String(grade).replace(',', '.'));
+        
+        if (studentId && !isNaN(grade) && grade >= 0 && grade <= 20) {
+          results[studentId] = { 
+            grade: grade, 
+            name: studentName,
+            subject: subject,
+            type: type
+          };
+        }
+      });
+      
+      const path = `results/${department}/${semester}/${subject}_${type}`;
+      try {
+        await set(ref(db, path), results);
+        alert(currentLang === 'ar' ? 
+          `✅ تم استيراد ${Object.keys(results).length} نقطة لـ ${subject} (${type})` : 
+          `✅ ${Object.keys(results).length} notes importées pour ${subject} (${type})`
+        );
+      } catch (error) {
+        alert(currentLang === 'ar' ? '❌ خطأ في الاستيراد' : "❌ Erreur lors de l'importation");
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  }
+  
+  window.searchStudentResult = async () => {
+    const department = document.getElementById('resultDepartment').value;
+    const semester = document.getElementById('semesterSelect').value;
+    const studentId = document.getElementById('studentIdInput').value.trim();
+    const container = document.getElementById('studentResultContainer');
+    const noResult = document.getElementById('noResultMessage');
+    
+    if (!department || !semester || !studentId) {
+      alert(currentLang === 'ar' ? 'الرجاء ملء جميع الحقول' : 'Veuillez remplir tous les champs');
+      return;
+    }
+    
+    container.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>' + 
+      (currentLang === 'ar' ? 'جاري التحميل...' : 'Chargement...') + '</p></div>';
+    container.style.display = 'block';
+    noResult.style.display = 'none';
+    
+    const snapshot = await get(child(ref(db), `results/${department}/${semester}`));
+    if (!snapshot.exists()) {
+      container.style.display = 'none';
+      noResult.style.display = 'block';
+      return;
+    }
+    
+    const allSubjects = snapshot.val();
+    let foundResults = [];
+    let studentName = '';
+    
+    for (let subjectKey in allSubjects) {
+      const studentData = allSubjects[subjectKey][studentId];
+      if (studentData) {
+        foundResults.push({
+          subject: studentData.subject,
+          type: studentData.type,
+          grade: studentData.grade
+        });
+        if (!studentName) studentName = studentData.name;
+      }
+    }
+    
+    if (foundResults.length === 0) {
+      container.style.display = 'none';
+      noResult.style.display = 'block';
+      return;
+    }
+    
+    let html = `
+      <div style="text-align:center; margin-bottom:20px;">
+        <i class="fas fa-user-graduate" style="font-size:2.5rem; color:var(--primary);"></i>
+        <h3 style="margin:10px 0;">${studentName || (currentLang === 'ar' ? 'طالب' : 'Étudiant')}</h3>
+        <p style="color:var(--text-light);">N° ${studentId} | ${department} | ${semester}</p>
+      </div>
+      <table style="width:100%; border-collapse:collapse;">
+        <thead><tr style="background:var(--primary-light);">
+          <th style="padding:10px; text-align:left;">${currentLang === 'ar' ? 'المادة' : 'Matière'}</th>
+          <th style="padding:10px; text-align:left;">${currentLang === 'ar' ? 'النوع' : 'Type'}</th>
+          <th style="padding:10px; text-align:center;">${currentLang === 'ar' ? 'النقطة' : 'Note'}</th>
+        </tr></thead>
+        <tbody>
+    `;
+    
+    foundResults.forEach(r => {
+      html += `<tr style="border-bottom:1px solid #eee;">
+        <td style="padding:10px;">${r.subject}</td>
+        <td style="padding:10px;">${r.type}</td>
+        <td style="padding:10px; text-align:center; font-weight:bold; color:${r.grade>=10?'#2d6a4f':'#e63946'};">${r.grade}/20</td>
+      </tr>`;
+    });
+    
+    html += `</tbody></table>`;
+    
+    container.innerHTML = html;
+  };
+  
+  window.showAdminSubjectsPanel = async () => {
+    if (!isResultsAdmin) {
+      await showResultsAdminLogin();
+      if (!isResultsAdmin) return;
+    }
+    
+    const department = document.getElementById('resultDepartment').value;
+    const semester = document.getElementById('semesterSelect').value;
+    
+    if (!department || !semester) {
+      alert(currentLang === 'ar' ? 'الرجاء اختيار القسم والفصل' : 'Veuillez choisir un département et un semestre');
+      return;
+    }
+    
+    const container = document.getElementById('studentResultContainer');
+    container.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>' + 
+      (currentLang === 'ar' ? 'جاري تحميل المواد...' : 'Chargement des matières...') + '</p></div>';
+    container.style.display = 'block';
+    document.getElementById('noResultMessage').style.display = 'none';
+    
+    const snapshot = await get(child(ref(db), `results/${department}/${semester}`));
+    
+    if (!snapshot.exists()) {
+      container.innerHTML = '<div class="empty-state"><i class="fas fa-folder-open"></i><h3>' + 
+        (currentLang === 'ar' ? 'لا توجد مواد' : 'Aucune matière trouvée') + '</h3></div>';
+      return;
+    }
+    
+    const subjects = snapshot.val();
+    let html = `
+      <div style="text-align:center; margin-bottom:20px;">
+        <i class="fas fa-database" style="font-size:2.5rem; color:var(--primary);"></i>
+        <h3 style="margin:10px 0;">${currentLang === 'ar' ? 'المواد المتوفرة' : 'Matières disponibles'}</h3>
+        <p style="color:var(--text-light);">${department} | ${semester}</p>
+      </div>
+      <table style="width:100%; border-collapse:collapse;">
+        <thead><tr style="background:var(--primary-light);">
+          <th style="padding:10px; text-align:left;">${currentLang === 'ar' ? 'المادة' : 'Matière'}</th>
+          <th style="padding:10px; text-align:center;">${currentLang === 'ar' ? 'النوع' : 'Type'}</th>
+          <th style="padding:10px; text-align:center;">${currentLang === 'ar' ? 'الطلاب' : 'Étudiants'}</th>
+          <th style="padding:10px; text-align:center;">${currentLang === 'ar' ? 'إجراء' : 'Action'}</th>
+        </tr></thead>
+        <tbody>
+    `;
+    
+    for (let key in subjects) {
+      const subjectData = subjects[key];
+      const count = Object.keys(subjectData).length;
+      
+      const parts = key.split('_');
+      const type = parts[parts.length - 1];
+      const subjectName = parts.slice(0, -1).join('_');
+      
+      html += `<tr style="border-bottom:1px solid #eee;">
+        <td style="padding:10px;">${subjectName}</td>
+        <td style="padding:10px; text-align:center;">${type}</td>
+        <td style="padding:10px; text-align:center;">${count}</td>
+        <td style="padding:10px; text-align:center;">
+          <button class="file-action delete" onclick="event.stopPropagation(); deleteSubjectResult('${department}', '${semester}', '${key}')" style="font-size:1rem;" title="${currentLang === 'ar' ? 'حذف هذه المادة' : 'Supprimer cette matière'}">
+            <i class="fas fa-trash"></i>
+          </button>
+        </td>
+      </tr>`;
+    }
+    
+    html += `</tbody></table>`;
+    container.innerHTML = html;
+  };
+  
+  window.deleteSubjectResult = async (department, semester, subjectKey) => {
+    const confirmMsg = currentLang === 'ar' ? 
+      '⚠️ هل أنت متأكد من حذف جميع نقاط هذه المادة؟' : 
+      '⚠️ Êtes-vous sûr de vouloir supprimer TOUTES les notes de cette matière ?';
+    
+    if (!confirm(confirmMsg)) return;
+    
+    const path = `results/${department}/${semester}/${subjectKey}`;
+    try {
+      await remove(ref(db, path));
+      alert(currentLang === 'ar' ? "✅ تم حذف المادة بنجاح!" : "✅ Matière supprimée avec succès !");
+      showAdminSubjectsPanel();
+    } catch (error) {
+      alert((currentLang === 'ar' ? "❌ خطأ في الحذف: " : "❌ Erreur lors de la suppression: ") + error.message);
+    }
+  };
+
+  // ===== EVENT LISTENERS =====
   window.addEventListener('popstate', function(event) {
     if (breadcrumbList.length > 0) {
       goBack();
@@ -1078,367 +1499,11 @@
   document.getElementById('adminOverlay').addEventListener('click', function(e) {
     if (e.target === this) closeAdmin();
   });
-  // ===== SYSTEME DE RESULTATS =====
 
-// كلمة مرور النتائج (يمكن تغييرها لاحقاً - حالياً نفس كلمة المرور العامة)
-const RESULTS_PASSWORD_HASH = "7688541f015722ea762564c84fcb5032567bdc32cb165d0e4d73436b7e6abd43";
-// دالة التحقق من كلمة مرور النتائج
-async function verifyResultsPassword(password) {
-  const inputHash = await hashPassword(password);
-  return inputHash === RESULTS_PASSWORD_HASH;
-}
-
-// // دالة التحقق من كلمة مرور النتائج
-// async function verifyResultsPassword(password) {
-//   const inputHash = await hashPassword(password);
-//   return inputHash === RESULTS_PASSWORD_HASH;
-// }
-
-// فتح نافذة رفع النتائج
-// فتح نافذة رفع النتائج (نسخة مبسطة جداً)
-window.openResultsUpload = async () => {
-  const password = prompt("🔒 Mot de passe administrateur des résultats:");
-  if (!await verifyResultsPassword(password)) {
-    alert("❌ Mot de passe incorrect !");
-    return;
-  }
-  
-  // إنشاء نافذة منبثقة
-  const modal = document.createElement('div');
-  modal.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; display:flex; align-items:center; justify-content:center;';
-  modal.innerHTML = `
-    <div style="background:white; padding:30px; border-radius:15px; width:400px; max-width:90%;">
-      <h3 style="margin-bottom:20px; color:var(--primary);">Importer une note</h3>
-      
-      <label style="display:block; margin-bottom:5px;">Département</label>
-      <select id="modalDepartment" style="width:100%; padding:10px; border:2px solid #ddd; border-radius:8px; margin-bottom:15px;">
-        <option value="">-- Choisir --</option>
-        <option value="PPV_L2">PPV L2</option>
-        <option value="PPV_L3">PPV L3</option>
-      </select>
-      
-      <label style="display:block; margin-bottom:5px;">Semestre</label>
-      <select id="modalSemester" style="width:100%; padding:10px; border:2px solid #ddd; border-radius:8px; margin-bottom:15px;">
-        <option value="">-- Choisir --</option>
-        <option value="S3">S3</option>
-        <option value="S4">S4</option>
-        <option value="S5">S5</option>
-        <option value="S6">S6</option>
-      </select>
-      
-      <label style="display:block; margin-bottom:5px;">Type d'évaluation</label>
-      <select id="modalType" style="width:100%; padding:10px; border:2px solid #ddd; border-radius:8px; margin-bottom:15px;">
-        <option value="Examen">Examen</option>
-        <option value="Contrôle continu">Contrôle continu</option>
-        <option value="Rattrapage">Rattrapage</option>
-      </select>
-      
-      <label style="display:block; margin-bottom:5px;">Nom de la matière</label>
-      <input type="text" id="modalSubject" placeholder="Ex: Phytoprotection 1" style="width:100%; padding:10px; border:2px solid #ddd; border-radius:8px; margin-bottom:15px;">
-      
-      <label style="display:block; margin-bottom:5px;">Fichier Excel</label>
-      <input type="file" id="modalFile" accept=".xlsx, .xls, .csv" style="width:100%; padding:10px; border:2px solid #ddd; border-radius:8px; margin-bottom:20px; background:white;">
-      
-      <div style="display:flex; gap:10px;">
-        <button id="modalConfirm" style="flex:1; padding:12px; background:var(--primary); color:white; border:none; border-radius:8px; cursor:pointer;">Importer</button>
-        <button id="modalCancel" style="flex:1; padding:12px; background:#aaa; color:white; border:none; border-radius:8px; cursor:pointer;">Annuler</button>
-      </div>
-    </div>
-  `;
-  
-  document.body.appendChild(modal);
-  
-  document.getElementById('modalCancel').onclick = () => modal.remove();
-  
-  document.getElementById('modalConfirm').onclick = async () => {
-    const department = document.getElementById('modalDepartment').value;
-    const semester = document.getElementById('modalSemester').value;
-    const type = document.getElementById('modalType').value;
-    const subject = document.getElementById('modalSubject').value.trim();
-    const fileInput = document.getElementById('modalFile');
-    const file = fileInput.files[0];
-    
-    if (!department || !semester || !subject || !file) {
-      alert('Veuillez remplir tous les champs et choisir un fichier');
-      return;
-    }
-    
-    modal.remove();
-    await processResultsFile(file, department, semester, subject, type);
-  };
-};
-
-// معالجة الملف
-async function processResultsFile(file, department, semester, subject, type) {
-  const reader = new FileReader();
-  reader.onload = async function(event) {
-    const data = new Uint8Array(event.target.result);
-    const workbook = XLSX.read(data, { type: 'array' });
-    const sheetName = workbook.SheetNames[0];
-    const worksheet = workbook.Sheets[sheetName];
-    const jsonData = XLSX.utils.sheet_to_json(worksheet);
-    
-    const results = {};
-    jsonData.forEach(row => {
-      let studentId = row.NUMERO || row.Numero || row.numero || row.ID || row.id || row.Matricule || row.matricule;
-      if (studentId) studentId = String(studentId).trim();
-      
-      const studentName = row['NOM & PRENOM'] || row['Nom et Prenom'] || row.Nom || row.nom || '';
-      
-      let grade = row['NOTE/20'] || row['Note/20'] || row.Note || row.note || row.Grade || row.grade || row.Moyenne || row.moyenne;
-      if (grade) grade = parseFloat(String(grade).replace(',', '.'));
-      
-      if (studentId && !isNaN(grade) && grade >= 0 && grade <= 20) {
-        results[studentId] = { 
-          grade: grade, 
-          name: studentName,
-          subject: subject,
-          type: type
-        };
-      }
-    });
-    
-    const path = `results/${department}/${semester}/${subject}_${type}`;
-    try {
-      await set(ref(db, path), results);
-      alert(`✅ ${Object.keys(results).length} notes importées pour ${subject} (${type})`);
-    } catch (error) {
-      alert('❌ Erreur lors de l\'importation');
-    }
-  };
-  reader.readAsArrayBuffer(file);
-}
-
-// البحث عن نتيجة طالب
-// البحث عن نتيجة طالب (نسخة مبسطة)
-window.searchStudentResult = async () => {
-  const department = document.getElementById('resultDepartment').value;
-  const semester = document.getElementById('semesterSelect').value;
-  const studentId = document.getElementById('studentIdInput').value.trim();
-  const container = document.getElementById('studentResultContainer');
-  const noResult = document.getElementById('noResultMessage');
-  
-  if (!department || !semester || !studentId) {
-    alert('Veuillez remplir tous les champs');
-    return;
-  }
-  
-  container.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>Chargement...</p></div>';
-  container.style.display = 'block';
-  noResult.style.display = 'none';
-  
-  const snapshot = await get(child(ref(db), `results/${department}/${semester}`));
-  if (!snapshot.exists()) {
-    container.style.display = 'none';
-    noResult.style.display = 'block';
-    return;
-  }
-  
-  const allSubjects = snapshot.val();
-  let foundResults = [];
-  let studentName = '';
-  
-  // البحث في جميع المواد المخزنة
-  for (let subjectKey in allSubjects) {
-    const studentData = allSubjects[subjectKey][studentId];
-    if (studentData) {
-      foundResults.push({
-        subject: studentData.subject,
-        type: studentData.type,
-        grade: studentData.grade
-      });
-      if (!studentName) studentName = studentData.name;
-    }
-  }
-  
-  if (foundResults.length === 0) {
-    container.style.display = 'none';
-    noResult.style.display = 'block';
-    return;
-  }
-  
-  // عرض النتائج
-  let html = `
-    <div style="text-align:center; margin-bottom:20px;">
-      <i class="fas fa-user-graduate" style="font-size:2.5rem; color:var(--primary);"></i>
-      <h3 style="margin:10px 0;">${studentName || 'Étudiant'}</h3>
-      <p style="color:var(--text-light);">N° ${studentId} | ${department} | ${semester}</p>
-    </div>
-    <table style="width:100%; border-collapse:collapse;">
-      <thead><tr style="background:var(--primary-light);"><th style="padding:10px; text-align:left;">Matière</th><th style="padding:10px; text-align:left;">Type</th><th style="padding:10px; text-align:center;">Note</th></tr></thead>
-      <tbody>
-  `;
-  
-  foundResults.forEach(r => {
-    html += `<tr style="border-bottom:1px solid #eee;">
-      <td style="padding:10px;">${r.subject}</td>
-      <td style="padding:10px;">${r.type}</td>
-      <td style="padding:10px; text-align:center; font-weight:bold; color:${r.grade>=10?'#2d6a4f':'#e63946'};">${r.grade}/20</td>
-    </tr>`;
+  document.addEventListener('DOMContentLoaded', function() {
+    const input = document.getElementById('studentIdInput');
+    if (input) input.addEventListener('keyup', e => { if (e.key === 'Enter') searchStudentResult(); });
   });
-  
-  html += `</tbody></table>`;
-  
-  container.innerHTML = html;
-};
-
-// إضافة مستمع للضغط على Enter في حقل البحث
-document.addEventListener('DOMContentLoaded', function() {
-  const input = document.getElementById('studentIdInput');
-  if (input) input.addEventListener('keyup', e => { if (e.key === 'Enter') searchStudentResult(); });
-});
-// فتح نافذة رفع النتائج مباشرة من الشاشة الرئيسية
-window.openResultsAdmin = async () => {
-  const password = prompt("🔒 Entrez le mot de passe administrateur:");
-  const inputHash = await hashPassword(password);
-  
-  if (inputHash !== ADMIN_PASSWORD_HASH) {
-    alert("❌ Mot de passe incorrect !");
-    return;
-  }
-  
-  // إنشاء نافذة منبثقة
-  const modal = document.createElement('div');
-  modal.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; display:flex; align-items:center; justify-content:center;';
-  modal.innerHTML = `
-    <div style="background:white; padding:30px; border-radius:15px; width:400px; max-width:90%;">
-      <h3 style="margin-bottom:20px; color:var(--primary);"><i class="fas fa-file-excel"></i> Importer des résultats</h3>
-      
-      <label style="display:block; margin-bottom:5px;">Département</label>
-      <select id="modalDepartment" style="width:100%; padding:10px; border:2px solid #ddd; border-radius:8px; margin-bottom:15px;">
-        <option value="">-- Choisir --</option>
-        <option value="PPV_L2">PPV L2</option>
-        <option value="PPV_L3">PPV L3</option>
-      </select>
-      
-      <label style="display:block; margin-bottom:5px;">Semestre</label>
-      <select id="modalSemester" style="width:100%; padding:10px; border:2px solid #ddd; border-radius:8px; margin-bottom:15px;">
-        <option value="">-- Choisir --</option>
-        <option value="S3">S3</option>
-        <option value="S4">S4</option>
-        <option value="S5">S5</option>
-        <option value="S6">S6</option>
-      </select>
-      
-      <label style="display:block; margin-bottom:5px;">Type d'évaluation</label>
-      <select id="modalType" style="width:100%; padding:10px; border:2px solid #ddd; border-radius:8px; margin-bottom:15px;">
-        <option value="Examen">Examen</option>
-        <option value="Contrôle continu">Contrôle continu</option>
-        <option value="Rattrapage">Rattrapage</option>
-      </select>
-      
-      <label style="display:block; margin-bottom:5px;">Nom de la matière</label>
-      <input type="text" id="modalSubject" placeholder="Ex: Phytoprotection 1" style="width:100%; padding:10px; border:2px solid #ddd; border-radius:8px; margin-bottom:15px;">
-      
-      <label style="display:block; margin-bottom:5px;">Fichier Excel</label>
-      <input type="file" id="modalFile" accept=".xlsx, .xls, .csv" style="width:100%; padding:10px; border:2px solid #ddd; border-radius:8px; margin-bottom:20px; background:white;">
-      
-      <div style="display:flex; gap:10px;">
-        <button id="modalConfirm" style="flex:1; padding:12px; background:var(--primary); color:white; border:none; border-radius:8px; cursor:pointer;">Importer</button>
-        <button id="modalCancel" style="flex:1; padding:12px; background:#aaa; color:white; border:none; border-radius:8px; cursor:pointer;">Annuler</button>
-      </div>
-    </div>
-  `;
-  
-  document.body.appendChild(modal);
-  
-  document.getElementById('modalCancel').onclick = () => modal.remove();
-  
-  document.getElementById('modalConfirm').onclick = async () => {
-    const department = document.getElementById('modalDepartment').value;
-    const semester = document.getElementById('modalSemester').value;
-    const type = document.getElementById('modalType').value;
-    const subject = document.getElementById('modalSubject').value.trim();
-    const fileInput = document.getElementById('modalFile');
-    const file = fileInput.files[0];
-    
-    if (!department || !semester || !subject || !file) {
-      alert('Veuillez remplir tous les champs et choisir un fichier');
-      return;
-    }
-    
-    modal.remove();
-    await processResultsFile(file, department, semester, subject, type);
-  };
-};
-// عرض لوحة إدارة المواد (للأدمن فقط - بعد كلمة المرور)
-window.showAdminSubjectsPanel = async () => {
-  const password = prompt("🔒 Entrez le mot de passe administrateur:");
-  const inputHash = await hashPassword(password);
-  
-  if (inputHash !== ADMIN_PASSWORD_HASH) {
-    alert("❌ Mot de passe incorrect !");
-    return;
-  }
-  
-  const department = document.getElementById('resultDepartment').value;
-  const semester = document.getElementById('semesterSelect').value;
-  
-  if (!department || !semester) {
-    alert('Veuillez choisir un département et un semestre');
-    return;
-  }
-  
-  const container = document.getElementById('studentResultContainer');
-  container.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>Chargement des matières...</p></div>';
-  container.style.display = 'block';
-  document.getElementById('noResultMessage').style.display = 'none';
-  
-  const snapshot = await get(child(ref(db), `results/${department}/${semester}`));
-  
-  if (!snapshot.exists()) {
-    container.innerHTML = '<div class="empty-state"><i class="fas fa-folder-open"></i><h3>Aucune matière trouvée</h3></div>';
-    return;
-  }
-  
-  const subjects = snapshot.val();
-  let html = `
-    <div style="text-align:center; margin-bottom:20px;">
-      <i class="fas fa-database" style="font-size:2.5rem; color:var(--primary);"></i>
-      <h3 style="margin:10px 0;">Matières disponibles</h3>
-      <p style="color:var(--text-light);">${department} | ${semester}</p>
-    </div>
-    <table style="width:100%; border-collapse:collapse;">
-      <thead><tr style="background:var(--primary-light);"><th style="padding:10px; text-align:left;">Matière</th><th style="padding:10px; text-align:center;">Type</th><th style="padding:10px; text-align:center;">Étudiants</th><th style="padding:10px; text-align:center;">Action</th></tr></thead>
-      <tbody>
-  `;
-  
-  for (let key in subjects) {
-    const subjectData = subjects[key];
-    const count = Object.keys(subjectData).length;
-    
-    const parts = key.split('_');
-    const type = parts[parts.length - 1];
-    const subjectName = parts.slice(0, -1).join('_');
-    
-    html += `<tr style="border-bottom:1px solid #eee;">
-      <td style="padding:10px;">${subjectName}</td>
-      <td style="padding:10px; text-align:center;">${type}</td>
-      <td style="padding:10px; text-align:center;">${count}</td>
-      <td style="padding:10px; text-align:center;">
-        <button class="file-action delete" onclick="event.stopPropagation(); deleteSubjectResult('${department}', '${semester}', '${key}')" style="font-size:1rem;" title="Supprimer cette matière">
-          <i class="fas fa-trash"></i>
-        </button>
-      </td>
-    </tr>`;
-  }
-  
-  html += `</tbody></table>`;
-  container.innerHTML = html;
-};
-// حذف مادة كاملة من النتائج
-window.deleteSubjectResult = async (department, semester, subjectKey) => {
-  if (!confirm(`⚠️ Êtes-vous sûr de vouloir supprimer TOUTES les notes de cette matière ?`)) return;
-  
-  const path = `results/${department}/${semester}/${subjectKey}`;
-  try {
-    await remove(ref(db, path));
-    alert("✅ Matière supprimée avec succès !");
-    showAdminSubjectsPanel(); // إعادة تحميل القائمة
-  } catch (error) {
-    alert("❌ Erreur lors de la suppression: " + error.message);
-  }
-};
 </script>
 </body>
 </html>
