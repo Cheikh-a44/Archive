@@ -213,6 +213,15 @@
     .card { padding:0.8rem 0.5rem; }
     header h1 { font-size:1.6rem; }
   }
+  .admin-toggle:nth-of-type(2) {
+    bottom:20px;
+    right: auto;
+    left: 20px;
+    background: #6c757d;
+  }
+  .admin-toggle:nth-of-type(2):hover{
+    background: #5a6268;
+  }
 </style>
 </head>
 <body>
@@ -311,6 +320,9 @@
 
   <button class="admin-toggle" onclick="openAdmin()">
     <i class="fas fa-cog"></i> Admin
+  </button>
+  <button class="admin-toggle" onclick="openResultatsAdmin()">
+    <i class="fas fa-file-excel"></i> Add Resultats
   </button>
 
   <!-- Admin -->
@@ -569,6 +581,9 @@
     <div style="margin-top: 40px; border-top: 1px dashed #ccc; padding-top: 20px;">
       <button class="admin-btn" onclick="openResultsUpload()" style="background: #6c757d;">
         <i class="fas fa-upload"></i> Importer des résultats (Admin)
+      </button>
+      <button class="admin-btn" onclick="showAdminSubjectsPanel()" style="background: #5a231c; margin-top: 10px;">
+        <i class="fas fa-trash-alt"></i> Gerer les résultats (Admin)
       </button>
     </div>
   </div>
@@ -1272,6 +1287,158 @@ document.addEventListener('DOMContentLoaded', function() {
   const input = document.getElementById('studentIdInput');
   if (input) input.addEventListener('keyup', e => { if (e.key === 'Enter') searchStudentResult(); });
 });
+// فتح نافذة رفع النتائج مباشرة من الشاشة الرئيسية
+window.openResultsAdmin = async () => {
+  const password = prompt("🔒 Entrez le mot de passe administrateur:");
+  const inputHash = await hashPassword(password);
+  
+  if (inputHash !== ADMIN_PASSWORD_HASH) {
+    alert("❌ Mot de passe incorrect !");
+    return;
+  }
+  
+  // إنشاء نافذة منبثقة
+  const modal = document.createElement('div');
+  modal.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; display:flex; align-items:center; justify-content:center;';
+  modal.innerHTML = `
+    <div style="background:white; padding:30px; border-radius:15px; width:400px; max-width:90%;">
+      <h3 style="margin-bottom:20px; color:var(--primary);"><i class="fas fa-file-excel"></i> Importer des résultats</h3>
+      
+      <label style="display:block; margin-bottom:5px;">Département</label>
+      <select id="modalDepartment" style="width:100%; padding:10px; border:2px solid #ddd; border-radius:8px; margin-bottom:15px;">
+        <option value="">-- Choisir --</option>
+        <option value="PPV_L2">PPV L2</option>
+        <option value="PPV_L3">PPV L3</option>
+      </select>
+      
+      <label style="display:block; margin-bottom:5px;">Semestre</label>
+      <select id="modalSemester" style="width:100%; padding:10px; border:2px solid #ddd; border-radius:8px; margin-bottom:15px;">
+        <option value="">-- Choisir --</option>
+        <option value="S3">S3</option>
+        <option value="S4">S4</option>
+        <option value="S5">S5</option>
+        <option value="S6">S6</option>
+      </select>
+      
+      <label style="display:block; margin-bottom:5px;">Type d'évaluation</label>
+      <select id="modalType" style="width:100%; padding:10px; border:2px solid #ddd; border-radius:8px; margin-bottom:15px;">
+        <option value="Examen">Examen</option>
+        <option value="Contrôle continu">Contrôle continu</option>
+        <option value="Rattrapage">Rattrapage</option>
+      </select>
+      
+      <label style="display:block; margin-bottom:5px;">Nom de la matière</label>
+      <input type="text" id="modalSubject" placeholder="Ex: Phytoprotection 1" style="width:100%; padding:10px; border:2px solid #ddd; border-radius:8px; margin-bottom:15px;">
+      
+      <label style="display:block; margin-bottom:5px;">Fichier Excel</label>
+      <input type="file" id="modalFile" accept=".xlsx, .xls, .csv" style="width:100%; padding:10px; border:2px solid #ddd; border-radius:8px; margin-bottom:20px; background:white;">
+      
+      <div style="display:flex; gap:10px;">
+        <button id="modalConfirm" style="flex:1; padding:12px; background:var(--primary); color:white; border:none; border-radius:8px; cursor:pointer;">Importer</button>
+        <button id="modalCancel" style="flex:1; padding:12px; background:#aaa; color:white; border:none; border-radius:8px; cursor:pointer;">Annuler</button>
+      </div>
+    </div>
+  `;
+  
+  document.body.appendChild(modal);
+  
+  document.getElementById('modalCancel').onclick = () => modal.remove();
+  
+  document.getElementById('modalConfirm').onclick = async () => {
+    const department = document.getElementById('modalDepartment').value;
+    const semester = document.getElementById('modalSemester').value;
+    const type = document.getElementById('modalType').value;
+    const subject = document.getElementById('modalSubject').value.trim();
+    const fileInput = document.getElementById('modalFile');
+    const file = fileInput.files[0];
+    
+    if (!department || !semester || !subject || !file) {
+      alert('Veuillez remplir tous les champs et choisir un fichier');
+      return;
+    }
+    
+    modal.remove();
+    await processResultsFile(file, department, semester, subject, type);
+  };
+};
+// عرض لوحة إدارة المواد (للأدمن فقط - بعد كلمة المرور)
+window.showAdminSubjectsPanel = async () => {
+  const password = prompt("🔒 Entrez le mot de passe administrateur:");
+  const inputHash = await hashPassword(password);
+  
+  if (inputHash !== ADMIN_PASSWORD_HASH) {
+    alert("❌ Mot de passe incorrect !");
+    return;
+  }
+  
+  const department = document.getElementById('resultDepartment').value;
+  const semester = document.getElementById('semesterSelect').value;
+  
+  if (!department || !semester) {
+    alert('Veuillez choisir un département et un semestre');
+    return;
+  }
+  
+  const container = document.getElementById('studentResultContainer');
+  container.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>Chargement des matières...</p></div>';
+  container.style.display = 'block';
+  document.getElementById('noResultMessage').style.display = 'none';
+  
+  const snapshot = await get(child(ref(db), `results/${department}/${semester}`));
+  
+  if (!snapshot.exists()) {
+    container.innerHTML = '<div class="empty-state"><i class="fas fa-folder-open"></i><h3>Aucune matière trouvée</h3></div>';
+    return;
+  }
+  
+  const subjects = snapshot.val();
+  let html = `
+    <div style="text-align:center; margin-bottom:20px;">
+      <i class="fas fa-database" style="font-size:2.5rem; color:var(--primary);"></i>
+      <h3 style="margin:10px 0;">Matières disponibles</h3>
+      <p style="color:var(--text-light);">${department} | ${semester}</p>
+    </div>
+    <table style="width:100%; border-collapse:collapse;">
+      <thead><tr style="background:var(--primary-light);"><th style="padding:10px; text-align:left;">Matière</th><th style="padding:10px; text-align:center;">Type</th><th style="padding:10px; text-align:center;">Étudiants</th><th style="padding:10px; text-align:center;">Action</th></tr></thead>
+      <tbody>
+  `;
+  
+  for (let key in subjects) {
+    const subjectData = subjects[key];
+    const count = Object.keys(subjectData).length;
+    
+    const parts = key.split('_');
+    const type = parts[parts.length - 1];
+    const subjectName = parts.slice(0, -1).join('_');
+    
+    html += `<tr style="border-bottom:1px solid #eee;">
+      <td style="padding:10px;">${subjectName}</td>
+      <td style="padding:10px; text-align:center;">${type}</td>
+      <td style="padding:10px; text-align:center;">${count}</td>
+      <td style="padding:10px; text-align:center;">
+        <button class="file-action delete" onclick="event.stopPropagation(); deleteSubjectResult('${department}', '${semester}', '${key}')" style="font-size:1rem;" title="Supprimer cette matière">
+          <i class="fas fa-trash"></i>
+        </button>
+      </td>
+    </tr>`;
+  }
+  
+  html += `</tbody></table>`;
+  container.innerHTML = html;
+};
+// حذف مادة كاملة من النتائج
+window.deleteSubjectResult = async (department, semester, subjectKey) => {
+  if (!confirm(`⚠️ Êtes-vous sûr de vouloir supprimer TOUTES les notes de cette matière ?`)) return;
+  
+  const path = `results/${department}/${semester}/${subjectKey}`;
+  try {
+    await remove(ref(db, path));
+    alert("✅ Matière supprimée avec succès !");
+    showAdminSubjectsPanel(); // إعادة تحميل القائمة
+  } catch (error) {
+    alert("❌ Erreur lors de la suppression: " + error.message);
+  }
+};
 </script>
 </body>
 </html>
