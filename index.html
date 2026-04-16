@@ -259,9 +259,8 @@
   
   <div class="sidebar-section">
     <h4><i class="fas fa-info-circle"></i> <span data-lang="about">حول</span></h4>
-    <div class="coming-soon">
-      <i class="fas fa-plus-circle"></i> <span data-lang="moreContent">المزيد من المحتوى قريباً</span>
-      <div class="footer-credit" style="margin-top:8px">Par Cheikh_A</div>
+    <div class="footer-credit" style="margin-top:8px; text-align: left; border: none; padding: 0;">
+      <i class="fas fa-graduation-cap"></i> Par Cheikh_A
     </div>
   </div>
   
@@ -299,7 +298,6 @@
   <div class="footer-credit">
     <i class="fas fa-graduation-cap"></i>Espace ISET<br>
     <small data-lang="platform">منصة الموارد الأكاديمية</small>
-    <div style="margin-top:5px">Par Cheikh_A</div>
   </div>
 </div>
 
@@ -591,8 +589,11 @@
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
   
-  // IMPORTANT: Changez ce mot de passe et mettez des règles Firebase strictes!
+  // IMPORTANT: كلمتا مرور مختلفتان - قم بتغييرهما!
+  // كلمة مرور الأدمن العام (لإضافة الملفات)
   const ADMIN_PASSWORD_HASH = "7688541f015722ea762564c84fcb5032567bdc32cb165d0e4d73436b7e6abd43";
+  // كلمة مرور أدمن النتائج (مختلفة)
+  const RESULTS_ADMIN_PASSWORD_HASH = "9af15b336e6a9619928537df30b2e6a2376569fcf9d7e773eccede65606529a0"; // "results123"
   
   async function hashPassword(password) {
     const msgBuffer = new TextEncoder().encode(password);
@@ -632,7 +633,7 @@
       importResults: "Importer des résultats",
       manageResults: "Gérer les résultats",
       exitAdminMode: "Quitter le mode admin",
-      adminAccess: "Accès Admin"
+      adminAccess: "Accès Admin Résultats"
     },
     ar: {
       title: "فضاء المعهد",
@@ -663,7 +664,7 @@
       importResults: "استيراد النتائج",
       manageResults: "إدارة النتائج",
       exitAdminMode: "الخروج من وضع الأدمن",
-      adminAccess: "دخول الأدمن"
+      adminAccess: "دخول أدمن النتائج"
     }
   };
 
@@ -1178,13 +1179,15 @@
 
   // ===== RESULTS SYSTEM =====
   
-  // Show admin login for results
+  // Show admin login for results (بكلمة مرور مختلفة)
   window.showResultsAdminLogin = async () => {
-    const password = prompt(currentLang === 'ar' ? "🔒 أدخل كلمة مرور الأدمن:" : "🔒 Entrez le mot de passe administrateur:");
+    const password = prompt(currentLang === 'ar' ? 
+      "🔒 أدخل كلمة مرور أدمن النتائج:" : 
+      "🔒 Entrez le mot de passe administrateur des résultats:");
     if (!password) return;
     
     const inputHash = await hashPassword(password);
-    if (inputHash === ADMIN_PASSWORD_HASH) {
+    if (inputHash === RESULTS_ADMIN_PASSWORD_HASH) {
       isResultsAdmin = true;
       document.getElementById('adminResultsSection').style.display = 'block';
       document.getElementById('showAdminLoginBtn').style.display = 'none';
