@@ -1170,7 +1170,7 @@ async function processResultsFile(file, department, semester, subject, type) {
       
       const studentName = row['NOM & PRENOM'] || row['Nom et Prenom'] || row.Nom || row.nom || '';
       
-      let grade = row['NOTE /20'] || row['Note /20'] || row.Note || row.note || row.Grade || row.grade || row.Moyenne || row.moyenne;
+      let grade = row['NOTE/20'] || row['Note/20'] || row.Note || row.note || row.Grade || row.grade || row.Moyenne || row.moyenne;
       if (grade) grade = parseFloat(String(grade).replace(',', '.'));
       
       if (studentId && !isNaN(grade) && grade >= 0 && grade <= 20) {
