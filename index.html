@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Archive ISET</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
   :root {
     --primary: #0077b6;
@@ -374,7 +375,7 @@
       <div class="card" onclick="showSectionWithBreadcrumb('semestersL1','L1')"><div class="card-title">L1</div></div>
       <div class="card" onclick="showSectionWithBreadcrumb('semestersL2','L2')"><div class="card-title">L2</div></div>
       <!--<div class="card" onclick="showSectionWithBreadcrumb('semestersL3','L3')"><div class="card-title">L3</div></div>-->
-      <div class="card" onclick="alert('Les resultats seront ajoutés après coordination avec l\'administration...')"><div class="card-title">Resultats</div></div>
+      <div class="card" onclick="showSectionWithBreadcrumb('resultatsSection','Resultats')"><div class="card-title">Resultats</div></div>
     </div>
     <div style="text-align:center; margin-top: 25px; padding: 15px; color:var(--primary); font-weight: 500; font-size: 1.1rem; background: var(--primary-light); border-radius: 50px; max-width: 90%; margin-right:auto;">
       <i class="fas fa-hourglass-half" style="margin-right:8px;"></i>
@@ -532,11 +533,51 @@
     <h2 class="section-title">Résultats de recherche</h2>
     <div class="file-list-container" id="searchResultsContainer"></div>
   </section>
+  <!-- ===== SECTION RÉSULTATS ===== -->
+<section id="resultatsSection">
+  <h2 class="section-title"><i class="fas fa-search"></i> Consulter vos résultats</h2>
+  <div style="max-width: 500px; margin: 20px auto; padding: 20px;">
+    
+    <label style="display: block; margin-bottom: 5px; font-weight: 500;">Département</label>
+    <select id="resultDepartment" style="width: 100%; padding: 10px; border: 2px solid var(--primary-light); border-radius: var(--radius); margin-bottom: 15px; font-size: 1rem;">
+      <option value="">-- Choisir un département --</option>
+      <option value="PPV_L2">PPV L2</option>
+      <option value="PPV_L3">PPV L3</option>
+    </select>
+    
+    <label style="display: block; margin-bottom: 5px; font-weight: 500;">Semestre</label>
+    <select id="semesterSelect" style="width: 100%; padding: 10px; border: 2px solid var(--primary-light); border-radius: var(--radius); margin-bottom: 15px; font-size: 1rem;">
+      <option value="">-- Choisir un semestre --</option>
+      <option value="S3">S3</option>
+      <option value="S4">S4</option>
+      <option value="S5">S5</option>
+      <option value="S6">S6</option>
+    </select>
+    
+    <div class="search-box" style="margin-bottom: 20px;">
+      <input type="text" id="studentIdInput" placeholder="Entrez votre numéro d'étudiant...">
+      <button onclick="searchStudentResult()"><i class="fas fa-search"></i> Rechercher</button>
+    </div>
+    
+    <div id="studentResultContainer" style="background: white; border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); display: none;"></div>
+    <div id="noResultMessage" style="text-align: center; color: var(--text-light); padding: 20px; display: none;">
+      <i class="fas fa-user-graduate" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
+      <p>Aucun résultat trouvé pour ce numéro</p>
+    </div>
+
+    <!-- قسم رفع النتائج للأدمن -->
+    <div style="margin-top: 40px; border-top: 1px dashed #ccc; padding-top: 20px;">
+      <button class="admin-btn" onclick="openResultsUpload()" style="background: #6c757d;">
+        <i class="fas fa-upload"></i> Importer des résultats (Admin)
+      </button>
+    </div>
+  </div>
+</section>
 </div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getDatabase, ref, push, remove, get, child } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+  import { getDatabase, ref, push, remove, get, child, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyDnrW6WnmbEFpbWzlW9IGglxAafajt2Kyo",
@@ -797,7 +838,7 @@
       </div>
       <div class="file-actions">
         <button class="file-action" title="Ouvrir" onclick="event.stopPropagation(); openFile('${f.url}','${f.name}')"><i class="fas fa-external-link-alt"></i></button>
-        <button class="file-action" title="Telecharger" oneclick="event.stopPropagation(); downloadFile('${f.url}','${f.name}')"><i class="fas fa-download"></i></button>
+        <button class="file-action" title="Telecharger" onclick="event.stopPropagation(); downloadFile('${f.url}','${f.name}')"><i class="fas fa-download"></i></button>
         <button class="file-action delete" title="Supprimer" onclick="event.stopPropagation(); deleteFileWithPassword('${f.key}')"><i class="fas fa-trash"></i></button>
       </div>`;
       //الضغط على الملف يفتح
@@ -911,7 +952,7 @@
       </div>
       <div class="file-actions">
         <button class="file-action" onclick="event.stopPropagation(); openFile('${f.url||''}','${f.name}')"><i class="fas fa-external-link-alt"></i></button>
-        <button class="file-action" title="Telecharger" oneclick="event.stopPropagation(); downloadFile('${f.url}','${f.name}')"><i class="fas fa-download"></i></button>
+        <button class="file-action" title="Telecharger" onclick="event.stopPropagation(); downloadFile('${f.url}','${f.name}')"><i class="fas fa-download"></i></button>
         <button class="file-action delete" title="Supprimer" onclick="event.stopPropagation(); deleteFileWithPassword('${f.key}')"><i class="fas fa-trash"></i></button>
         </div>`;
     div.onclick = () => openFile(f.url || '', f.name);
@@ -1022,6 +1063,161 @@
   document.getElementById('adminOverlay').addEventListener('click', function(e) {
     if (e.target === this) closeAdmin();
   });
+  // ===== SYSTEME DE RESULTATS =====
+
+// كلمة مرور النتائج (يمكن تغييرها لاحقاً - حالياً نفس كلمة المرور العامة)
+const RESULTS_PASSWORD_HASH = "7688541f015722ea762564c84fcb5032567bdc32cb165d0e4d73436b7e6abd43";
+
+// دالة التحقق من كلمة مرور النتائج
+async function verifyResultsPassword(password) {
+  const inputHash = await hashPassword(password);
+  return inputHash === RESULTS_PASSWORD_HASH;
+}
+
+// فتح نافذة رفع النتائج
+window.openResultsUpload = async () => {
+  const password = prompt("🔒 Mot de passe administrateur des résultats:");
+  if (!await verifyResultsPassword(password)) {
+    alert("❌ Mot de passe incorrect !");
+    return;
+  }
+  
+  const department = prompt("Entrez le département (ex: PPV_L2, PPV_L3):");
+  if (!department) return;
+  
+  const semester = prompt("Entrez le semestre (ex: S3, S4, S5, S6):");
+  if (!semester) return;
+  
+  const subject = prompt("Entrez le nom de la matière:");
+  if (!subject) return;
+  
+  const coefficient = parseFloat(prompt("Entrez le coefficient (ex: 1, 2, 3):", "1"));
+  if (isNaN(coefficient)) return;
+  
+  const fileInput = document.createElement('input');
+  fileInput.type = 'file';
+  fileInput.accept = '.xlsx, .xls, .csv';
+  fileInput.onchange = (e) => handleResultsFileUpload(e, department, semester, subject, coefficient);
+  fileInput.click();
+};
+
+// معالجة ملف Excel المرفوع
+async function handleResultsFileUpload(e, department, semester, subject, coefficient) {
+  const file = e.target.files[0];
+  if (!file) return;
+  
+  const reader = new FileReader();
+  reader.onload = async function(event) {
+    const data = new Uint8Array(event.target.result);
+    const workbook = XLSX.read(data, { type: 'array' });
+    const sheetName = workbook.SheetNames[0];
+    const worksheet = workbook.Sheets[sheetName];
+    const jsonData = XLSX.utils.sheet_to_json(worksheet);
+    
+    const results = {};
+    jsonData.forEach(row => {
+      let studentId = row.NUMERO || row.Numero || row.numero || row.ID || row.id || row.Matricule || row.matricule;
+      if (studentId) studentId = String(studentId).trim();
+      
+      const studentName = row['NOM & PRENOM'] || row['Nom et Prenom'] || row.Nom || row.nom || '';
+      
+      let grade = row['NOTE /20'] || row['Note /20'] || row.Note || row.note || row.Grade || row.grade || row.Moyenne || row.moyenne;
+      if (grade) grade = parseFloat(String(grade).replace(',', '.'));
+      
+      if (studentId && !isNaN(grade) && grade >= 0 && grade <= 20) {
+        results[studentId] = { grade, coefficient, name: studentName };
+      }
+    });
+    
+    const path = `results/${department}/${semester}/${subject}`;
+    try {
+      await set(ref(db, path), results);
+      alert(`✅ ${Object.keys(results).length} notes importées pour ${subject} (${department} - ${semester})`);
+    } catch (error) {
+      alert('❌ Erreur lors de l\'importation');
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+// البحث عن نتيجة طالب
+window.searchStudentResult = async () => {
+  const department = document.getElementById('resultDepartment').value;
+  const semester = document.getElementById('semesterSelect').value;
+  const studentId = document.getElementById('studentIdInput').value.trim();
+  const container = document.getElementById('studentResultContainer');
+  const noResult = document.getElementById('noResultMessage');
+  
+  if (!department || !semester || !studentId) {
+    alert('Veuillez remplir tous les champs');
+    return;
+  }
+  
+  container.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>Chargement...</p></div>';
+  container.style.display = 'block';
+  noResult.style.display = 'none';
+  
+  const snapshot = await get(child(ref(db), `results/${department}/${semester}`));
+  if (!snapshot.exists()) {
+    container.style.display = 'none';
+    noResult.style.display = 'block';
+    return;
+  }
+  
+  const subjects = snapshot.val();
+  let totalPoints = 0, totalCoef = 0, studentName = '', hasAnyGrade = false;
+  
+  for (let subjectName in subjects) {
+    if (subjects[subjectName][studentId] && !studentName) {
+      studentName = subjects[subjectName][studentId].name;
+    }
+  }
+  
+  let html = `
+    <div style="text-align:center; margin-bottom:20px;">
+      <i class="fas fa-user-graduate" style="font-size:2.5rem; color:var(--primary);"></i>
+      <h3 style="margin:10px 0;">${studentName || 'Étudiant'}</h3>
+      <p style="color:var(--text-light);">N° ${studentId} | ${department} | ${semester}</p>
+    </div>
+    <table style="width:100%; border-collapse:collapse;">
+      <thead><tr style="background:var(--primary-light);"><th style="padding:10px;">Matière</th><th style="padding:10px;">Note</th><th style="padding:10px;">Coef</th><th style="padding:10px;">Points</th></tr></thead>
+      <tbody>
+  `;
+  
+  for (let subjectName in subjects) {
+    const data = subjects[subjectName][studentId];
+    if (data) {
+      hasAnyGrade = true;
+      const points = data.grade * data.coefficient;
+      totalPoints += points;
+      totalCoef += data.coefficient;
+      html += `<tr style="border-bottom:1px solid #eee;"><td style="padding:10px;">${subjectName}</td><td style="padding:10px; text-align:center; color:${data.grade>=10?'#2d6a4f':'#e63946'}; font-weight:bold;">${data.grade}/20</td><td style="padding:10px; text-align:center;">${data.coefficient}</td><td style="padding:10px; text-align:center;">${points.toFixed(2)}</td></tr>`;
+    }
+  }
+  
+  if (!hasAnyGrade) {
+    container.style.display = 'none';
+    noResult.style.display = 'block';
+    return;
+  }
+  
+  const moyenne = totalPoints / totalCoef;
+  const decision = moyenne >= 10 ? 'Admis(e)' : 'Redouble';
+  
+  html += `
+        <tr style="background:var(--primary-light); font-weight:bold;"><td colspan="3" style="padding:10px; text-align:right;">Moyenne Générale</td><td style="padding:10px; text-align:center;">${moyenne.toFixed(2)}/20</td></tr>
+        <tr style="background:${decision==='Admis(e)'?'#d4edda':'#f8d7da'};"><td colspan="4" style="padding:15px; text-align:center; font-weight:bold; color:${decision==='Admis(e)'?'#155724':'#721c24'};">${decision}</td></tr>
+      </tbody></table>
+  `;
+  
+  container.innerHTML = html;
+};
+
+// إضافة مستمع للضغط على Enter في حقل البحث
+document.addEventListener('DOMContentLoaded', function() {
+  const input = document.getElementById('studentIdInput');
+  if (input) input.addEventListener('keyup', e => { if (e.key === 'Enter') searchStudentResult(); });
+});
 </script>
 </body>
 </html>
