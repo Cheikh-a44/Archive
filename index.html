@@ -550,7 +550,13 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
-  const ADMIN_PASSWORD = "iset2024";//mot de pass
+  const ADMIN_PASSWORD_HASH = "7688541f015722ea762564c84fcb5032567bdc32cb165d0e4d73436b7e6abd43";//mp hash
+  async function hashPassword(password) {
+  const msgBuffer = new TextEncoder().encode(password);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
 
   // ===== STATE =====
   let currentSubject = '';
@@ -791,26 +797,54 @@
       </div>
       <div class="file-actions">
         <button class="file-action" title="Ouvrir" onclick="event.stopPropagation(); openFile('${f.url}','${f.name}')"><i class="fas fa-external-link-alt"></i></button>
+        <button class="file-action" title="Telecharger" oneclick="event.stopPropagation(); downloadFile('${f.url}','${f.name}')"><i class="fas fa-download"></i></button>
         <button class="file-action delete" title="Supprimer" onclick="event.stopPropagation(); deleteFileWithPassword('${f.key}')"><i class="fas fa-trash"></i></button>
       </div>`;
+      //الضغط على الملف يفتح
     div.onclick = () => openFile(f.url, f.name);
     return div;
   }
 
-  window.deleteFileWithPassword = async (key) => {
-    const password = prompt("🔒 Entrez le mot de passe admin pour supprimer ce fichier:");
-    if (password !== ADMIN_PASSWORD) {
-      alert("❌ Mot de passe incorrect ! Suppression annulée.");
-      return;
-    }
-    if (!confirm('⚠️ Êtes-vous sûr de vouloir supprimer ce fichier ?')) return;
-    await deleteFileDB(currentSubject, currentFileType, currentGEMAspect, key);
-    showFiles(currentFileType);
-  };
+ window.deleteFileWithPassword = async (key) => {
+  const password = prompt("🔒 Entrez le mot de passe admin pour supprimer ce fichier:");
+  const inputHash = await hashPassword(password);
+  
+  if (inputHash !== ADMIN_PASSWORD_HASH) {
+    alert("❌ Mot de passe incorrect ! Suppression annulée.");
+    return;
+  }
+  if (!confirm('⚠️ Êtes-vous sûr de vouloir supprimer ce fichier ?')) return;
+  await deleteFileDB(currentSubject, currentFileType, currentGEMAspect, key);
+  showFiles(currentFileType);
+};
 
   window.openFile = (url, name) => {
     if (url && url.trim()) window.open(url, '_blank');
     else alert('Aucun lien disponible pour: ' + name);
+  };
+  // دالة التنزيل المباشر
+  window.downloadFile = (url, name) => {
+    if (!url || !url.trim()) {
+    alert('Aucun lien disponible pour: ' + name);
+    return;
+  }
+
+    let downloadUrl = url;
+
+  // تحويل رابط Google Drive إلى رابط تحميل مباشر
+    const driveMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)\//);
+    if (driveMatch && driveMatch[1]) {
+    downloadUrl = `https://drive.google.com/uc?export=download&id=${driveMatch[1]}`;
+    }
+
+    // إنشاء رابط وهمي للتنزيل
+    const link = document.createElement('a');
+    link.href = downloadUrl;
+    link.download = name;
+    link.target = '_blank';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   // ===== SEARCH =====
@@ -877,7 +911,9 @@
       </div>
       <div class="file-actions">
         <button class="file-action" onclick="event.stopPropagation(); openFile('${f.url||''}','${f.name}')"><i class="fas fa-external-link-alt"></i></button>
-      </div>`;
+        <button class="file-action" title="Telecharger" oneclick="event.stopPropagation(); downloadFile('${f.url}','${f.name}')"><i class="fas fa-download"></i></button>
+        <button class="file-action delete" title="Supprimer" onclick="event.stopPropagation(); deleteFileWithPassword('${f.key}')"><i class="fas fa-trash"></i></button>
+        </div>`;
     div.onclick = () => openFile(f.url || '', f.name);
     return div;
   }
@@ -893,21 +929,24 @@
 
   window.closeAdmin = () => document.getElementById('adminOverlay').classList.remove('active');
 
-  window.checkPassword = () => {
-    if (document.getElementById('passwordInput').value === ADMIN_PASSWORD) {
-      document.getElementById('passwordScreen').style.display = 'none';
-      document.getElementById('adminForm').style.display = 'block';
-      document.getElementById('adminSuccess').style.display = 'none';
-      document.getElementById('adminFormError').style.display = 'none';
-      document.getElementById('adminFileName').value = '';
-      document.getElementById('adminFileURL').value = '';
-      document.getElementById('adminSemester').value = '';
-      document.getElementById('adminSubject').innerHTML = "<option value=''>-- Choisir le semestre d'abord --</option>";
-      document.getElementById('gemSubRow').style.display = 'none';
-    } else {
-      document.getElementById('passwordError').style.display = 'block';
-    }
-  };
+  window.checkPassword = async () => {
+  const inputPassword = document.getElementById('passwordInput').value;
+  const inputHash = await hashPassword(inputPassword);
+  
+  if (inputHash === ADMIN_PASSWORD_HASH) {
+    document.getElementById('passwordScreen').style.display = 'none';
+    document.getElementById('adminForm').style.display = 'block';
+    document.getElementById('adminSuccess').style.display = 'none';
+    document.getElementById('adminFormError').style.display = 'none';
+    document.getElementById('adminFileName').value = '';
+    document.getElementById('adminFileURL').value = '';
+    document.getElementById('adminSemester').value = '';
+    document.getElementById('adminSubject').innerHTML = "<option value=''>-- Choisir le semestre d'abord --</option>";
+    document.getElementById('gemSubRow').style.display = 'none';
+  } else {
+    document.getElementById('passwordError').style.display = 'block';
+  }
+};
 
   window.updateAdminSubjects = () => {
     const sem = document.getElementById('adminSemester').value;
