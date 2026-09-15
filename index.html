@@ -162,6 +162,8 @@
               <option value="SciencePlantes">Science des Plantes</option>
             </optgroup>
             <optgroup label="S3 - GAB">
+              <option value="Francais3">Français 3</option>
+              <option value="EconomieGestion">Économie et Gestion</option>
               <option value="ResistanceMateriaux">Résistance de matériaux</option>
               <option value="EnergieRenouvelable">Énergie renouvelable</option>
               <option value="Environnement">Environnement</option>
@@ -169,6 +171,17 @@
               <option value="DAO">DAO</option>
               <option value="MecaniqueFluides">Mécanique de fluides</option>
               <option value="ChimieEau">Chimie de l'eau</option>
+            </optgroup>
+            <optgroup label="S3 - GEM">
+              <option value="Automatique">Automatique</option>
+              <option value="Automatisme">Automatisme</option>
+              <option value="ProcedeFabrication">Procédé de fabrication mécanique</option>
+              <option value="Electronique">Électronique</option>
+              <option value="Francais3">Français 3</option>
+              <option value="EconomieGestion">Économie et Gestion</option>
+              <option value="DessinIndustriel">Dessin industriel</option>
+              <option value="ResistanceMateriaux">Résistance de matériaux</option>
+              <option value="SchemasCablage">Schémas et câblage électrique</option>
             </optgroup>
             <optgroup label="S4 - PPV">
               <option value="Vulgarisation">Vulgarisation</option>
@@ -181,10 +194,19 @@
               <option value="Malherbologie">Malherbologie</option>
               <option value="BesoinEau">Besoin en eau</option>
             </optgroup>
+            <optgroup label="S4 - GEM">
+              <option value="SciencesMateriaux">Sciences de matériaux</option>
+              <option value="TechnologieConstruction">Technologie de construction mécanique</option>
+              <option value="Metrologie">Métrologie capteur instrumentation</option>
+              <option value="Refrigeration">Réfrigération climatisation ventilation</option>
+              <option value="Vulgarisation">Vulgarisation</option>
+              <option value="Electrotechnique">Électrotechnique</option>
+              <option value="MoteurCombustion">Moteur à combustion interne</option>
+            </optgroup>
           </select>
         </div>
         <div class="form-group" id="gemAspectGroup">
-          <label>Aspect GEM</label>
+          <label>Aspect GEM (S2 seulement)</label>
           <select id="gemAspect">
             <option value="Dessin">Dessin</option>
             <option value="Electricite">Électricité</option>
@@ -297,7 +319,19 @@
       Topographie: 'Topographie',
       DAO: 'DAO',
       MecaniqueFluides: 'Mécanique de fluides',
-      ChimieEau: "Chimie de l'eau"
+      ChimieEau: "Chimie de l'eau",
+      Automatique: 'Automatique',
+      Automatisme: 'Automatisme',
+      ProcedeFabrication: 'Procédé de fabrication mécanique',
+      Electronique: 'Électronique',
+      DessinIndustriel: 'Dessin industriel',
+      SchemasCablage: 'Schémas et câblage électrique',
+      SciencesMateriaux: 'Sciences de matériaux',
+      TechnologieConstruction: 'Technologie de construction mécanique',
+      Metrologie: 'Métrologie capteur instrumentation',
+      Refrigeration: 'Réfrigération climatisation ventilation',
+      Electrotechnique: 'Électrotechnique',
+      MoteurCombustion: 'Moteur à combustion interne'
     };
 
     document.getElementById('subject').addEventListener('change', function() {
