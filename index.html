@@ -145,7 +145,6 @@
 
     <div id="status" class="status"></div>
 
-    <!-- إضافة ملف -->
     <div class="card">
       <h2>Ajouter un fichier</h2>
       <div class="form-row">
@@ -236,7 +235,6 @@
       <button onclick="addFile()">Ajouter le fichier</button>
     </div>
 
-    <!-- قائمة الملفات -->
     <div class="card">
       <h2>Fichiers existants</h2>
       <div class="form-row">
@@ -263,11 +261,9 @@
     </div>
   </div>
 
-  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-database-compat.js"></script>
   <script>
-    // ===== Firebase Config =====
     const firebaseConfig = {
       apiKey: "AIzaSyDnrW6WnmbEFpbWzlW9IGglxAafajt2Kyo",
       authDomain: "iset-b9974.firebaseapp.com",
@@ -281,7 +277,6 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // ===== Helpers =====
     const subjectSelect = document.getElementById('subject');
     const gemGroup = document.getElementById('gemAspectGroup');
 
@@ -303,7 +298,6 @@
       return `files/\( {subject}/ \){type}`;
     }
 
-    // ===== Add File =====
     async function addFile() {
       const subject = document.getElementById('subject').value;
       const type = document.getElementById('fileType').value;
@@ -328,7 +322,6 @@
       }
     }
 
-    // ===== Load & Delete Files =====
     async function loadFiles() {
       const list = document.getElementById('filesList');
       list.innerHTML = '<div class="empty">Chargement...</div>';
@@ -341,7 +334,6 @@
         const data = snapshot.val() || {};
         let files = [];
 
-        // Flatten structure
         for (const [subjectKey, subjectData] of Object.entries(data)) {
           if (subjectKey === 'GEM') {
             for (const [aspect, aspectData] of Object.entries(subjectData || {})) {
@@ -368,11 +360,9 @@
           }
         }
 
-        // Filter
         if (filterSubject) files = files.filter(f => f.subject === filterSubject);
         if (filterType) files = files.filter(f => f.type === filterType);
 
-        // Fill filter subjects
         const filterSel = document.getElementById('filterSubject');
         if (filterSel.options.length <= 1) {
           const subjects = [...new Set(files.map(f => f.subject))].sort();
@@ -417,7 +407,6 @@
       }
     }
 
-    // Init
     loadFiles();
   </script>
 </body>
