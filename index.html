@@ -12,7 +12,7 @@
       color: #1e293b;
       padding: 20px;
     }
-    .container { max-width: 900px; margin: 0 auto; }
+    .container { max-width: 950px; margin: 0 auto; }
     header {
       background: linear-gradient(135deg, #003F6B, #0077B6);
       color: white;
@@ -76,7 +76,7 @@
       font-size: 12px;
     }
     button.danger:hover { background: #b91c1c; }
-    .files-list { max-height: 400px; overflow-y: auto; }
+    .files-list { max-height: 420px; overflow-y: auto; }
     .file-item {
       display: flex;
       align-items: center;
@@ -141,16 +141,18 @@
               <option value="Informatique">Informatique</option>
               <option value="Statistique">Statistique</option>
             </optgroup>
+
             <optgroup label="S2">
               <option value="Francais2">Français 2</option>
               <option value="Anglais2">Anglais 2</option>
-              <option value="GEM">GEM</option>
+              <option value="GEM">GEM (S2 - Aspects)</option>
               <option value="GAB">GAB</option>
               <option value="PPV">PPV</option>
               <option value="TIC">TIC</option>
               <option value="STA">STA</option>
               <option value="PSA">PSA</option>
             </optgroup>
+
             <optgroup label="S3 - PPV">
               <option value="Francais3">Français 3</option>
               <option value="EconomieGestion">Économie et Gestion</option>
@@ -161,6 +163,7 @@
               <option value="ScienceSols">Science des Sols</option>
               <option value="SciencePlantes">Science des Plantes</option>
             </optgroup>
+
             <optgroup label="S3 - GAB">
               <option value="Francais3">Français 3</option>
               <option value="EconomieGestion">Économie et Gestion</option>
@@ -172,6 +175,7 @@
               <option value="MecaniqueFluides">Mécanique de fluides</option>
               <option value="ChimieEau">Chimie de l'eau</option>
             </optgroup>
+
             <optgroup label="S3 - GEM">
               <option value="Automatique">Automatique</option>
               <option value="Automatisme">Automatisme</option>
@@ -180,9 +184,10 @@
               <option value="Francais3">Français 3</option>
               <option value="EconomieGestion">Économie et Gestion</option>
               <option value="DessinIndustriel">Dessin industriel</option>
-              <option value="ResistanceMateriauxGEM">Résistance de matériaux</option>
+              <option value="ResistanceMateriauxGEM">Résistance de matériaux (GEM)</option>
               <option value="SchemasCablage">Schémas et câblage électrique</option>
             </optgroup>
+
             <optgroup label="S4 - PPV">
               <option value="Vulgarisation">Vulgarisation</option>
               <option value="TechniquePropagation">Technique de propagation</option>
@@ -194,6 +199,7 @@
               <option value="Malherbologie">Malherbologie</option>
               <option value="BesoinEau">Besoin en eau</option>
             </optgroup>
+
             <optgroup label="S4 - GEM">
               <option value="SciencesMateriaux">Sciences de matériaux</option>
               <option value="TechnologieConstruction">Technologie de construction mécanique</option>
@@ -205,6 +211,7 @@
             </optgroup>
           </select>
         </div>
+
         <div class="form-group" id="gemAspectGroup">
           <label>Aspect GEM (S2 seulement)</label>
           <select id="gemAspect">
@@ -212,6 +219,7 @@
             <option value="Electricite">Électricité</option>
           </select>
         </div>
+
         <div class="form-group">
           <label>Type</label>
           <select id="fileType">
@@ -222,6 +230,7 @@
           </select>
         </div>
       </div>
+
       <div class="form-row">
         <div class="form-group">
           <label>Nom du fichier</label>
@@ -232,6 +241,7 @@
           <input type="text" id="fileUrl" placeholder="https://drive.google.com/file/d/...">
         </div>
       </div>
+
       <button onclick="addFile()">Ajouter le fichier</button>
     </div>
 
@@ -325,7 +335,7 @@
       ProcedeFabrication: 'Procédé de fabrication mécanique',
       Electronique: 'Électronique',
       DessinIndustriel: 'Dessin industriel',
-      ResistanceMateriauxGEM: 'Résistance de matériaux',
+      ResistanceMateriauxGEM: 'Résistance de matériaux (GEM)',
       SchemasCablage: 'Schémas et câblage électrique',
       SciencesMateriaux: 'Sciences de matériaux',
       TechnologieConstruction: 'Technologie de construction mécanique',
@@ -335,7 +345,7 @@
       MoteurCombustion: 'Moteur à combustion interne'
     };
 
-    document.getElementById('subject').addEventListener('change', function() {
+    document.getElementById('subject').addEventListener('change', function () {
       document.getElementById('gemAspectGroup').style.display =
         this.value === 'GEM' ? 'block' : 'none';
     });
@@ -344,7 +354,7 @@
       var el = document.getElementById('status');
       el.textContent = msg;
       el.className = 'status ' + type;
-      setTimeout(function() { el.className = 'status'; }, 4000);
+      setTimeout(function () { el.className = 'status'; }, 4000);
     }
 
     function getPath(subject, type, gemAspect) {
@@ -430,20 +440,20 @@
         }
 
         if (filterSubject) {
-          files = files.filter(function(f) { return f.subject === filterSubject; });
+          files = files.filter(function (f) { return f.subject === filterSubject; });
         }
         if (filterType) {
-          files = files.filter(function(f) { return f.type === filterType; });
+          files = files.filter(function (f) { return f.type === filterType; });
         }
 
         var filterSel = document.getElementById('filterSubject');
         if (filterSel.options.length <= 1) {
           var subjects = [];
-          files.forEach(function(f) {
+          files.forEach(function (f) {
             if (subjects.indexOf(f.subject) === -1) subjects.push(f.subject);
           });
           subjects.sort();
-          subjects.forEach(function(s) {
+          subjects.forEach(function (s) {
             var opt = document.createElement('option');
             opt.value = s;
             opt.textContent = subjectNames[s] || s;
@@ -457,7 +467,7 @@
         }
 
         var html = '';
-        files.forEach(function(f) {
+        files.forEach(function (f) {
           var displaySubject = subjectNames[f.subject] || f.subject;
           html += '<div class="file-item">' +
             '<div class="file-info">' +
