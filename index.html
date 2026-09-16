@@ -201,13 +201,34 @@
             </optgroup>
 
             <optgroup label="S4 - GEM">
+              <option value="Vulgarisation">Vulgarisation</option>
               <option value="SciencesMateriaux">Sciences de matériaux</option>
               <option value="TechnologieConstruction">Technologie de construction mécanique</option>
               <option value="Metrologie">Métrologie capteur instrumentation</option>
               <option value="Refrigeration">Réfrigération climatisation ventilation</option>
-              <option value="Vulgarisation">Vulgarisation</option>
               <option value="Electrotechnique">Électrotechnique</option>
               <option value="MoteurCombustion">Moteur à combustion interne</option>
+            </optgroup>
+
+            <optgroup label="S5 - PPV">
+              <option value="DroitSanteSecurite">Droit Santé et sécurité au travail</option>
+              <option value="TechniqueGestionEntrepreneuriat">Technique de gestion et entreprenariat</option>
+              <option value="SystemeProduction">Système de Production</option>
+              <option value="Arboriculture">Arboriculture</option>
+              <option value="ConduiteCalibrage">Conduite et Calibrage</option>
+              <option value="Phytopathologie1">Phytopathologie 1</option>
+              <option value="GestionConservationSolEau">Gestion et conservation du sol et de l'eau</option>
+              <option value="EnnemisCultures">Ennemis des cultures et lutte intégrée</option>
+              <option value="PaysageCulturesOrnementales">Intro au paysage et cultures ornementales</option>
+            </optgroup>
+
+            <optgroup label="S6 - PPV">
+              <option value="RedactionRapports">Rédaction et édition des rapports</option>
+              <option value="AmeliorationGenetique">Amélioration génétique des plantes et biotechnologie</option>
+              <option value="Agroenvironnement">Agroenvironnement et agriculture de précision</option>
+              <option value="Phytopathologie2">Phytopathologie 2</option>
+              <option value="AdaptationClimat">Adaptation au changement climatique et agriculture durable</option>
+              <option value="AmenagementPaysager">Aménagement paysager et poste récolte</option>
             </optgroup>
           </select>
         </div>
@@ -342,7 +363,24 @@
       Metrologie: 'Métrologie capteur instrumentation',
       Refrigeration: 'Réfrigération climatisation ventilation',
       Electrotechnique: 'Électrotechnique',
-      MoteurCombustion: 'Moteur à combustion interne'
+      MoteurCombustion: 'Moteur à combustion interne',
+      // S5
+      DroitSanteSecurite: 'Droit Santé et sécurité au travail',
+      TechniqueGestionEntrepreneuriat: 'Technique de gestion et entreprenariat',
+      SystemeProduction: 'Système de Production',
+      Arboriculture: 'Arboriculture',
+      ConduiteCalibrage: 'Conduite et Calibrage',
+      Phytopathologie1: 'Phytopathologie 1',
+      GestionConservationSolEau: "Gestion et conservation du sol et de l'eau",
+      EnnemisCultures: 'Ennemis des cultures et lutte intégrée',
+      PaysageCulturesOrnementales: 'Intro au paysage et cultures ornementales',
+      // S6
+      RedactionRapports: 'Rédaction et édition des rapports',
+      AmeliorationGenetique: 'Amélioration génétique des plantes et biotechnologie',
+      Agroenvironnement: 'Agroenvironnement et agriculture de précision',
+      Phytopathologie2: 'Phytopathologie 2',
+      AdaptationClimat: 'Adaptation au changement climatique et agriculture durable',
+      AmenagementPaysager: 'Aménagement paysager et poste récolte'
     };
 
     document.getElementById('subject').addEventListener('change', function () {
@@ -439,7 +477,7 @@
           }
         }
 
-        // تعبئة الفلتر بكل المواد (حتى لو فارغة)
+        // تعبئة الفلتر بكل المواد
         var filterSel = document.getElementById('filterSubject');
         if (filterSel.options.length <= 1) {
           var allSubjects = Object.keys(subjectNames).sort();
