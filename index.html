@@ -439,26 +439,23 @@
           }
         }
 
-        if (filterSubject) {
-          files = files.filter(function (f) { return f.subject === filterSubject; });
-        }
-        if (filterType) {
-          files = files.filter(function (f) { return f.type === filterType; });
-        }
-
+        // تعبئة الفلتر بكل المواد (حتى لو فارغة)
         var filterSel = document.getElementById('filterSubject');
         if (filterSel.options.length <= 1) {
-          var subjects = [];
-          files.forEach(function (f) {
-            if (subjects.indexOf(f.subject) === -1) subjects.push(f.subject);
-          });
-          subjects.sort();
-          subjects.forEach(function (s) {
+          var allSubjects = Object.keys(subjectNames).sort();
+          allSubjects.forEach(function (s) {
             var opt = document.createElement('option');
             opt.value = s;
             opt.textContent = subjectNames[s] || s;
             filterSel.appendChild(opt);
           });
+        }
+
+        if (filterSubject) {
+          files = files.filter(function (f) { return f.subject === filterSubject; });
+        }
+        if (filterType) {
+          files = files.filter(function (f) { return f.type === filterType; });
         }
 
         if (files.length === 0) {
