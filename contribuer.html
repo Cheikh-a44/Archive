@@ -224,14 +224,20 @@
           </select>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" id="subjectGroup" style="display: none">
           <label>Matière *</label>
-          <input
-            type="text"
-            id="subject"
-            placeholder="Ex: Analyse, Algèbre..."
-            required
-          />
+          <select id="subject" required>
+            <option value="">— Choisir —</option>
+          </select>
+        </div>
+
+        <div class="form-group" id="gemAspectGroup" style="display: none">
+          <label>Aspect GEM *</label>
+          <select id="gemAspect">
+            <option value="">— Choisir —</option>
+            <option value="Dessin">Dessin</option>
+            <option value="Electricite">Électricité</option>
+          </select>
         </div>
 
         <div class="form-group">
@@ -306,19 +312,206 @@
         appId: "1:1054170284751:web:8f02232478430d5ae2adba",
       };
 
-      //  الرابط من نشر Apps Script
+      // ⚠️ الرابط من Apps Script
       const APPS_SCRIPT_URL =
         "https://script.google.com/macros/s/AKfycbyXvPZNlWemdTHFHaBd29UTKJcuVKtMP3kuQv1QIH3__ZMP8Ydwqf0vwj65NlfFtMAZ/exec";
-
-      //  نفس المفتاح الموجود في Apps Script
       const SECRET_KEY = "ESAV_2026_cheikha44_37635859_ch";
 
+      // =================================================================
+      //  بيانات المواد (منسوخة من main.js)
+      // =================================================================
+      const SUBJECT_NAMES = {
+        Math: "Mathématiques",
+        Physique: "Physique",
+        Chimie: "Chimie",
+        Anglais: "Anglais",
+        Francais: "Français",
+        Biologie: "Biologie",
+        Microbiologie: "Microbiologie",
+        Genetique: "Génétique",
+        Informatique: "Informatique",
+        Statistique: "Statistique",
+        Francais2: "Français 2",
+        Anglais2: "Anglais 2",
+        GEM: "GEM",
+        GAB: "GAB",
+        PPV: "PPV",
+        TIC: "TIC",
+        STA: "STA",
+        PSA: "PSA",
+        Francais3: "Français 3",
+        EconomieGestion: "Économie et Gestion",
+        Agronomie: "Agronomie",
+        Horticulture: "Horticulture",
+        Pesticides: "Pesticides",
+        Entomologie: "Entomologie",
+        ScienceSols: "Science des Sols",
+        SciencePlantes: "Science des Plantes",
+        ResistanceMateriaux: "Résistance de matériaux",
+        EnergieRenouvelable: "Énergie renouvelable",
+        Environnement: "Environnement",
+        Topographie: "Topographie",
+        DAO: "DAO",
+        MecaniqueFluides: "Mécanique de fluides",
+        ChimieEau: "Chimie de l'eau",
+        Automatique: "Automatique",
+        Automatisme: "Automatisme",
+        ProcedeFabrication: "Procédé de fabrication mécanique",
+        Electronique: "Électronique",
+        DessinIndustriel: "Dessin industriel",
+        ResistanceMateriauxGEM: "Résistance de matériaux",
+        SchemasCablage: "Schémas et câblage électrique",
+        Vulgarisation: "Vulgarisation",
+        TechniquePropagation: "Technique de propagation",
+        TechniqueIrrigation: "Technique d'irrigation",
+        Ecophysiologie: "Ecophysiologie végétale",
+        BiochimieStructurale: "Biochimie structurale",
+        FertiliteSol: "Fertilité du sol",
+        MethodesDiagnostic: "Méthodes de diagnostic",
+        Malherbologie: "Malherbologie",
+        BesoinEau: "Besoin en eau",
+        SciencesMateriaux: "Sciences de matériaux",
+        TechnologieConstruction: "Technologie de construction mécanique",
+        Metrologie: "Métrologie capteur instrumentation",
+        Refrigeration: "Réfrigération climatisation ventilation",
+        Electrotechnique: "Électrotechnique",
+        MoteurCombustion: "Moteur à combustion interne",
+        DroitSanteSecurite: "Droit Santé et sécurité au travail",
+        TechniqueGestionEntrepreneuriat:
+          "Technique de gestion et entreprenariat",
+        SystemeProduction: "Système de Production",
+        Arboriculture: "Arboriculture",
+        ConduiteCalibrage: "Conduite et Calibrage",
+        Phytopathologie1: "Phytopathologie 1",
+        GestionConservationSolEau: "Gestion et conservation du sol et de l'eau",
+        EnnemisCultures: "Ennemis des cultures et lutte intégrée",
+        PaysageCulturesOrnementales:
+          "Intro au paysage et cultures ornementales",
+        RedactionRapports: "Rédaction et édition des rapports",
+        AmeliorationGenetique:
+          "Amélioration génétique des plantes et biotechnologie",
+        Agroenvironnement: "Agroenvironnement et agriculture de précision",
+        Phytopathologie2: "Phytopathologie 2",
+        AdaptationClimat:
+          "Adaptation au changement climatique et agriculture durable",
+        AmenagementPaysager: "Aménagement paysager et poste récolte",
+      };
+
+      const SHARED = {
+        S3: ["Francais3", "EconomieGestion"],
+        S4: ["Vulgarisation"],
+        S5: ["DroitSanteSecurite", "TechniqueGestionEntrepreneuriat"],
+        S6: ["RedactionRapports"],
+      };
+
+      const DEPT_SUBJECTS = {
+        "S3-PPV": [
+          "Agronomie",
+          "Horticulture",
+          "Pesticides",
+          "Entomologie",
+          "ScienceSols",
+          "SciencePlantes",
+        ],
+        "S3-GAB": [
+          "ResistanceMateriaux",
+          "EnergieRenouvelable",
+          "Environnement",
+          "Topographie",
+          "DAO",
+          "MecaniqueFluides",
+          "ChimieEau",
+        ],
+        "S3-GEM": [
+          "Automatique",
+          "Automatisme",
+          "ProcedeFabrication",
+          "Electronique",
+          "DessinIndustriel",
+          "ResistanceMateriauxGEM",
+          "SchemasCablage",
+        ],
+        "S3-PSA": [],
+        "S3-STA": [],
+        "S4-PPV": [
+          "TechniquePropagation",
+          "TechniqueIrrigation",
+          "Ecophysiologie",
+          "BiochimieStructurale",
+          "FertiliteSol",
+          "MethodesDiagnostic",
+          "Malherbologie",
+          "BesoinEau",
+        ],
+        "S4-GAB": ["TechniqueIrrigation"],
+        "S4-GEM": [
+          "SciencesMateriaux",
+          "TechnologieConstruction",
+          "Metrologie",
+          "Refrigeration",
+          "Electrotechnique",
+          "MoteurCombustion",
+        ],
+        "S4-PSA": [],
+        "S4-STA": [],
+        "S5-PPV": [
+          "SystemeProduction",
+          "Arboriculture",
+          "ConduiteCalibrage",
+          "Phytopathologie1",
+          "GestionConservationSolEau",
+          "EnnemisCultures",
+          "PaysageCulturesOrnementales",
+        ],
+        "S5-GAB": [],
+        "S5-GEM": [],
+        "S5-PSA": [],
+        "S5-STA": [],
+        "S6-PPV": [
+          "AmeliorationGenetique",
+          "Agroenvironnement",
+          "Phytopathologie2",
+          "AdaptationClimat",
+          "AmenagementPaysager",
+        ],
+        "S6-GAB": [],
+        "S6-GEM": [],
+        "S6-PSA": [],
+        "S6-STA": [],
+      };
+
+      const FIXED = {
+        S1: [
+          "Math",
+          "Physique",
+          "Chimie",
+          "Anglais",
+          "Francais",
+          "Biologie",
+          "Microbiologie",
+          "Genetique",
+          "Informatique",
+          "Statistique",
+        ],
+        S2: ["Francais2", "Anglais2", "GEM", "GAB", "PPV", "TIC", "STA", "PSA"],
+      };
+
+      // =================================================================
+      //  Firebase init
+      // =================================================================
       const app = initializeApp(firebaseConfig);
       const db = getDatabase(app);
 
+      // =================================================================
+      //  عناصر النموذج
+      // =================================================================
       const levelEl = document.getElementById("level");
       const deptGroup = document.getElementById("deptGroup");
       const deptEl = document.getElementById("dept");
+      const subjectGroup = document.getElementById("subjectGroup");
+      const subjectEl = document.getElementById("subject");
+      const gemAspectGroup = document.getElementById("gemAspectGroup");
+      const gemAspectEl = document.getElementById("gemAspect");
       const dropZone = document.getElementById("dropZone");
       const fileInput = document.getElementById("fileInput");
       const fileInfo = document.getElementById("fileInfo");
@@ -332,19 +525,85 @@
       const progressFill = document.getElementById("progressFill");
       const progressText = document.getElementById("progressText");
 
-      const MAX_SIZE = 50 * 1024 * 1024; // 50 MB
+      const MAX_SIZE = 50 * 1024 * 1024;
       let selectedFile = null;
 
-      // إظهار قسم Département حسب المستوى
+      // =================================================================
+      //  منطق القوائم المنسدلة
+      // =================================================================
+      function getSubjectsForLevel(level, dept) {
+        if (level === "S1") return FIXED.S1 || [];
+        if (level === "S2") return FIXED.S2 || [];
+        const key = level + "-" + dept;
+        return (SHARED[level] || []).concat(DEPT_SUBJECTS[key] || []);
+      }
+
+      function updateSubjects() {
+        const level = levelEl.value;
+        if (!level) {
+          subjectGroup.style.display = "none";
+          gemAspectGroup.style.display = "none";
+          return;
+        }
+
+        let subjects = [];
+        if (level === "S1" || level === "S2") {
+          subjects = FIXED[level] || [];
+        } else {
+          const dept = deptEl.value;
+          if (!dept) {
+            subjectGroup.style.display = "none";
+            gemAspectGroup.style.display = "none";
+            return;
+          }
+          subjects = getSubjectsForLevel(level, dept);
+        }
+
+        // تعبئة القائمة
+        subjectEl.innerHTML = '<option value="">— Choisir —</option>';
+        subjects.forEach(function (sk) {
+          const opt = document.createElement("option");
+          opt.value = sk;
+          opt.textContent = SUBJECT_NAMES[sk] || sk;
+          subjectEl.appendChild(opt);
+        });
+
+        subjectGroup.style.display = "block";
+        subjectEl.required = true;
+        subjectEl.value = "";
+        gemAspectGroup.style.display = "none";
+        gemAspectEl.required = false;
+        gemAspectEl.value = "";
+      }
+
       levelEl.addEventListener("change", () => {
         const v = levelEl.value;
         const needDept = ["S3", "S4", "S5", "S6"].includes(v);
         deptGroup.style.display = needDept ? "block" : "none";
         deptEl.required = needDept;
         if (!needDept) deptEl.value = "";
+        updateSubjects();
       });
 
-      // اختيار الملف
+      deptEl.addEventListener("change", updateSubjects);
+
+      subjectEl.addEventListener("change", () => {
+        const subject = subjectEl.value;
+        // GEM خاص: له أوجه (Dessin/Électricité)
+        if (subject === "GEM" && levelEl.value === "S2") {
+          gemAspectGroup.style.display = "block";
+          gemAspectEl.required = true;
+          gemAspectEl.value = "";
+        } else {
+          gemAspectGroup.style.display = "none";
+          gemAspectEl.required = false;
+          gemAspectEl.value = "";
+        }
+      });
+
+      // =================================================================
+      //  اختيار الملف
+      // =================================================================
       dropZone.addEventListener("click", () => fileInput.click());
 
       ["dragenter", "dragover"].forEach((ev) =>
@@ -402,20 +661,18 @@
         alertBox.className = "alert " + type;
       }
 
-      // تحويل الملف إلى Base64
       function fileToBase64(file) {
         return new Promise((resolve, reject) => {
           const reader = new FileReader();
-          reader.onload = () => {
-            const base64 = reader.result.split(",")[1];
-            resolve(base64);
-          };
+          reader.onload = () => resolve(reader.result.split(",")[1]);
           reader.onerror = reject;
           reader.readAsDataURL(file);
         });
       }
 
-      // إرسال
+      // =================================================================
+      //  الإرسال
+      // =================================================================
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
         if (!selectedFile) {
@@ -434,7 +691,8 @@
         try {
           const level = levelEl.value;
           const dept = deptEl.value;
-          const subject = document.getElementById("subject").value.trim();
+          const subject = subjectEl.value; // المفتاح الخام
+          const gemAspect = gemAspectEl.value; // Dessin / Electricite / ""
           const type = document.getElementById("type").value;
           const author =
             document.getElementById("author").value.trim() || "Anonyme";
@@ -444,7 +702,7 @@
           progressText.textContent = "Envoi vers Google Drive...";
           progressFill.style.width = "50%";
 
-          // 2) رفع الملف إلى Google Drive عبر Apps Script
+          // 2) رفع الملف إلى Google Drive
           const response = await fetch(APPS_SCRIPT_URL, {
             method: "POST",
             body: JSON.stringify({
@@ -456,31 +714,22 @@
           });
 
           const result = await response.json();
-
-          if (!result.success) {
+          if (!result.success)
             throw new Error(result.error || "Erreur lors de l'envoi");
-          }
 
           progressText.textContent = "Enregistrement de la contribution...";
           progressFill.style.width = "80%";
 
-          // 3) بناء معرف المادة
-          let subjectKey = subject.toUpperCase().replace(/\s+/g, "_");
-          if (["S3", "S4", "S5", "S6"].includes(level)) {
-            subjectKey = `${level}-${dept}-${subjectKey}`;
-          } else {
-            subjectKey = `${level}-${subjectKey}`;
-          }
-
-          // 4) حفظ الطلب في Firebase
+          // 3) حفظ الطلب في Firebase (بمفاتيح صحيحة)
           const submissionRef = push(ref(db, "pending_submissions"));
           await set(submissionRef, {
             name: selectedFile.name,
             url: result.downloadUrl,
             previewUrl: result.previewUrl,
             driveFileId: result.fileId,
-            subject: subjectKey,
-            subjectDisplay: subject,
+            subject: subject, // المفتاح الخام
+            subjectDisplay: SUBJECT_NAMES[subject] || subject, // للعرض
+            gemAspect: gemAspect, // فارغ إلا لـ GEM
             level: level,
             dept: dept,
             type: type,
@@ -502,6 +751,8 @@
           dropZone.querySelector(".text").innerHTML =
             "Cliquez pour choisir un fichier<br>ou glissez-déposez ici";
           deptGroup.style.display = "none";
+          subjectGroup.style.display = "none";
+          gemAspectGroup.style.display = "none";
         } catch (err) {
           console.error(err);
           showAlert("❌ Erreur : " + err.message, "error");

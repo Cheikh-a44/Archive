@@ -812,7 +812,7 @@ function renderHome() {
     '<section class="section cta"><div class="container"><div class="box"><div>' +
     '<h3 class="h3">Vous avez un fichier à partager ?</h3>' +
     "<p>Contribuez en nous l'envoyant sur WhatsApp.</p></div>" +
-    '<button type="button" class="btn light" onclick="openWhatsApp()"><span>Contribuer via WhatsApp</span></button>' +
+    '<button type="button" class="btn light" onclick="location.href=\'contribuer.html\'"><span>Contribuer un fichier</span></button>' +
     "</div></div></section>";
   return h;
 }
