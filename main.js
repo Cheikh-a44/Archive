@@ -488,7 +488,7 @@ function scrollToContact() {
 function openWhatsApp() {
   window.open(
     "https://wa.me/22237635859?text=" +
-      encodeURIComponent("Bonjour, je souhaite contribuer à ESSAV"),
+      encodeURIComponent("Bonjour, je souhaite contribuer à ESAV"),
     "_blank",
     "noopener",
   );
@@ -663,7 +663,7 @@ function applyLogo() {
     const src = esc(imgUrl(IMAGES.logo));
     document.querySelectorAll(".logo").forEach(function (el) {
       const text = el.querySelector(".logo-text");
-      const label = text ? text.textContent : "ESSAV";
+      const label = text ? text.textContent : "ESAV";
       el.innerHTML =
         '<img src="' +
         src +
@@ -773,14 +773,14 @@ function renderHome() {
       "one",
       270,
       300,
-      "ESSAV",
+      "ESAV",
     ) +
     pic(
       typeof IMAGES !== "undefined" ? IMAGES.hero2 : "",
       "two",
       240,
       370,
-      "ESSAV",
+      "ESAV",
     ) +
     "</div></div></section>" +
     '<section class="section category"><div class="container">' +
