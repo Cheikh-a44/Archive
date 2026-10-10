@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contribuer — ESAV</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      .form-container {
+        max-width: 620px;
+        margin: 30px auto;
+        padding: 30px;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      }
+      .form-container h1 {
+        color: #0a7ea4;
+        margin-bottom: 8px;
+        font-size: 24px;
+      }
+      .form-container p.subtitle {
+        color: #666;
+        margin-bottom: 24px;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      .form-group {
+        margin-bottom: 18px;
+      }
+      .form-group label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 600;
+        font-size: 14px;
+        color: #222;
+      }
+      .form-group input,
+      .form-group select {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1.5px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 14px;
+        font-family: inherit;
+        outline: none;
+        transition: border-color 0.2s;
+        box-sizing: border-box;
+        background: #fff;
+      }
+      .form-group input:focus,
+      .form-group select:focus {
+        border-color: #0a7ea4;
+      }
+
+      .drop-zone {
+        border: 2px dashed #ccc;
+        border-radius: 12px;
+        padding: 30px 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        background: #fafafa;
+      }
+      .drop-zone:hover,
+      .drop-zone.dragover {
+        border-color: #0a7ea4;
+        background: #f0f9fc;
+      }
+      .drop-zone.has-file {
+        border-color: #28a745;
+        background: #f0fff4;
+      }
+      .drop-zone .icon {
+        font-size: 40px;
+        margin-bottom: 8px;
+      }
+      .drop-zone .text {
+        font-size: 14px;
+        color: #555;
+      }
+      .drop-zone .hint {
+        font-size: 12px;
+        color: #999;
+        margin-top: 6px;
+      }
+
+      .file-info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 10px;
+        padding: 12px;
+        background: #f0fff4;
+        border-radius: 10px;
+        font-size: 13px;
+      }
+      .file-info .name {
+        font-weight: 600;
+        color: #222;
+        word-break: break-all;
+      }
+      .file-info .size {
+        color: #666;
+        font-size: 12px;
+        margin-left: 10px;
+      }
+      .file-info .remove {
+        background: #dc3545;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 4px 10px;
+        cursor: pointer;
+        font-size: 12px;
+        margin-left: 10px;
+      }
+
+      .btn-submit {
+        width: 100%;
+        padding: 14px;
+        background: #0a7ea4;
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: opacity 0.2s;
+      }
+      .btn-submit:hover {
+        opacity: 0.9;
+      }
+      .btn-submit:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .back-link {
+        display: inline-block;
+        margin-bottom: 20px;
+        color: #0a7ea4;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+      }
+      .alert {
+        padding: 14px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        font-size: 14px;
+        display: none;
+      }
+      .alert.success {
+        background: #d4edda;
+        color: #155724;
+        display: block;
+      }
+      .alert.error {
+        background: #f8d7da;
+        color: #721c24;
+        display: block;
+      }
+
+      .progress-bar {
+        height: 8px;
+        background: #e0e0e0;
+        border-radius: 4px;
+        margin-top: 12px;
+        overflow: hidden;
+        display: none;
+      }
+      .progress-bar .fill {
+        height: 100%;
+        width: 0%;
+        background: #0a7ea4;
+        transition: width 0.2s;
+      }
+      .progress-text {
+        font-size: 12px;
+        color: #0a7ea4;
+        margin-top: 6px;
+        text-align: center;
+        display: none;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="form-container">
+      <a href="index.html" class="back-link">← Retour</a>
+      <h1>📤 Contribuer un fichier</h1>
+      <p class="subtitle">
+        Choisissez un fichier depuis votre appareil. Votre contribution sera
+        vérifiée avant publication. Max: <strong>50 MB</strong> (PDF, DOC, PPT,
+        XLS, images).
+      </p>
+
+      <div id="alert" class="alert"></div>
+
+      <form id="contribForm">
+        <div class="form-group">
+          <label>Niveau & Semestre *</label>
+          <select id="level" required>
+            <option value="">— Choisir —</option>
+            <option value="S1">S1</option>
+            <option value="S2">S2</option>
+            <option value="S3">S3</option>
+            <option value="S4">S4</option>
+            <option value="S5">S5</option>
+            <option value="S6">S6</option>
+          </select>
+        </div>
+
+        <div class="form-group" id="deptGroup" style="display: none">
+          <label>Département *</label>
+          <select id="dept">
+            <option value="">— Choisir —</option>
+            <option value="PPV">PPV</option>
+            <option value="GAB">GAB</option>
+            <option value="GEM">GEM</option>
+            <option value="PSA">PSA</option>
+            <option value="STA">STA</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Matière *</label>
+          <input
+            type="text"
+            id="subject"
+            placeholder="Ex: Analyse, Algèbre..."
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Type de fichier *</label>
+          <select id="type" required>
+            <option value="">— Choisir —</option>
+            <option value="Cours">Cours</option>
+            <option value="TD">TD</option>
+            <option value="Devoirs">Devoirs</option>
+            <option value="Examens">Examens</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Fichier *</label>
+          <div class="drop-zone" id="dropZone">
+            <div class="icon">📎</div>
+            <div class="text">
+              Cliquez pour choisir un fichier<br />ou glissez-déposez ici
+            </div>
+            <div class="hint">
+              PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX, JPG, PNG — Max 50 MB
+            </div>
+          </div>
+          <input
+            type="file"
+            id="fileInput"
+            style="display: none"
+            accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.jpg,.jpeg,.png,.txt"
+          />
+          <div class="file-info" id="fileInfo" style="display: none">
+            <div>
+              <span class="name" id="fileName">—</span>
+              <span class="size" id="fileSize"></span>
+            </div>
+            <button type="button" class="remove" id="removeFile">✕</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Votre nom (optionnel)</label>
+          <input type="text" id="author" placeholder="Ex: Ahmed M." />
+        </div>
+
+        <button type="submit" class="btn-submit" id="submitBtn">
+          Envoyer la contribution
+        </button>
+
+        <div class="progress-bar" id="progressBar">
+          <div class="fill" id="progressFill"></div>
+        </div>
+        <div class="progress-text" id="progressText"></div>
+      </form>
+    </div>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        push,
+        set,
+      } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyDnrW6WnmbEFpbWzlW9IGglxAafajt2Kyo",
+        authDomain: "iset-b9974.firebaseapp.com",
+        databaseURL: "https://iset-b9974-default-rtdb.firebaseio.com",
+        projectId: "iset-b9974",
+        storageBucket: "iset-b9974.firebasestorage.app",
+        messagingSenderId: "1054170284751",
+        appId: "1:1054170284751:web:8f02232478430d5ae2adba",
+      };
+
+      //  الرابط من نشر Apps Script
+      const APPS_SCRIPT_URL =
+        "https://script.google.com/macros/s/AKfycbyXvPZNlWemdTHFHaBd29UTKJcuVKtMP3kuQv1QIH3__ZMP8Ydwqf0vwj65NlfFtMAZ/exec";
+
+      //  نفس المفتاح الموجود في Apps Script
+      const SECRET_KEY = "ESAV_2026_cheikha44_37635859_ch";
+
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+
+      const levelEl = document.getElementById("level");
+      const deptGroup = document.getElementById("deptGroup");
+      const deptEl = document.getElementById("dept");
+      const dropZone = document.getElementById("dropZone");
+      const fileInput = document.getElementById("fileInput");
+      const fileInfo = document.getElementById("fileInfo");
+      const fileNameEl = document.getElementById("fileName");
+      const fileSizeEl = document.getElementById("fileSize");
+      const removeFileBtn = document.getElementById("removeFile");
+      const form = document.getElementById("contribForm");
+      const submitBtn = document.getElementById("submitBtn");
+      const alertBox = document.getElementById("alert");
+      const progressBar = document.getElementById("progressBar");
+      const progressFill = document.getElementById("progressFill");
+      const progressText = document.getElementById("progressText");
+
+      const MAX_SIZE = 50 * 1024 * 1024; // 50 MB
+      let selectedFile = null;
+
+      // إظهار قسم Département حسب المستوى
+      levelEl.addEventListener("change", () => {
+        const v = levelEl.value;
+        const needDept = ["S3", "S4", "S5", "S6"].includes(v);
+        deptGroup.style.display = needDept ? "block" : "none";
+        deptEl.required = needDept;
+        if (!needDept) deptEl.value = "";
+      });
+
+      // اختيار الملف
+      dropZone.addEventListener("click", () => fileInput.click());
+
+      ["dragenter", "dragover"].forEach((ev) =>
+        dropZone.addEventListener(ev, (e) => {
+          e.preventDefault();
+          dropZone.classList.add("dragover");
+        }),
+      );
+      ["dragleave", "drop"].forEach((ev) =>
+        dropZone.addEventListener(ev, (e) => {
+          e.preventDefault();
+          dropZone.classList.remove("dragover");
+        }),
+      );
+      dropZone.addEventListener("drop", (e) => {
+        const f = e.dataTransfer.files[0];
+        if (f) setFile(f);
+      });
+      fileInput.addEventListener("change", (e) => {
+        const f = e.target.files[0];
+        if (f) setFile(f);
+      });
+
+      function setFile(f) {
+        if (f.size > MAX_SIZE) {
+          showAlert("❌ Fichier trop volumineux (max 50 MB).", "error");
+          return;
+        }
+        selectedFile = f;
+        fileNameEl.textContent = f.name;
+        fileSizeEl.textContent = "(" + humanSize(f.size) + ")";
+        fileInfo.style.display = "flex";
+        dropZone.classList.add("has-file");
+        dropZone.querySelector(".text").innerHTML = "✅ Fichier sélectionné";
+      }
+
+      removeFileBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        selectedFile = null;
+        fileInput.value = "";
+        fileInfo.style.display = "none";
+        dropZone.classList.remove("has-file");
+        dropZone.querySelector(".text").innerHTML =
+          "Cliquez pour choisir un fichier<br>ou glissez-déposez ici";
+      });
+
+      function humanSize(bytes) {
+        if (bytes < 1024) return bytes + " B";
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+        return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+      }
+
+      function showAlert(msg, type) {
+        alertBox.textContent = msg;
+        alertBox.className = "alert " + type;
+      }
+
+      // تحويل الملف إلى Base64
+      function fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const base64 = reader.result.split(",")[1];
+            resolve(base64);
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+      }
+
+      // إرسال
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        if (!selectedFile) {
+          showAlert("❌ Veuillez sélectionner un fichier.", "error");
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Envoi en cours...";
+        alertBox.className = "alert";
+        progressBar.style.display = "block";
+        progressText.style.display = "block";
+        progressText.textContent = "Conversion du fichier...";
+        progressFill.style.width = "20%";
+
+        try {
+          const level = levelEl.value;
+          const dept = deptEl.value;
+          const subject = document.getElementById("subject").value.trim();
+          const type = document.getElementById("type").value;
+          const author =
+            document.getElementById("author").value.trim() || "Anonyme";
+
+          // 1) تحويل الملف إلى Base64
+          const base64 = await fileToBase64(selectedFile);
+          progressText.textContent = "Envoi vers Google Drive...";
+          progressFill.style.width = "50%";
+
+          // 2) رفع الملف إلى Google Drive عبر Apps Script
+          const response = await fetch(APPS_SCRIPT_URL, {
+            method: "POST",
+            body: JSON.stringify({
+              secret: SECRET_KEY,
+              fileName: selectedFile.name,
+              mimeType: selectedFile.type || "application/octet-stream",
+              fileBase64: base64,
+            }),
+          });
+
+          const result = await response.json();
+
+          if (!result.success) {
+            throw new Error(result.error || "Erreur lors de l'envoi");
+          }
+
+          progressText.textContent = "Enregistrement de la contribution...";
+          progressFill.style.width = "80%";
+
+          // 3) بناء معرف المادة
+          let subjectKey = subject.toUpperCase().replace(/\s+/g, "_");
+          if (["S3", "S4", "S5", "S6"].includes(level)) {
+            subjectKey = `${level}-${dept}-${subjectKey}`;
+          } else {
+            subjectKey = `${level}-${subjectKey}`;
+          }
+
+          // 4) حفظ الطلب في Firebase
+          const submissionRef = push(ref(db, "pending_submissions"));
+          await set(submissionRef, {
+            name: selectedFile.name,
+            url: result.downloadUrl,
+            previewUrl: result.previewUrl,
+            driveFileId: result.fileId,
+            subject: subjectKey,
+            subjectDisplay: subject,
+            level: level,
+            dept: dept,
+            type: type,
+            size: selectedFile.size,
+            submittedBy: author,
+            submittedAt: Date.now(),
+            status: "pending",
+          });
+
+          progressFill.style.width = "100%";
+          showAlert(
+            "✅ Merci ! Votre contribution a été envoyée. Elle sera publiée après vérification.",
+            "success",
+          );
+          form.reset();
+          selectedFile = null;
+          fileInfo.style.display = "none";
+          dropZone.classList.remove("has-file");
+          dropZone.querySelector(".text").innerHTML =
+            "Cliquez pour choisir un fichier<br>ou glissez-déposez ici";
+          deptGroup.style.display = "none";
+        } catch (err) {
+          console.error(err);
+          showAlert("❌ Erreur : " + err.message, "error");
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Envoyer la contribution";
+          progressBar.style.display = "none";
+          progressText.style.display = "none";
+          progressFill.style.width = "0%";
+        }
+      });
+    </script>
+  </body>
+</html>
