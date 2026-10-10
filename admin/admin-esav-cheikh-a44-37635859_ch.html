@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin — ESAV</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: #f4f6f8;
+        color: #222;
+        padding: 20px;
+        min-height: 100vh;
+      }
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+      h1 {
+        color: #0a7ea4;
+        margin-bottom: 20px;
+        font-size: 24px;
+      }
+
+      /* ---- Login ---- */
+      .login-box {
+        max-width: 400px;
+        margin: 80px auto;
+        padding: 30px;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      }
+      .login-box h1 {
+        text-align: center;
+      }
+      .login-box input {
+        width: 100%;
+        padding: 12px 14px;
+        margin-bottom: 12px;
+        border: 1.5px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 14px;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      .login-box input:focus {
+        border-color: #0a7ea4;
+      }
+      .login-box button {
+        width: 100%;
+        padding: 13px;
+        background: #0a7ea4;
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: opacity 0.2s;
+      }
+      .login-box button:hover {
+        opacity: 0.9;
+      }
+      .login-box button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      #errorMsg {
+        color: #dc3545;
+        font-size: 13px;
+        margin-top: 10px;
+        text-align: center;
+        min-height: 18px;
+      }
+
+      /* ---- Dashboard ---- */
+      .header-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .header-bar h1 {
+        margin: 0;
+      }
+      .btn-logout {
+        padding: 9px 16px;
+        background: #dc3545;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 13px;
+      }
+      .btn-logout:hover {
+        opacity: 0.9;
+      }
+
+      .stats {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+      .stat-box {
+        background: #fff;
+        padding: 14px 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        min-width: 140px;
+      }
+      .stat-box .num {
+        font-size: 24px;
+        font-weight: 700;
+        color: #0a7ea4;
+      }
+      .stat-box .lbl {
+        font-size: 12px;
+        color: #666;
+        margin-top: 2px;
+      }
+
+      .submission-card {
+        background: #fff;
+        border-radius: 14px;
+        padding: 18px;
+        margin-bottom: 14px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+        border-left: 4px solid #ffc107;
+      }
+      .submission-card h3 {
+        margin: 0 0 10px;
+        font-size: 16px;
+        color: #222;
+        word-break: break-word;
+      }
+      .submission-meta {
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 4px;
+        line-height: 1.5;
+      }
+      .submission-meta strong {
+        color: #333;
+      }
+      .submission-meta a {
+        color: #0a7ea4;
+        text-decoration: none;
+      }
+      .submission-meta a:hover {
+        text-decoration: underline;
+      }
+
+      .submission-actions {
+        margin-top: 14px;
+        display: flex;
+        gap: 10px;
+      }
+      .btn-approve,
+      .btn-reject {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 14px;
+        transition: opacity 0.2s;
+      }
+      .btn-approve {
+        background: #28a745;
+        color: #fff;
+      }
+      .btn-reject {
+        background: #dc3545;
+        color: #fff;
+      }
+      .btn-approve:hover,
+      .btn-reject:hover {
+        opacity: 0.9;
+      }
+      .btn-approve:disabled,
+      .btn-reject:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .empty {
+        text-align: center;
+        color: #888;
+        padding: 60px 20px;
+        font-size: 15px;
+        background: #fff;
+        border-radius: 14px;
+      }
+      .empty .icon {
+        font-size: 48px;
+        margin-bottom: 12px;
+      }
+
+      #appSection {
+        display: none;
+      }
+      #loginSection {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ============================================================ -->
+    <!--  Login                                                       -->
+    <!-- ============================================================ -->
+    <div id="loginSection">
+      <div class="login-box">
+        <h1>🔒 Admin</h1>
+        <input
+          type="email"
+          id="email"
+          placeholder="Email"
+          autocomplete="email"
+        />
+        <input
+          type="password"
+          id="password"
+          placeholder="Mot de passe"
+          autocomplete="current-password"
+        />
+        <button id="loginBtn">Se connecter</button>
+        <div id="errorMsg"></div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!--  Dashboard                                                   -->
+    <!-- ============================================================ -->
+    <div id="appSection">
+      <div class="container">
+        <div class="header-bar">
+          <h1>📋 Contributions en attente</h1>
+          <button class="btn-logout" id="logoutBtn">Déconnexion</button>
+        </div>
+
+        <div class="stats" id="stats"></div>
+
+        <div id="listContainer">
+          <div class="empty">Chargement...</div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        onValue,
+        remove,
+        set,
+        push,
+      } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+      import {
+        getAuth,
+        signInWithEmailAndPassword,
+        signOut,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+      // ================================================================
+      //  ⚠️ نفس إعدادات main.js
+      // ================================================================
+      const firebaseConfig = {
+        apiKey: "AIzaSyDnrW6WnmbEFpbWzlW9IGglxAafajt2Kyo",
+        authDomain: "iset-b9974.firebaseapp.com",
+        databaseURL: "https://iset-b9974-default-rtdb.firebaseio.com",
+        projectId: "iset-b9974",
+        storageBucket: "iset-b9974.firebasestorage.app",
+        messagingSenderId: "1054170284751",
+        appId: "1:1054170284751:web:8f02232478430d5ae2adba",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+      const auth = getAuth(app);
+
+      // ================================================================
+      //  عناصر الواجهة
+      // ================================================================
+      const loginSection = document.getElementById("loginSection");
+      const appSection = document.getElementById("appSection");
+      const emailEl = document.getElementById("email");
+      const passwordEl = document.getElementById("password");
+      const loginBtn = document.getElementById("loginBtn");
+      const logoutBtn = document.getElementById("logoutBtn");
+      const errorMsg = document.getElementById("errorMsg");
+      const listContainer = document.getElementById("listContainer");
+      const statsEl = document.getElementById("stats");
+
+      let unsubscribe = null;
+
+      // ================================================================
+      //  المصادقة
+      // ================================================================
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          loginSection.style.display = "none";
+          appSection.style.display = "block";
+          startListening();
+        } else {
+          loginSection.style.display = "block";
+          appSection.style.display = "none";
+          if (unsubscribe) {
+            unsubscribe();
+            unsubscribe = null;
+          }
+        }
+      });
+
+      loginBtn.addEventListener("click", doLogin);
+      emailEl.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") doLogin();
+      });
+      passwordEl.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") doLogin();
+      });
+
+      async function doLogin() {
+        errorMsg.textContent = "";
+        const email = emailEl.value.trim();
+        const pwd = passwordEl.value;
+        if (!email || !pwd) {
+          errorMsg.textContent = "Email et mot de passe requis";
+          return;
+        }
+        loginBtn.disabled = true;
+        loginBtn.textContent = "Connexion...";
+        try {
+          await signInWithEmailAndPassword(auth, email, pwd);
+        } catch (err) {
+          console.error(err);
+          let msg = "Erreur de connexion";
+          if (
+            err.code === "auth/invalid-credential" ||
+            err.code === "auth/wrong-password" ||
+            err.code === "auth/user-not-found"
+          ) {
+            msg = "Email ou mot de passe incorrect";
+          } else if (err.code === "auth/invalid-email") {
+            msg = "Email invalide";
+          } else if (err.code === "auth/too-many-requests") {
+            msg = "Trop de tentatives. Réessayez plus tard.";
+          }
+          errorMsg.textContent = "❌ " + msg;
+        } finally {
+          loginBtn.disabled = false;
+          loginBtn.textContent = "Se connecter";
+        }
+      }
+
+      logoutBtn.addEventListener("click", () => {
+        if (confirm("Se déconnecter ?")) signOut(auth);
+      });
+
+      // ================================================================
+      //  قائمة الطلبات
+      // ================================================================
+      function startListening() {
+        const pendingRef = ref(db, "pending_submissions");
+        unsubscribe = onValue(pendingRef, (snapshot) => {
+          const data = snapshot.val() || {};
+          const items = Object.entries(data).sort(
+            (a, b) => (b[1].submittedAt || 0) - (a[1].submittedAt || 0),
+          );
+
+          // Stats
+          statsEl.innerHTML =
+            '<div class="stat-box"><div class="num">' +
+            items.length +
+            '</div><div class="lbl">En attente</div></div>';
+
+          if (items.length === 0) {
+            listContainer.innerHTML =
+              '<div class="empty"><div class="icon">✅</div>' +
+              "Aucune contribution en attente.</div>";
+            return;
+          }
+
+          listContainer.innerHTML = "";
+          items.forEach(([id, item]) => {
+            const card = document.createElement("div");
+            card.className = "submission-card";
+
+            const sizeTxt = item.size
+              ? (item.size / 1024 / 1024).toFixed(2) + " MB"
+              : "—";
+
+            // بناء المسار المتوقع للنشر
+            const targetPath = item.gemAspect
+              ? "GEM / " + item.gemAspect
+              : item.subject || "—";
+
+            card.innerHTML = `
+            <h3>📄 ${escapeHtml(item.name || "—")}</h3>
+            <div class="submission-meta"><strong>Matière :</strong> ${escapeHtml(item.subjectDisplay || item.subject || "—")}</div>
+            <div class="submission-meta"><strong>Niveau :</strong> ${escapeHtml(item.level || "—")}${item.dept ? " · " + escapeHtml(item.dept) : ""}</div>
+            ${item.gemAspect ? '<div class="submission-meta"><strong>Aspect GEM :</strong> ' + escapeHtml(item.gemAspect) + "</div>" : ""}
+            <div class="submission-meta"><strong>Type :</strong> ${escapeHtml(item.type || "—")}</div>
+            <div class="submission-meta"><strong>Taille :</strong> ${sizeTxt}</div>
+            <div class="submission-meta"><strong>Par :</strong> ${escapeHtml(item.submittedBy || "Anonyme")}</div>
+            <div class="submission-meta"><strong>Publié vers :</strong> <code>files/${escapeHtml(targetPath)}/${escapeHtml(item.type || "")}</code></div>
+            <div class="submission-meta"><strong>Fichier :</strong> <a href="${escapeAttr(item.url)}" target="_blank" rel="noopener">📄 Ouvrir</a></div>
+            <div class="submission-actions">
+              <button class="btn-approve" data-id="${id}">✅ Approuver</button>
+              <button class="btn-reject" data-id="${id}">❌ Rejeter</button>
+            </div>
+          `;
+            listContainer.appendChild(card);
+          });
+
+          // ربط الأزرار
+          listContainer.querySelectorAll(".btn-approve").forEach((btn) => {
+            btn.addEventListener("click", () =>
+              approve(btn.dataset.id, data[btn.dataset.id], btn),
+            );
+          });
+          listContainer.querySelectorAll(".btn-reject").forEach((btn) => {
+            btn.addEventListener("click", () => reject(btn.dataset.id, btn));
+          });
+        });
+      }
+
+      // ================================================================
+      //  الموافقة — نشر الملف في files/
+      // ================================================================
+      async function approve(id, item, btn) {
+        if (!item) return;
+        if (
+          !confirm(
+            `Approuver "${item.name}" ?\n\nSera publié dans : files/${item.gemAspect ? "GEM/" + item.gemAspect : item.subject}/${item.type}`,
+          )
+        )
+          return;
+
+        btn.disabled = true;
+        btn.textContent = "Publication...";
+
+        try {
+          // 1) تحديد المسار — يطابق بنية main.js
+          //    - GEM: files/GEM/{aspect}/{type}
+          //    - عادي: files/{subject}/{type}
+          let basePath;
+          if (item.gemAspect) {
+            basePath = `files/GEM/${item.gemAspect}/${item.type}`;
+          } else {
+            basePath = `files/${item.subject}/${item.type}`;
+          }
+
+          // 2) إضافة الملف
+          const newFileRef = push(ref(db, basePath));
+          await set(newFileRef, {
+            name: item.name,
+            url: item.url,
+          });
+
+          // 3) حذف الطلب من pending
+          await remove(ref(db, `pending_submissions/${id}`));
+
+          // (الملف يبقى في Google Drive — لا حاجة للحذف)
+        } catch (err) {
+          console.error(err);
+          alert("❌ Erreur lors de la publication : " + err.message);
+          btn.disabled = false;
+          btn.textContent = "✅ Approuver";
+        }
+      }
+
+      // ================================================================
+      //  الرفض — حذف الطلب فقط
+      // ================================================================
+      async function reject(id, btn) {
+        if (
+          !confirm(
+            "Rejeter cette contribution ?\n\n(Le fichier restera dans Google Drive, vous pourrez le supprimer manuellement.)",
+          )
+        )
+          return;
+
+        btn.disabled = true;
+        btn.textContent = "Suppression...";
+
+        try {
+          await remove(ref(db, `pending_submissions/${id}`));
+          // الملف يبقى في Drive — يمكن حذفه يدوياً من مجلد ESAV_Submissions
+        } catch (err) {
+          console.error(err);
+          alert("❌ Erreur : " + err.message);
+          btn.disabled = false;
+          btn.textContent = "❌ Rejeter";
+        }
+      }
+
+      // ================================================================
+      //  Helpers
+      // ================================================================
+      function escapeHtml(s) {
+        return String(s == null ? "" : s).replace(
+          /[&<>"']/g,
+          (c) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[c],
+        );
+      }
+      function escapeAttr(s) {
+        return escapeHtml(s);
+      }
+    </script>
+  </body>
+</html>
