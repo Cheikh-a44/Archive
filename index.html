@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <title>ESSAV — Plateforme académique</title>
+    <meta
+      name="description"
+      content="Cours, TD, devoirs et examens par semestre et par matière."
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700;800&family=Poppins:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body id="top">
+    <header class="header">
+      <div class="container">
+        <a
+          class="logo"
+          id="logo"
+          onclick="go('home')"
+          role="button"
+          tabindex="0"
+          aria-label="ESSAV accueil"
+        >
+          <span class="logo-text">ESSAV</span>
+        </a>
+
+        <div class="header-right">
+          <nav aria-label="Navigation principale">
+            <ul class="navbar-list">
+              <li>
+                <button
+                  type="button"
+                  class="navbar-link active"
+                  id="navHome"
+                  onclick="go('home')"
+                >
+                  Accueil
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  class="navbar-link"
+                  onclick="scrollToContact()"
+                >
+                  Contact
+                </button>
+              </li>
+            </ul>
+          </nav>
+          <div class="profile-menu">
+            <button
+              type="button"
+              class="navbar-link"
+              id="profileBtn"
+              onclick="toggleProfileMenu(event)"
+              aria-haspopup="true"
+              aria-expanded="false"
+              aria-label="Changer d'année ou de filière"
+            >
+              <span class="lbl"></span>
+            </button>
+            <div class="dropdown" id="profileDropdown" hidden></div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="content"></main>
+
+    <footer class="footer" id="contact">
+      <div class="container footer-top">
+        <div class="footer-brand">
+          <div class="logo"><span class="logo-text">ESSAV</span></div>
+          <p>
+            Cours, TD, devoirs et examens, organisés par semestre et par matière
+            pour faciliter le travail des étudiants.
+          </p>
+        </div>
+
+        <ul class="footer-list">
+          <li><p class="footer-list-title">Contact</p></li>
+          <li class="wrapper">
+            <span class="span">Email :</span
+            ><a href="mailto:cahmedou651@gmail.com" class="footer-link"
+              >cahmedou651@gmail.com</a
+            >
+          </li>
+          <li class="wrapper">
+            <span class="span">Telegram :</span
+            ><a
+              href="https://t.me/Cheikh_a44"
+              target="_blank"
+              rel="noopener"
+              class="footer-link"
+              >@Cheikh_a44</a
+            >
+          </li>
+          <li class="wrapper">
+            <span class="span">WhatsApp :</span
+            ><a
+              href="https://wa.me/22237635859"
+              target="_blank"
+              rel="noopener"
+              class="footer-link"
+              >+222 37 63 58 59</a
+            >
+          </li>
+        </ul>
+
+        <ul class="footer-list">
+          <li><p class="footer-list-title">Liens</p></li>
+          <li>
+            <button type="button" class="footer-link" onclick="go('home')">
+              Accueil
+            </button>
+          </li>
+          <li>
+            <button type="button" class="footer-link" onclick="changeProfile()">
+              Changer d'année / de filière
+            </button>
+          </li>
+          <li>
+            <button type="button" class="footer-link" onclick="openWhatsApp()">
+              Partager un fichier
+            </button>
+          </li>
+        </ul>
+      </div>
+      <div class="footer-bottom">
+        <p>
+          ESSAV v1.0.0 — Développé par
+          <span class="copyright-link">Cheikh_A</span>
+        </p>
+      </div>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-database-compat.js"></script>
+    <script src="images.js"></script>
+    <script src="main.js"></script>
+  </body>
+</html>
