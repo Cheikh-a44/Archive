@@ -199,6 +199,7 @@
       <div id="alert" class="alert"></div>
 
       <form id="contribForm">
+        <!-- المستوى -->
         <div class="form-group">
           <label>Niveau & Semestre *</label>
           <select id="level" required>
@@ -212,6 +213,7 @@
           </select>
         </div>
 
+        <!-- القسم (يظهر فقط لـ S3-S6) -->
         <div class="form-group" id="deptGroup" style="display: none">
           <label>Département *</label>
           <select id="dept">
@@ -224,6 +226,7 @@
           </select>
         </div>
 
+        <!-- المادة (قائمة منسدلة تتعبأ تلقائياً) -->
         <div class="form-group" id="subjectGroup" style="display: none">
           <label>Matière *</label>
           <select id="subject" required>
@@ -231,6 +234,7 @@
           </select>
         </div>
 
+        <!-- وجه GEM (يظهر فقط عند اختيار GEM في S2) -->
         <div class="form-group" id="gemAspectGroup" style="display: none">
           <label>Aspect GEM *</label>
           <select id="gemAspect">
@@ -240,6 +244,7 @@
           </select>
         </div>
 
+        <!-- نوع الملف -->
         <div class="form-group">
           <label>Type de fichier *</label>
           <select id="type" required>
@@ -251,6 +256,7 @@
           </select>
         </div>
 
+        <!-- اختيار الملف -->
         <div class="form-group">
           <label>Fichier *</label>
           <div class="drop-zone" id="dropZone">
@@ -277,11 +283,13 @@
           </div>
         </div>
 
+        <!-- اسم المساهم -->
         <div class="form-group">
           <label>Votre nom (optionnel)</label>
           <input type="text" id="author" placeholder="Ex: Ahmed M." />
         </div>
 
+        <!-- زر الإرسال -->
         <button type="submit" class="btn-submit" id="submitBtn">
           Envoyer la contribution
         </button>
@@ -302,6 +310,9 @@
         set,
       } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
+      // =================================================================
+      //  إعدادات Firebase (من main.js)
+      // =================================================================
       const firebaseConfig = {
         apiKey: "AIzaSyDnrW6WnmbEFpbWzlW9IGglxAafajt2Kyo",
         authDomain: "iset-b9974.firebaseapp.com",
@@ -312,13 +323,15 @@
         appId: "1:1054170284751:web:8f02232478430d5ae2adba",
       };
 
-      // ⚠️ الرابط من Apps Script
+      // =================================================================
+      //   عدّل هذين السطرين
+      // =================================================================
       const APPS_SCRIPT_URL =
         "https://script.google.com/macros/s/AKfycbyXvPZNlWemdTHFHaBd29UTKJcuVKtMP3kuQv1QIH3__ZMP8Ydwqf0vwj65NlfFtMAZ/exec";
       const SECRET_KEY = "ESAV_2026_cheikha44_37635859_ch";
 
       // =================================================================
-      //  بيانات المواد (منسوخة من main.js)
+      //  المواد (منسوخة حرفياً من main.js)
       // =================================================================
       const SUBJECT_NAMES = {
         Math: "Mathématiques",
@@ -512,6 +525,8 @@
       const subjectEl = document.getElementById("subject");
       const gemAspectGroup = document.getElementById("gemAspectGroup");
       const gemAspectEl = document.getElementById("gemAspect");
+      const typeEl = document.getElementById("type");
+      const authorEl = document.getElementById("author");
       const dropZone = document.getElementById("dropZone");
       const fileInput = document.getElementById("fileInput");
       const fileInfo = document.getElementById("fileInfo");
@@ -529,7 +544,7 @@
       let selectedFile = null;
 
       // =================================================================
-      //  منطق القوائم المنسدلة
+      //  القوائم المنسدلة الذكية
       // =================================================================
       function getSubjectsForLevel(level, dept) {
         if (level === "S1") return FIXED.S1 || [];
@@ -538,62 +553,70 @@
         return (SHARED[level] || []).concat(DEPT_SUBJECTS[key] || []);
       }
 
-      function updateSubjects() {
-        const level = levelEl.value;
-        if (!level) {
-          subjectGroup.style.display = "none";
-          gemAspectGroup.style.display = "none";
+      function fillSubjects(subjects) {
+        // إعادة بناء القائمة
+        subjectEl.innerHTML = '<option value="">— Choisir —</option>';
+        if (subjects.length === 0) {
+          const opt = document.createElement("option");
+          opt.value = "";
+          opt.disabled = true;
+          opt.textContent = "Aucune matière disponible";
+          subjectEl.appendChild(opt);
+          subjectGroup.style.display = "block";
+          subjectEl.required = false;
           return;
         }
-
-        let subjects = [];
-        if (level === "S1" || level === "S2") {
-          subjects = FIXED[level] || [];
-        } else {
-          const dept = deptEl.value;
-          if (!dept) {
-            subjectGroup.style.display = "none";
-            gemAspectGroup.style.display = "none";
-            return;
-          }
-          subjects = getSubjectsForLevel(level, dept);
-        }
-
-        // تعبئة القائمة
-        subjectEl.innerHTML = '<option value="">— Choisir —</option>';
         subjects.forEach(function (sk) {
           const opt = document.createElement("option");
           opt.value = sk;
           opt.textContent = SUBJECT_NAMES[sk] || sk;
           subjectEl.appendChild(opt);
         });
-
         subjectGroup.style.display = "block";
         subjectEl.required = true;
         subjectEl.value = "";
+      }
+
+      function updateSubjects() {
+        const level = levelEl.value;
+
+        // إخفاء الكل أولاً
+        subjectGroup.style.display = "none";
         gemAspectGroup.style.display = "none";
         gemAspectEl.required = false;
         gemAspectEl.value = "";
+
+        if (!level) return;
+
+        if (level === "S1" || level === "S2") {
+          // مواد ثابتة
+          fillSubjects(FIXED[level] || []);
+        } else {
+          // يحتاج قسم
+          const dept = deptEl.value;
+          if (!dept) return;
+          fillSubjects(getSubjectsForLevel(level, dept));
+        }
       }
 
-      levelEl.addEventListener("change", () => {
+      // عند تغيير المستوى
+      levelEl.addEventListener("change", function () {
         const v = levelEl.value;
-        const needDept = ["S3", "S4", "S5", "S6"].includes(v);
+        const needDept = ["S3", "S4", "S5", "S6"].indexOf(v) !== -1;
         deptGroup.style.display = needDept ? "block" : "none";
         deptEl.required = needDept;
         if (!needDept) deptEl.value = "";
         updateSubjects();
       });
 
+      // عند تغيير القسم
       deptEl.addEventListener("change", updateSubjects);
 
-      subjectEl.addEventListener("change", () => {
-        const subject = subjectEl.value;
-        // GEM خاص: له أوجه (Dessin/Électricité)
-        if (subject === "GEM" && levelEl.value === "S2") {
+      // عند تغيير المادة (للتحقق من GEM)
+      subjectEl.addEventListener("change", function () {
+        if (subjectEl.value === "GEM" && levelEl.value === "S2") {
           gemAspectGroup.style.display = "block";
           gemAspectEl.required = true;
-          gemAspectEl.value = "";
         } else {
           gemAspectGroup.style.display = "none";
           gemAspectEl.required = false;
@@ -629,7 +652,7 @@
 
       function setFile(f) {
         if (f.size > MAX_SIZE) {
-          showAlert("❌ Fichier trop volumineux (max 50 MB).", "error");
+          showAlert(" Fichier trop volumineux (max 50 MB).", "error");
           return;
         }
         selectedFile = f;
@@ -637,7 +660,7 @@
         fileSizeEl.textContent = "(" + humanSize(f.size) + ")";
         fileInfo.style.display = "flex";
         dropZone.classList.add("has-file");
-        dropZone.querySelector(".text").innerHTML = "✅ Fichier sélectionné";
+        dropZone.querySelector(".text").innerHTML = " Fichier sélectionné";
       }
 
       removeFileBtn.addEventListener("click", (e) => {
@@ -675,8 +698,29 @@
       // =================================================================
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
+
         if (!selectedFile) {
-          showAlert("❌ Veuillez sélectionner un fichier.", "error");
+          showAlert(" Veuillez sélectionner un fichier.", "error");
+          return;
+        }
+        if (!levelEl.value) {
+          showAlert(" Veuillez choisir un niveau.", "error");
+          return;
+        }
+        if (deptGroup.style.display !== "none" && !deptEl.value) {
+          showAlert(" Veuillez choisir un département.", "error");
+          return;
+        }
+        if (!subjectEl.value) {
+          showAlert(" Veuillez choisir une matière.", "error");
+          return;
+        }
+        if (gemAspectGroup.style.display !== "none" && !gemAspectEl.value) {
+          showAlert(" Veuillez choisir un aspect GEM.", "error");
+          return;
+        }
+        if (!typeEl.value) {
+          showAlert(" Veuillez choisir un type de fichier.", "error");
           return;
         }
 
@@ -691,18 +735,17 @@
         try {
           const level = levelEl.value;
           const dept = deptEl.value;
-          const subject = subjectEl.value; // المفتاح الخام
-          const gemAspect = gemAspectEl.value; // Dessin / Electricite / ""
-          const type = document.getElementById("type").value;
-          const author =
-            document.getElementById("author").value.trim() || "Anonyme";
+          const subject = subjectEl.value;
+          const gemAspect = gemAspectEl.value;
+          const type = typeEl.value;
+          const author = authorEl.value.trim() || "Anonyme";
 
           // 1) تحويل الملف إلى Base64
           const base64 = await fileToBase64(selectedFile);
           progressText.textContent = "Envoi vers Google Drive...";
           progressFill.style.width = "50%";
 
-          // 2) رفع الملف إلى Google Drive
+          // 2) رفع الملف إلى Google Drive عبر Apps Script
           const response = await fetch(APPS_SCRIPT_URL, {
             method: "POST",
             body: JSON.stringify({
@@ -714,22 +757,23 @@
           });
 
           const result = await response.json();
-          if (!result.success)
+          if (!result.success) {
             throw new Error(result.error || "Erreur lors de l'envoi");
+          }
 
           progressText.textContent = "Enregistrement de la contribution...";
           progressFill.style.width = "80%";
 
-          // 3) حفظ الطلب في Firebase (بمفاتيح صحيحة)
+          // 3) حفظ الطلب في Firebase
           const submissionRef = push(ref(db, "pending_submissions"));
           await set(submissionRef, {
             name: selectedFile.name,
             url: result.downloadUrl,
             previewUrl: result.previewUrl,
             driveFileId: result.fileId,
-            subject: subject, // المفتاح الخام
-            subjectDisplay: SUBJECT_NAMES[subject] || subject, // للعرض
-            gemAspect: gemAspect, // فارغ إلا لـ GEM
+            subject: subject,
+            subjectDisplay: SUBJECT_NAMES[subject] || subject,
+            gemAspect: gemAspect,
             level: level,
             dept: dept,
             type: type,
@@ -741,9 +785,11 @@
 
           progressFill.style.width = "100%";
           showAlert(
-            "✅ Merci ! Votre contribution a été envoyée. Elle sera publiée après vérification.",
+            " Merci ! Votre contribution a été envoyée. Elle sera publiée après vérification.",
             "success",
           );
+
+          // إعادة تعيين النموذج
           form.reset();
           selectedFile = null;
           fileInfo.style.display = "none";
@@ -755,7 +801,7 @@
           gemAspectGroup.style.display = "none";
         } catch (err) {
           console.error(err);
-          showAlert("❌ Erreur : " + err.message, "error");
+          showAlert(" Erreur : " + err.message, "error");
         } finally {
           submitBtn.disabled = false;
           submitBtn.textContent = "Envoyer la contribution";
