@@ -1,0 +1,1293 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Notes Admin - ESAV</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700;800&family=Poppins:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --c-primary: #0a7ea4;
+        --c-primary-dark: #065a75;
+        --c-primary-light: #e6f4f9;
+        --c-text: #1e293b;
+        --c-text-soft: #64748b;
+        --c-border: #e2e8f0;
+        --c-bg: #f4f8fb;
+        --c-white: #ffffff;
+        --c-success: #16a34a;
+        --c-success-bg: #dcfce7;
+        --c-error: #dc2626;
+        --c-error-bg: #fee2e2;
+        --radius: 8px;
+        --shadow: 0 2px 8px rgba(10, 126, 164, 0.08);
+      }
+      body {
+        font-family:
+          "Poppins",
+          -apple-system,
+          BlinkMacSystemFont,
+          sans-serif;
+        background: var(--c-bg);
+        color: var(--c-text);
+        min-height: 100vh;
+        line-height: 1.5;
+      }
+      h1,
+      h2,
+      h3,
+      label,
+      .btn {
+        font-family: "League Spartan", sans-serif;
+        letter-spacing: 0.3px;
+      }
+
+      /* ---------- LOGIN ---------- */
+      #loginSection {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 20px;
+      }
+      .login-box {
+        max-width: 400px;
+        width: 100%;
+        background: var(--c-white);
+        padding: 40px 30px;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        border-top: 4px solid var(--c-primary);
+        text-align: center;
+      }
+      .login-box .logo {
+        font-family: "League Spartan", sans-serif;
+        font-weight: 800;
+        font-size: 28px;
+        color: var(--c-primary);
+        letter-spacing: 4px;
+        margin-bottom: 6px;
+      }
+      .login-box p {
+        color: var(--c-text-soft);
+        font-size: 13px;
+        margin-bottom: 26px;
+      }
+      .login-box input {
+        width: 100%;
+        padding: 14px 16px;
+        border: 1.5px solid var(--c-border);
+        border-radius: var(--radius);
+        font-size: 16px;
+        text-align: center;
+        letter-spacing: 3px;
+        font-weight: 600;
+        text-transform: uppercase;
+        outline: none;
+        transition: border-color 0.2s;
+        margin-bottom: 14px;
+        font-family: "League Spartan", sans-serif;
+      }
+      .login-box input:focus {
+        border-color: var(--c-primary);
+      }
+      .login-box button {
+        width: 100%;
+        padding: 14px;
+        background: var(--c-primary);
+        color: #fff;
+        border: none;
+        border-radius: var(--radius);
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: "League Spartan", sans-serif;
+      }
+      .login-box button:hover {
+        background: var(--c-primary-dark);
+      }
+      .login-box button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .login-error {
+        color: var(--c-error);
+        font-size: 13px;
+        margin-top: 12px;
+        min-height: 18px;
+      }
+
+      /* ---------- APP ---------- */
+      #appSection {
+        display: none;
+      }
+      .topbar {
+        background: var(--c-white);
+        padding: 14px 20px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+      .topbar-inner {
+        max-width: 1000px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .topbar .logo {
+        font-family: "League Spartan", sans-serif;
+        font-weight: 800;
+        color: var(--c-primary);
+        font-size: 22px;
+        letter-spacing: 3px;
+      }
+      .badge {
+        display: inline-block;
+        background: var(--c-primary-light);
+        color: var(--c-primary);
+        padding: 4px 12px;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 12px;
+        font-family: "League Spartan", sans-serif;
+        margin-left: 10px;
+      }
+      .btn-logout {
+        padding: 8px 16px;
+        background: var(--c-error);
+        color: #fff;
+        border: none;
+        border-radius: var(--radius);
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 13px;
+        font-family: "League Spartan", sans-serif;
+      }
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .card {
+        background: var(--c-white);
+        border-radius: var(--radius);
+        padding: 22px;
+        margin-bottom: 16px;
+        box-shadow: var(--shadow);
+      }
+      .card h2 {
+        color: var(--c-primary);
+        font-size: 16px;
+        margin-bottom: 16px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--c-border);
+        font-weight: 700;
+      }
+
+      .field {
+        margin-bottom: 14px;
+      }
+      .field label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 600;
+        font-size: 13px;
+        color: var(--c-text);
+      }
+      .field select,
+      .field input[type="text"],
+      .field input[type="number"],
+      .field input[type="file"] {
+        width: 100%;
+        padding: 11px 14px;
+        border: 1.5px solid var(--c-border);
+        border-radius: var(--radius);
+        font-size: 14px;
+        font-family: inherit;
+        outline: none;
+        transition: border-color 0.2s;
+        background: var(--c-white);
+        color: var(--c-text);
+      }
+      .field select:focus,
+      .field input:focus {
+        border-color: var(--c-primary);
+      }
+
+      .row-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+      @media (max-width: 600px) {
+        .row-2 {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .btn {
+        padding: 11px 22px;
+        background: var(--c-primary);
+        color: #fff;
+        border: none;
+        border-radius: var(--radius);
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+      .btn:hover {
+        background: var(--c-primary-dark);
+      }
+      .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .btn-block {
+        width: 100%;
+      }
+      .btn-danger {
+        background: var(--c-error);
+      }
+      .btn-danger:hover {
+        background: #b91c1c;
+      }
+      .btn-sm {
+        padding: 6px 12px;
+        font-size: 12px;
+      }
+
+      .alert {
+        padding: 12px 16px;
+        border-radius: var(--radius);
+        margin-bottom: 16px;
+        font-size: 13px;
+        font-weight: 500;
+        display: none;
+      }
+      .alert.show {
+        display: block;
+      }
+      .alert.success {
+        background: var(--c-success-bg);
+        color: #166534;
+        border-left: 4px solid var(--c-success);
+      }
+      .alert.error {
+        background: var(--c-error-bg);
+        color: #991b1b;
+        border-left: 4px solid var(--c-error);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+        margin-top: 10px;
+        font-family: "Poppins", sans-serif;
+      }
+      th,
+      td {
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--c-border);
+        text-align: left;
+      }
+      th {
+        background: #f8fafc;
+        font-weight: 600;
+        color: var(--c-text);
+        font-family: "League Spartan", sans-serif;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      tbody tr:hover {
+        background: #fafcfd;
+      }
+
+      .hint {
+        font-size: 12px;
+        color: var(--c-text-soft);
+        margin-top: 6px;
+        line-height: 1.6;
+      }
+      .code-block {
+        background: #f8fafc;
+        padding: 12px 14px;
+        border-radius: var(--radius);
+        font-family: "Courier New", monospace;
+        font-size: 12px;
+        color: var(--c-text);
+        margin-top: 10px;
+        overflow-x: auto;
+        white-space: pre;
+        border: 1px solid var(--c-border);
+      }
+
+      .tabs-bar {
+        display: flex;
+        gap: 4px;
+        margin-bottom: 14px;
+        flex-wrap: wrap;
+        border-bottom: 2px solid var(--c-border);
+      }
+      .tab-btn {
+        padding: 10px 18px;
+        background: transparent;
+        color: var(--c-text-soft);
+        border: none;
+        border-bottom: 3px solid transparent;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: "League Spartan", sans-serif;
+        margin-bottom: -2px;
+        transition: all 0.15s;
+      }
+      .tab-btn:hover {
+        color: var(--c-primary);
+      }
+      .tab-btn.active {
+        color: var(--c-primary);
+        border-bottom-color: var(--c-primary);
+      }
+
+      .tab-content {
+        display: none;
+      }
+      .tab-content.active {
+        display: block;
+      }
+
+      .loading {
+        text-align: center;
+        padding: 40px;
+        color: var(--c-text-soft);
+        font-size: 14px;
+      }
+
+      .import-group {
+        border: 1px solid var(--c-border);
+        border-radius: var(--radius);
+        margin-bottom: 12px;
+        overflow: hidden;
+      }
+      .import-group-header {
+        background: #f8fafc;
+        padding: 12px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .import-group-header .info {
+        font-size: 13px;
+        color: var(--c-text);
+      }
+      .import-group-header .info strong {
+        color: var(--c-primary);
+        font-family: "League Spartan", sans-serif;
+      }
+      .import-group-body {
+        padding: 0;
+      }
+      .import-group-body.collapsed {
+        display: none;
+      }
+
+      .tp-list {
+        max-height: 400px;
+        overflow-y: auto;
+        border: 1px solid var(--c-border);
+        border-radius: var(--radius);
+        padding: 10px;
+        background: #fafcfd;
+      }
+      .tp-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 10px;
+        border-radius: var(--radius);
+        font-size: 13px;
+      }
+      .tp-item:hover {
+        background: var(--c-primary-light);
+      }
+      .tp-item input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--c-primary);
+        cursor: pointer;
+      }
+      .tp-item label {
+        cursor: pointer;
+        flex: 1;
+      }
+      .tp-item.no-tp label {
+        color: var(--c-error);
+        font-weight: 600;
+      }
+
+      .small-btn-icon {
+        width: 30px;
+        height: 30px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ==================== LOGIN ==================== -->
+    <div id="loginSection">
+      <div class="login-box">
+        <div class="logo">ESAV</div>
+        <p>Administration des notes</p>
+        <input
+          type="password"
+          id="passwordInput"
+          placeholder="MOT DE PASSE"
+          maxlength="6"
+          autocomplete="off"
+        />
+        <button id="loginBtn">Se connecter</button>
+        <div id="loginError" class="login-error"></div>
+      </div>
+    </div>
+
+    <!-- ==================== APP ==================== -->
+    <div id="appSection">
+      <div class="topbar">
+        <div class="topbar-inner">
+          <div>
+            <span class="logo">ESAV</span>
+            <span class="badge" id="deptBadge">-</span>
+          </div>
+          <button class="btn-logout" id="logoutBtn">Deconnexion</button>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="alert" id="globalAlert"></div>
+
+        <div class="card">
+          <h2>Selection</h2>
+          <div class="row-2">
+            <div class="field">
+              <label>Semestre</label>
+              <select id="semSelect"></select>
+            </div>
+            <div class="field">
+              <label>Action</label>
+              <button class="btn btn-block" id="loadDataBtn">Charger</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="tabs-bar">
+          <button class="tab-btn active" data-tab="import">
+            Importer Excel
+          </button>
+          <button class="tab-btn" data-tab="manual">Saisie manuelle</button>
+          <button class="tab-btn" data-tab="existing">
+            Donnees existantes
+          </button>
+          <button class="tab-btn" data-tab="tp">Gestion TP</button>
+        </div>
+
+        <!-- TAB IMPORT -->
+        <div class="card tab-content active" id="tab-import">
+          <h2>Importer un fichier Excel</h2>
+          <div class="row-2">
+            <div class="field">
+              <label>Matiere</label>
+              <select id="subjectSelect"></select>
+            </div>
+            <div class="field">
+              <label>Type de note</label>
+              <select id="typeSelect">
+                <option value="Examen">Examen</option>
+                <option value="Controle continu">Controle continu</option>
+                <option value="TP">TP</option>
+                <option value="Rattrapage">Rattrapage</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label>Fichier Excel (.xlsx)</label>
+            <input type="file" id="excelInput" accept=".xlsx,.xls" />
+            <div class="hint">
+              Le fichier doit contenir 3 colonnes : Numero, Nom, Note. La
+              premiere ligne doit etre un entete.
+            </div>
+            <div class="code-block">
+              Numero | Nom | Note 12345 | Ahmed Ould M. | 15 12346 | Fatima Mint
+              S. | 12.5
+            </div>
+          </div>
+          <button class="btn btn-block" id="importBtn">Importer</button>
+        </div>
+
+        <!-- TAB MANUAL -->
+        <div class="card tab-content" id="tab-manual">
+          <h2>Saisie manuelle</h2>
+          <div class="field">
+            <label>Numero etudiant</label>
+            <input type="text" id="manualNum" placeholder="Ex: 12345" />
+          </div>
+          <div class="field">
+            <label>Nom complet</label>
+            <input
+              type="text"
+              id="manualName"
+              placeholder="Ex: Ahmed Ould Mohamed"
+            />
+          </div>
+          <div class="row-2">
+            <div class="field">
+              <label>Matiere</label>
+              <select id="manualSubject"></select>
+            </div>
+            <div class="field">
+              <label>Type</label>
+              <select id="manualType">
+                <option value="Examen">Examen</option>
+                <option value="Controle continu">Controle continu</option>
+                <option value="TP">TP</option>
+                <option value="Rattrapage">Rattrapage</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label>Note (sur 20)</label>
+            <input
+              type="number"
+              id="manualNote"
+              min="0"
+              max="20"
+              step="0.25"
+              placeholder="Ex: 15.5"
+            />
+          </div>
+          <button class="btn btn-block" id="manualSaveBtn">Enregistrer</button>
+        </div>
+
+        <!-- TAB EXISTING -->
+        <div class="card tab-content" id="tab-existing">
+          <h2>Donnees existantes</h2>
+          <div class="row-2">
+            <div class="field">
+              <label>Filtrer par matiere</label>
+              <select id="filterSubject">
+                <option value="">-- Toutes --</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Filtrer par type</label>
+              <select id="filterType">
+                <option value="">-- Tous --</option>
+                <option value="Examen">Examen</option>
+                <option value="Controle continu">Controle continu</option>
+                <option value="TP">TP</option>
+                <option value="Rattrapage">Rattrapage</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn" id="refreshExistingBtn">Actualiser</button>
+          <button
+            class="btn btn-danger"
+            id="deleteFilteredBtn"
+            style="display: none"
+          >
+            Supprimer tout ce qui est filtre
+          </button>
+          <div id="existingTable">
+            <div class="loading">Cliquez sur "Actualiser"</div>
+          </div>
+        </div>
+
+        <!-- TAB TP -->
+        <div class="card tab-content" id="tab-tp">
+          <h2>Gestion des TP</h2>
+          <p class="hint" style="margin-bottom: 14px">
+            Cochez les matieres qui ont un TP. Les matieres non cochees
+            n'apparaitront pas dans le type "TP" et leur calcul de moyenne
+            utilisera seulement CC et Examen.
+          </p>
+          <button class="btn" id="loadTpBtn">Charger la liste</button>
+          <div id="tpContainer">
+            <div class="loading">Cliquez sur "Charger"</div>
+          </div>
+          <button class="btn btn-block" id="saveTpBtn" style="display: none">
+            Enregistrer les modifications
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="config.js"></script>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        push,
+        set,
+        get,
+        remove,
+        update,
+        child,
+      } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+      // ==================== CONFIG ====================
+      const firebaseConfig = window.FIREBASE_CONFIG;
+      const APPS_SCRIPT_URL = window.APPS_SCRIPT_URL;
+
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+
+      // ==================== STATE ====================
+      let currentDept = "";
+      let currentSem = "";
+      let structure = {};
+      let noTPSubjects = [];
+
+      // ==================== ELEMENTS ====================
+      const loginSection = document.getElementById("loginSection");
+      const appSection = document.getElementById("appSection");
+      const passwordInput = document.getElementById("passwordInput");
+      const loginBtn = document.getElementById("loginBtn");
+      const loginError = document.getElementById("loginError");
+      const logoutBtn = document.getElementById("logoutBtn");
+      const deptBadge = document.getElementById("deptBadge");
+      const semSelect = document.getElementById("semSelect");
+      const loadDataBtn = document.getElementById("loadDataBtn");
+      const subjectSelect = document.getElementById("subjectSelect");
+      const typeSelect = document.getElementById("typeSelect");
+      const excelInput = document.getElementById("excelInput");
+      const importBtn = document.getElementById("importBtn");
+      const manualNum = document.getElementById("manualNum");
+      const manualName = document.getElementById("manualName");
+      const manualSubject = document.getElementById("manualSubject");
+      const manualType = document.getElementById("manualType");
+      const manualNote = document.getElementById("manualNote");
+      const manualSaveBtn = document.getElementById("manualSaveBtn");
+      const filterSubject = document.getElementById("filterSubject");
+      const filterType = document.getElementById("filterType");
+      const refreshExistingBtn = document.getElementById("refreshExistingBtn");
+      const deleteFilteredBtn = document.getElementById("deleteFilteredBtn");
+      const existingTable = document.getElementById("existingTable");
+      const globalAlert = document.getElementById("globalAlert");
+      const loadTpBtn = document.getElementById("loadTpBtn");
+      const tpContainer = document.getElementById("tpContainer");
+      const saveTpBtn = document.getElementById("saveTpBtn");
+
+      // ==================== HELPERS ====================
+      function showAlert(msg, type) {
+        globalAlert.textContent = msg;
+        globalAlert.className = "alert show " + type;
+        setTimeout(() => {
+          globalAlert.className = "alert";
+        }, 5000);
+      }
+      function normalizeNumber(v) {
+        if (v === undefined || v === null || v === "") return null;
+        const s = String(v).replace(",", ".").trim();
+        const n = parseFloat(s);
+        return isNaN(n) ? null : n;
+      }
+      function cleanString(v) {
+        return String(v == null ? "" : v).trim();
+      }
+      function displayName(s) {
+        return String(s || "").replace(/_/g, " ");
+      }
+      function hasTP(subject) {
+        return !noTPSubjects.includes(subject);
+      }
+
+      // ==================== LOGIN ====================
+      loginBtn.addEventListener("click", doLogin);
+      passwordInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") doLogin();
+      });
+
+      async function doLogin() {
+        const pwd = passwordInput.value.trim().toUpperCase();
+        if (!pwd) {
+          loginError.textContent = "Entrez un mot de passe";
+          return;
+        }
+        loginBtn.disabled = true;
+        loginBtn.textContent = "Verification...";
+        loginError.textContent = "";
+
+        try {
+          const res = await fetch(APPS_SCRIPT_URL, {
+            method: "POST",
+            body: JSON.stringify({ action: "login", password: pwd }),
+          });
+          const data = await res.json();
+
+          if (!data.success) {
+            loginError.textContent = "Mot de passe incorrect";
+            loginBtn.disabled = false;
+            loginBtn.textContent = "Se connecter";
+            return;
+          }
+
+          currentDept = data.dept;
+          deptBadge.textContent = currentDept;
+          sessionStorage.setItem("dept", currentDept);
+          sessionStorage.setItem("pwd", pwd);
+
+          await loadStructure();
+          fillSemesters();
+          loginSection.style.display = "none";
+          appSection.style.display = "block";
+          onSemChange();
+        } catch (err) {
+          loginError.textContent = "Erreur reseau";
+          console.error(err);
+        } finally {
+          loginBtn.disabled = false;
+          loginBtn.textContent = "Se connecter";
+        }
+      }
+
+      logoutBtn.addEventListener("click", () => {
+        sessionStorage.clear();
+        location.reload();
+      });
+
+      // ==================== LOAD DATA ====================
+      async function loadStructure() {
+        const snap = await get(child(ref(db), "structure"));
+        structure = snap.exists() ? snap.val() : {};
+        const snapNoTP = await get(child(ref(db), "no_tp_subjects"));
+        noTPSubjects = snapNoTP.exists() ? snapNoTP.val() : [];
+      }
+
+      function fillSemesters() {
+        const deptStruct = structure[currentDept] || {};
+        const sems = Object.keys(deptStruct).sort();
+        semSelect.innerHTML = "";
+        if (sems.length === 0) {
+          const opt = document.createElement("option");
+          opt.value = "";
+          opt.textContent = "Aucun semestre defini";
+          semSelect.appendChild(opt);
+          return;
+        }
+        sems.forEach((s) => {
+          const opt = document.createElement("option");
+          opt.value = s;
+          opt.textContent = s;
+          semSelect.appendChild(opt);
+        });
+      }
+
+      function getSubjectsForCurrent() {
+        const deptStruct = structure[currentDept] || {};
+        const semStruct = deptStruct[currentSem] || {};
+        const subjects = [];
+        for (const modKey of Object.keys(semStruct)) {
+          const mod = semStruct[modKey];
+          for (const s of mod.subjects || []) {
+            if (!subjects.includes(s)) subjects.push(s);
+          }
+        }
+        return subjects;
+      }
+
+      function fillSubjects(includeNoTP = true) {
+        const all = getSubjectsForCurrent();
+        const filtered = includeNoTP ? all : all.filter(hasTP);
+        const options = filtered
+          .map((s) => `<option value="${s}">${displayName(s)}</option>`)
+          .join("");
+        return options || '<option value="">Aucune matiere</option>';
+      }
+
+      function refreshAllSubjectDropdowns() {
+        subjectSelect.innerHTML = fillSubjects(typeSelect.value !== "TP");
+        manualSubject.innerHTML = fillSubjects(manualType.value !== "TP");
+        filterSubject.innerHTML =
+          '<option value="">-- Toutes --</option>' + fillSubjects(true);
+      }
+
+      // ==================== SEMESTER CHANGE ====================
+      loadDataBtn.addEventListener("click", onSemChange);
+      semSelect.addEventListener("change", onSemChange);
+
+      function onSemChange() {
+        currentSem = semSelect.value;
+        if (!currentSem) return;
+        refreshAllSubjectDropdowns();
+        existingTable.innerHTML =
+          '<div class="loading">Cliquez sur "Actualiser"</div>';
+        deleteFilteredBtn.style.display = "none";
+      }
+
+      typeSelect.addEventListener("change", refreshAllSubjectDropdowns);
+      manualType.addEventListener("change", refreshAllSubjectDropdowns);
+
+      // ==================== TABS ====================
+      document.querySelectorAll(".tab-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document
+            .querySelectorAll(".tab-btn")
+            .forEach((b) => b.classList.remove("active"));
+          document
+            .querySelectorAll(".tab-content")
+            .forEach((c) => c.classList.remove("active"));
+          btn.classList.add("active");
+          document
+            .getElementById("tab-" + btn.dataset.tab)
+            .classList.add("active");
+        });
+      });
+
+      // ==================== FONCTION CENTRALE : UPSERT ====================
+      // Cherche une entree existante pour (num, subject, type)
+      // Si trouvee : met a jour la note. Sinon : cree une nouvelle entree.
+      async function upsertNote(numero, nom, subject, type, note) {
+        const basePath = `results/${currentDept}/${currentSem}/${numero}`;
+        const snap = await get(child(ref(db), basePath));
+
+        if (snap.exists()) {
+          const data = snap.val();
+          for (const key of Object.keys(data)) {
+            const e = data[key];
+            if (e.subject === subject && e.type === type) {
+              // Mise a jour
+              await update(ref(db, `${basePath}/${key}`), {
+                name: nom || e.name || "",
+                grade: note,
+              });
+              return "updated";
+            }
+          }
+        }
+
+        // Nouvelle entree
+        const newRef = push(ref(db, basePath));
+        await set(newRef, {
+          name: nom || "",
+          subject: subject,
+          type: type,
+          grade: note,
+        });
+        return "created";
+      }
+
+      // ==================== IMPORT EXCEL ====================
+      importBtn.addEventListener("click", async () => {
+        const subject = subjectSelect.value;
+        const type = typeSelect.value;
+        const file = excelInput.files[0];
+
+        if (!subject) {
+          showAlert("Choisissez une matiere", "error");
+          return;
+        }
+        if (!file) {
+          showAlert("Choisissez un fichier Excel", "error");
+          return;
+        }
+
+        if (type === "TP" && !hasTP(subject)) {
+          showAlert("Cette matiere n'a pas de TP", "error");
+          return;
+        }
+
+        importBtn.disabled = true;
+        importBtn.textContent = "Lecture...";
+
+        try {
+          const data = await readExcel(file);
+          if (data.length === 0) {
+            showAlert("Aucune donnee trouvee", "error");
+            return;
+          }
+
+          let created = 0,
+            updated = 0;
+          for (let i = 0; i < data.length; i++) {
+            const { numero, nom, note } = data[i];
+            if (!numero || note === null) continue;
+            importBtn.textContent = `Envoi ${i + 1}/${data.length}...`;
+            const r = await upsertNote(numero, nom, subject, type, note);
+            if (r === "updated") updated++;
+            else created++;
+          }
+
+          showAlert(
+            `Import termine : ${created} ajoutees, ${updated} mises a jour`,
+            "success",
+          );
+          excelInput.value = "";
+        } catch (err) {
+          console.error(err);
+          showAlert("Erreur : " + err.message, "error");
+        } finally {
+          importBtn.disabled = false;
+          importBtn.textContent = "Importer";
+        }
+      });
+
+      function readExcel(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            try {
+              const wb = XLSX.read(e.target.result, { type: "array" });
+              const sheet = wb.Sheets[wb.SheetNames[0]];
+              const json = XLSX.utils.sheet_to_json(sheet, {
+                header: 1,
+                defval: "",
+              });
+              if (json.length < 2) {
+                resolve([]);
+                return;
+              }
+              const rows = [];
+              for (let i = 1; i < json.length; i++) {
+                const r = json[i];
+                if (!r || r.length < 3) continue;
+                const numero = cleanString(r[0]);
+                const nom = cleanString(r[1]);
+                const note = normalizeNumber(r[2]);
+                if (!numero) continue;
+                rows.push({ numero, nom, note });
+              }
+              resolve(rows);
+            } catch (err) {
+              reject(err);
+            }
+          };
+          reader.onerror = reject;
+          reader.readAsArrayBuffer(file);
+        });
+      }
+
+      // ==================== SAISIE MANUELLE ====================
+      manualSaveBtn.addEventListener("click", async () => {
+        const numero = cleanString(manualNum.value);
+        const nom = cleanString(manualName.value);
+        const subject = manualSubject.value;
+        const type = manualType.value;
+        const note = normalizeNumber(manualNote.value);
+
+        if (!numero) {
+          showAlert("Numero etudiant requis", "error");
+          return;
+        }
+        if (!subject) {
+          showAlert("Matiere requise", "error");
+          return;
+        }
+        if (note === null || note < 0 || note > 20) {
+          showAlert("Note invalide (0-20)", "error");
+          return;
+        }
+        if (type === "TP" && !hasTP(subject)) {
+          showAlert("Cette matiere n'a pas de TP", "error");
+          return;
+        }
+
+        manualSaveBtn.disabled = true;
+        try {
+          const r = await upsertNote(numero, nom, subject, type, note);
+          showAlert(
+            r === "updated" ? "Note mise a jour" : "Note enregistree",
+            "success",
+          );
+          manualNote.value = "";
+        } catch (err) {
+          showAlert("Erreur : " + err.message, "error");
+        } finally {
+          manualSaveBtn.disabled = false;
+        }
+      });
+
+      // ==================== EXISTING DATA ====================
+      refreshExistingBtn.addEventListener("click", loadExisting);
+
+      async function loadExisting() {
+        refreshExistingBtn.disabled = true;
+        existingTable.innerHTML = '<div class="loading">Chargement...</div>';
+
+        try {
+          const snap = await get(
+            child(ref(db), `results/${currentDept}/${currentSem}`),
+          );
+          if (!snap.exists()) {
+            existingTable.innerHTML =
+              '<div class="loading">Aucune donnee</div>';
+            deleteFilteredBtn.style.display = "none";
+            return;
+          }
+
+          const data = snap.val();
+          const filterSub = filterSubject.value;
+          const filterTyp = filterType.value;
+
+          // Regrouper par (subject + type)
+          const groups = {};
+          for (const num of Object.keys(data)) {
+            for (const key of Object.keys(data[num])) {
+              const e = data[num][key];
+              if (!e.subject || !e.type) continue;
+              if (filterSub && e.subject !== filterSub) continue;
+              if (filterTyp && e.type !== filterTyp) continue;
+              const gkey = e.subject + "||" + e.type;
+              if (!groups[gkey])
+                groups[gkey] = {
+                  subject: e.subject,
+                  type: e.type,
+                  students: [],
+                };
+              groups[gkey].students.push({
+                num,
+                key,
+                name: e.name,
+                grade: e.grade,
+              });
+            }
+          }
+
+          const groupKeys = Object.keys(groups);
+          if (groupKeys.length === 0) {
+            existingTable.innerHTML =
+              '<div class="loading">Aucune donnee pour ce filtre</div>';
+            deleteFilteredBtn.style.display = "none";
+            return;
+          }
+
+          let html = "";
+          for (const gk of groupKeys) {
+            const g = groups[gk];
+            html += `
+            <div class="import-group">
+              <div class="import-group-header">
+                <div class="info">
+                  <strong>${displayName(g.subject)}</strong>
+                  <span class="badge">${g.type}</span>
+                  <span style="margin-left:8px; color:var(--c-text-soft);">${g.students.length} etudiant(s)</span>
+                </div>
+                <button class="btn btn-danger btn-sm" data-delete-group="${gk}">Supprimer ce lot</button>
+              </div>
+              <div class="import-group-body">
+                <table>
+                  <thead><tr><th>Numero</th><th>Nom</th><th>Note</th><th></th></tr></thead>
+                  <tbody>
+                    ${g.students
+                      .sort((a, b) =>
+                        String(a.num).localeCompare(String(b.num)),
+                      )
+                      .map(
+                        (s) => `
+                      <tr>
+                        <td>${s.num}</td>
+                        <td>${s.name || "-"}</td>
+                        <td><strong>${s.grade}</strong></td>
+                        <td><button class="btn btn-danger btn-sm small-btn-icon" data-num="${s.num}" data-key="${s.key}">X</button></td>
+                      </tr>
+                    `,
+                      )
+                      .join("")}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `;
+          }
+          existingTable.innerHTML = html;
+          deleteFilteredBtn.style.display = "inline-block";
+
+          // Handlers
+          existingTable.querySelectorAll("[data-num]").forEach((btn) => {
+            btn.addEventListener("click", () =>
+              deleteRow(btn.dataset.num, btn.dataset.key),
+            );
+          });
+          existingTable
+            .querySelectorAll("[data-delete-group]")
+            .forEach((btn) => {
+              btn.addEventListener("click", () =>
+                deleteGroup(btn.dataset.deleteGroup, groups),
+              );
+            });
+        } catch (err) {
+          existingTable.innerHTML =
+            '<div class="loading">Erreur : ' + err.message + "</div>";
+        } finally {
+          refreshExistingBtn.disabled = false;
+        }
+      }
+
+      async function deleteRow(num, key) {
+        if (!confirm("Supprimer cette note ?")) return;
+        try {
+          await remove(
+            ref(db, `results/${currentDept}/${currentSem}/${num}/${key}`),
+          );
+          loadExisting();
+        } catch (err) {
+          showAlert("Erreur : " + err.message, "error");
+        }
+      }
+
+      async function deleteGroup(gk, groups) {
+        const g = groups[gk];
+        if (
+          !confirm(
+            `Supprimer ${g.students.length} notes de ${displayName(g.subject)} (${g.type}) ?`,
+          )
+        )
+          return;
+        try {
+          for (const s of g.students) {
+            await remove(
+              ref(db, `results/${currentDept}/${currentSem}/${s.num}/${s.key}`),
+            );
+          }
+          showAlert("Lot supprime", "success");
+          loadExisting();
+        } catch (err) {
+          showAlert("Erreur : " + err.message, "error");
+        }
+      }
+
+      deleteFilteredBtn.addEventListener("click", async () => {
+        const filterSub = filterSubject.value;
+        const filterTyp = filterType.value;
+        if (!filterSub && !filterTyp) {
+          showAlert("Choisissez au moins un filtre", "error");
+          return;
+        }
+        if (
+          !confirm("Supprimer TOUTES les notes qui correspondent au filtre ?")
+        )
+          return;
+        try {
+          const snap = await get(
+            child(ref(db), `results/${currentDept}/${currentSem}`),
+          );
+          if (!snap.exists()) return;
+          const data = snap.val();
+          let count = 0;
+          for (const num of Object.keys(data)) {
+            for (const key of Object.keys(data[num])) {
+              const e = data[num][key];
+              if (filterSub && e.subject !== filterSub) continue;
+              if (filterTyp && e.type !== filterTyp) continue;
+              await remove(
+                ref(db, `results/${currentDept}/${currentSem}/${num}/${key}`),
+              );
+              count++;
+            }
+          }
+          showAlert(count + " notes supprimees", "success");
+          loadExisting();
+        } catch (err) {
+          showAlert("Erreur : " + err.message, "error");
+        }
+      });
+
+      // ==================== GESTION TP ====================
+      loadTpBtn.addEventListener("click", loadTpList);
+
+      function loadTpList() {
+        const all = getSubjectsForCurrent();
+        if (all.length === 0) {
+          tpContainer.innerHTML =
+            '<div class="loading">Aucune matiere pour ce semestre</div>';
+          saveTpBtn.style.display = "none";
+          return;
+        }
+
+        let html = '<div class="tp-list">';
+        for (const s of all) {
+          const checked = hasTP(s) ? "checked" : "";
+          const cls = hasTP(s) ? "" : "no-tp";
+          html += `
+          <div class="tp-item ${cls}">
+            <input type="checkbox" id="tp-${s}" data-subject="${s}" ${checked}>
+            <label for="tp-${s}">${displayName(s)}</label>
+          </div>
+        `;
+        }
+        html += "</div>";
+        tpContainer.innerHTML = html;
+        saveTpBtn.style.display = "block";
+      }
+
+      saveTpBtn.addEventListener("click", async () => {
+        saveTpBtn.disabled = true;
+        try {
+          const all = getSubjectsForCurrent();
+          const newNoTP = [];
+          // Conserver les no-TP des autres semestres/depts
+          for (const s of noTPSubjects) {
+            if (!all.includes(s)) newNoTP.push(s);
+          }
+          // Ajouter ceux decoches ici
+          for (const s of all) {
+            const cb = document.getElementById("tp-" + s);
+            if (cb && !cb.checked) newNoTP.push(s);
+          }
+          // Deduplicate
+          const unique = [...new Set(newNoTP)];
+          await set(ref(db, "no_tp_subjects"), unique);
+          noTPSubjects = unique;
+          showAlert("Liste TP mise a jour", "success");
+          refreshAllSubjectDropdowns();
+        } catch (err) {
+          showAlert("Erreur : " + err.message, "error");
+        } finally {
+          saveTpBtn.disabled = false;
+        }
+      });
+
+      // ==================== AUTO LOGIN ====================
+      (async function init() {
+        const savedDept = sessionStorage.getItem("dept");
+        if (savedDept) {
+          currentDept = savedDept;
+          deptBadge.textContent = savedDept;
+          await loadStructure();
+          fillSemesters();
+          loginSection.style.display = "none";
+          appSection.style.display = "block";
+          onSemChange();
+        }
+      })();
+    </script>
+  </body>
+</html>
