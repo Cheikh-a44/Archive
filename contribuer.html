@@ -2,304 +2,629 @@
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Contribuer — ESAV</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <title>Contribuer - ESAV</title>
+    <meta name="description" content="Contribuez un fichier a ESAV." />
     <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700;800&family=Poppins:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
     <style>
-      .form-container {
-        max-width: 620px;
-        margin: 30px auto;
-        padding: 30px;
-        background: #fff;
-        border-radius: 16px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      }
-      .form-container h1 {
-        color: #0a7ea4;
-        margin-bottom: 8px;
-        font-size: 24px;
-      }
-      .form-container p.subtitle {
-        color: #666;
-        margin-bottom: 24px;
-        font-size: 14px;
-        line-height: 1.5;
-      }
-      .form-group {
-        margin-bottom: 18px;
-      }
-      .form-group label {
-        display: block;
-        margin-bottom: 6px;
-        font-weight: 600;
-        font-size: 14px;
-        color: #222;
-      }
-      .form-group input,
-      .form-group select {
-        width: 100%;
-        padding: 12px 14px;
-        border: 1.5px solid #e0e0e0;
-        border-radius: 10px;
-        font-size: 14px;
-        font-family: inherit;
-        outline: none;
-        transition: border-color 0.2s;
-        box-sizing: border-box;
-        background: #fff;
-      }
-      .form-group input:focus,
-      .form-group select:focus {
-        border-color: #0a7ea4;
+      :root {
+        --c-primary: #0a7ea4;
+        --c-primary-dark: #065a75;
+        --c-primary-light: #e6f4f9;
+        --c-text: #1e293b;
+        --c-text-soft: #64748b;
+        --c-border: #e2e8f0;
+        --c-bg: #f4f8fb;
+        --c-white: #ffffff;
+        --c-success: #16a34a;
+        --c-success-bg: #dcfce7;
+        --c-error: #dc2626;
+        --c-error-bg: #fee2e2;
+        --radius-lg: 18px;
+        --radius-md: 12px;
+        --radius-sm: 10px;
+        --shadow-soft: 0 4px 24px rgba(10, 126, 164, 0.08);
+        --shadow-hover: 0 8px 32px rgba(10, 126, 164, 0.15);
       }
 
-      .drop-zone {
-        border: 2px dashed #ccc;
-        border-radius: 12px;
-        padding: 30px 20px;
-        text-align: center;
-        cursor: pointer;
-        transition: all 0.2s;
-        background: #fafafa;
-      }
-      .drop-zone:hover,
-      .drop-zone.dragover {
-        border-color: #0a7ea4;
-        background: #f0f9fc;
-      }
-      .drop-zone.has-file {
-        border-color: #28a745;
-        background: #f0fff4;
-      }
-      .drop-zone .icon {
-        font-size: 40px;
-        margin-bottom: 8px;
-      }
-      .drop-zone .text {
-        font-size: 14px;
-        color: #555;
-      }
-      .drop-zone .hint {
-        font-size: 12px;
-        color: #999;
-        margin-top: 6px;
+      body {
+        margin: 0;
+        background: var(--c-bg);
+        color: var(--c-text);
+        font-family:
+          "Poppins",
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
       }
 
-      .file-info {
+      .contrib-header {
+        background: var(--c-white);
+        box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      .contrib-header .container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 16px 20px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-top: 10px;
-        padding: 12px;
-        background: #f0fff4;
+      }
+      .contrib-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        color: var(--c-primary);
+        font-family: "League Spartan", sans-serif;
+        font-weight: 800;
+        font-size: 22px;
+        letter-spacing: 2px;
+      }
+      .contrib-logo-text {
+        color: var(--c-primary);
+      }
+      .contrib-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 9px 16px;
+        background: var(--c-primary-light);
+        color: var(--c-primary);
+        text-decoration: none;
         border-radius: 10px;
-        font-size: 13px;
-      }
-      .file-info .name {
         font-weight: 600;
-        color: #222;
-        word-break: break-all;
+        font-size: 13px;
+        transition: all 0.2s ease;
       }
-      .file-info .size {
-        color: #666;
-        font-size: 12px;
-        margin-left: 10px;
-      }
-      .file-info .remove {
-        background: #dc3545;
+      .contrib-back:hover {
+        background: var(--c-primary);
         color: #fff;
-        border: none;
-        border-radius: 6px;
-        padding: 4px 10px;
-        cursor: pointer;
-        font-size: 12px;
-        margin-left: 10px;
       }
 
-      .btn-submit {
+      .contrib-main {
+        flex: 1;
+        padding: 32px 20px 60px;
+      }
+      .contrib-container {
+        max-width: 680px;
+        margin: 0 auto;
+      }
+
+      .contrib-intro {
+        text-align: center;
+        margin-bottom: 28px;
+      }
+      .contrib-icon {
+        width: 64px;
+        height: 64px;
+        margin: 0 auto 14px;
+        background: var(--c-primary-light);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .contrib-icon svg {
+        width: 30px;
+        height: 30px;
+        stroke: var(--c-primary);
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .contrib-title {
+        font-family: "League Spartan", sans-serif;
+        font-weight: 800;
+        font-size: 28px;
+        color: var(--c-text);
+        margin: 0 0 8px;
+        letter-spacing: 0.5px;
+      }
+      .contrib-subtitle {
+        color: var(--c-text-soft);
+        font-size: 14px;
+        line-height: 1.6;
+        margin: 0 auto;
+        max-width: 480px;
+      }
+
+      .contrib-card {
+        background: var(--c-white);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-soft);
+        padding: 32px 28px;
+      }
+
+      .contrib-field {
+        margin-bottom: 20px;
+      }
+      .contrib-label {
+        display: block;
+        margin-bottom: 8px;
+        font-family: "League Spartan", sans-serif;
+        font-weight: 600;
+        font-size: 14px;
+        color: var(--c-text);
+      }
+      .contrib-label .req {
+        color: var(--c-primary);
+      }
+      .contrib-input,
+      .contrib-select {
         width: 100%;
-        padding: 14px;
-        background: #0a7ea4;
+        padding: 13px 16px;
+        border: 1.5px solid var(--c-border);
+        border-radius: var(--radius-md);
+        font-size: 14px;
+        font-family: inherit;
+        color: var(--c-text);
+        background: var(--c-white);
+        outline: none;
+        transition: all 0.2s ease;
+        box-sizing: border-box;
+        appearance: none;
+        -webkit-appearance: none;
+      }
+      .contrib-select {
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230a7ea4' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 14px center;
+        background-size: 16px;
+        padding-right: 42px;
+        cursor: pointer;
+      }
+      .contrib-input:focus,
+      .contrib-select:focus {
+        border-color: var(--c-primary);
+        box-shadow: 0 0 0 4px rgba(10, 126, 164, 0.1);
+      }
+      .contrib-input::placeholder {
+        color: #94a3b8;
+      }
+
+      .contrib-drop {
+        border: 2px dashed #cbd5e1;
+        border-radius: var(--radius-md);
+        padding: 32px 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        background: #fafcfd;
+      }
+      .contrib-drop:hover,
+      .contrib-drop.dragover {
+        border-color: var(--c-primary);
+        background: var(--c-primary-light);
+        transform: translateY(-1px);
+      }
+      .contrib-drop.has-file {
+        border-color: var(--c-success);
+        border-style: solid;
+        background: var(--c-success-bg);
+      }
+      .contrib-drop-icon {
+        display: block;
+        width: 40px;
+        height: 40px;
+        margin: 0 auto 8px;
+      }
+      .contrib-drop-icon svg {
+        width: 100%;
+        height: 100%;
+        stroke: var(--c-primary);
+        fill: none;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .contrib-drop-text {
+        font-size: 14px;
+        color: var(--c-text);
+        font-weight: 500;
+        line-height: 1.5;
+      }
+      .contrib-drop-text strong {
+        color: var(--c-primary);
+        font-weight: 600;
+      }
+      .contrib-drop-hint {
+        font-size: 12px;
+        color: var(--c-text-soft);
+        margin-top: 8px;
+        line-height: 1.5;
+      }
+
+      .contrib-file-info {
+        display: none;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 12px;
+        padding: 12px 14px;
+        background: var(--c-success-bg);
+        border-radius: var(--radius-md);
+        font-size: 13px;
+        gap: 10px;
+      }
+      .contrib-file-info.show {
+        display: flex;
+      }
+      .contrib-file-info .meta {
+        flex: 1;
+        min-width: 0;
+      }
+      .contrib-file-info .fname {
+        font-weight: 600;
+        color: var(--c-text);
+        word-break: break-all;
+        display: block;
+      }
+      .contrib-file-info .fsize {
+        color: var(--c-text-soft);
+        font-size: 12px;
+        margin-top: 2px;
+        display: block;
+      }
+      .contrib-file-remove {
+        background: var(--c-error);
         color: #fff;
         border: none;
-        border-radius: 10px;
-        font-size: 16px;
-        font-weight: 600;
+        border-radius: 8px;
+        width: 30px;
+        height: 30px;
         cursor: pointer;
+        font-size: 14px;
+        font-weight: 700;
+        flex-shrink: 0;
         transition: opacity 0.2s;
       }
-      .btn-submit:hover {
-        opacity: 0.9;
+      .contrib-file-remove:hover {
+        opacity: 0.85;
       }
-      .btn-submit:disabled {
-        opacity: 0.5;
+
+      .contrib-submit {
+        width: 100%;
+        padding: 15px;
+        background: var(--c-primary);
+        color: #fff;
+        border: none;
+        border-radius: var(--radius-md);
+        font-size: 15px;
+        font-weight: 700;
+        font-family: "League Spartan", sans-serif;
+        letter-spacing: 0.5px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        margin-top: 8px;
+      }
+      .contrib-submit:hover:not(:disabled) {
+        background: var(--c-primary-dark);
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-hover);
+      }
+      .contrib-submit:disabled {
+        opacity: 0.6;
         cursor: not-allowed;
+        transform: none;
       }
 
-      .back-link {
-        display: inline-block;
+      .contrib-alert {
+        padding: 14px 16px;
+        border-radius: var(--radius-md);
         margin-bottom: 20px;
-        color: #0a7ea4;
-        text-decoration: none;
-        font-weight: 600;
         font-size: 14px;
+        font-weight: 500;
+        display: none;
+        line-height: 1.5;
       }
-      .alert {
-        padding: 14px;
-        border-radius: 10px;
-        margin-bottom: 20px;
-        font-size: 14px;
+      .contrib-alert.success {
+        background: var(--c-success-bg);
+        color: #166534;
+        display: block;
+        border-left: 4px solid var(--c-success);
+      }
+      .contrib-alert.error {
+        background: var(--c-error-bg);
+        color: #991b1b;
+        display: block;
+        border-left: 4px solid var(--c-error);
+      }
+
+      .contrib-progress {
+        margin-top: 14px;
         display: none;
       }
-      .alert.success {
-        background: #d4edda;
-        color: #155724;
+      .contrib-progress.show {
         display: block;
       }
-      .alert.error {
-        background: #f8d7da;
-        color: #721c24;
-        display: block;
-      }
-
-      .progress-bar {
-        height: 8px;
-        background: #e0e0e0;
+      .contrib-progress-bar {
+        height: 6px;
+        background: #e2e8f0;
         border-radius: 4px;
-        margin-top: 12px;
         overflow: hidden;
-        display: none;
       }
-      .progress-bar .fill {
+      .contrib-progress-fill {
         height: 100%;
         width: 0%;
-        background: #0a7ea4;
-        transition: width 0.2s;
+        background: linear-gradient(
+          90deg,
+          var(--c-primary),
+          var(--c-primary-dark)
+        );
+        border-radius: 4px;
+        transition: width 0.3s ease;
       }
-      .progress-text {
+      .contrib-progress-text {
         font-size: 12px;
-        color: #0a7ea4;
-        margin-top: 6px;
+        color: var(--c-primary);
         text-align: center;
-        display: none;
+        margin-top: 8px;
         font-weight: 600;
+      }
+
+      .contrib-footer {
+        background: #0f172a;
+        color: #cbd5e1;
+        padding: 32px 20px 20px;
+        margin-top: auto;
+      }
+      .contrib-footer-container {
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+      .contrib-footer-brand {
+        text-align: center;
+        padding-bottom: 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        margin-bottom: 20px;
+      }
+      .contrib-footer-logo {
+        font-family: "League Spartan", sans-serif;
+        font-weight: 800;
+        font-size: 22px;
+        color: #fff;
+        letter-spacing: 3px;
+        margin-bottom: 8px;
+      }
+      .contrib-footer-brand p {
+        margin: 0 auto;
+        font-size: 13px;
+        line-height: 1.6;
+        max-width: 500px;
+      }
+      .contrib-footer-bottom {
+        text-align: center;
+        font-size: 12px;
+        color: #94a3b8;
+      }
+      .contrib-footer-bottom a {
+        color: var(--c-primary);
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      @media (max-width: 600px) {
+        .contrib-main {
+          padding: 20px 14px 40px;
+        }
+        .contrib-card {
+          padding: 24px 18px;
+          border-radius: 14px;
+        }
+        .contrib-title {
+          font-size: 23px;
+        }
+        .contrib-header .container {
+          padding: 12px 14px;
+        }
+        .contrib-back {
+          padding: 8px 12px;
+          font-size: 12px;
+        }
+        .contrib-logo {
+          font-size: 19px;
+        }
+        .contrib-drop {
+          padding: 24px 14px;
+        }
       }
     </style>
   </head>
   <body>
-    <div class="form-container">
-      <a href="index.html" class="back-link">← Retour</a>
-      <h1>📤 Contribuer un fichier</h1>
-      <p class="subtitle">
-        Choisissez un fichier depuis votre appareil. Votre contribution sera
-        vérifiée avant publication. Max: <strong>50 MB</strong> (PDF, DOC, PPT,
-        XLS, images).
-      </p>
+    <header class="contrib-header">
+      <div class="container">
+        <a href="index.html" class="contrib-logo">
+          <span class="contrib-logo-text">ESAV</span>
+        </a>
+        <a href="index.html" class="contrib-back">Retour a l'accueil</a>
+      </div>
+    </header>
 
-      <div id="alert" class="alert"></div>
-
-      <form id="contribForm">
-        <!-- المستوى -->
-        <div class="form-group">
-          <label>Niveau & Semestre *</label>
-          <select id="level" required>
-            <option value="">— Choisir —</option>
-            <option value="S1">S1</option>
-            <option value="S2">S2</option>
-            <option value="S3">S3</option>
-            <option value="S4">S4</option>
-            <option value="S5">S5</option>
-            <option value="S6">S6</option>
-          </select>
+    <main class="contrib-main">
+      <div class="contrib-container">
+        <div class="contrib-intro">
+          <div class="contrib-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="17 8 12 3 7 8" />
+              <line x1="12" y1="3" x2="12" y2="15" />
+            </svg>
+          </div>
+          <h1 class="contrib-title">Contribuer un fichier</h1>
+          <p class="contrib-subtitle">
+            Partagez un cours, TD, devoir ou examen. Votre contribution sera
+            verifiee avant d'etre publiee. Formats acceptes : PDF, DOC, PPT,
+            XLS, images - max <strong>50 MB</strong>.
+          </p>
         </div>
 
-        <!-- القسم (يظهر فقط لـ S3-S6) -->
-        <div class="form-group" id="deptGroup" style="display: none">
-          <label>Département *</label>
-          <select id="dept">
-            <option value="">— Choisir —</option>
-            <option value="PPV">PPV</option>
-            <option value="GAB">GAB</option>
-            <option value="GEM">GEM</option>
-            <option value="PSA">PSA</option>
-            <option value="STA">STA</option>
-          </select>
-        </div>
+        <div id="alert" class="contrib-alert"></div>
 
-        <!-- المادة (قائمة منسدلة تتعبأ تلقائياً) -->
-        <div class="form-group" id="subjectGroup" style="display: none">
-          <label>Matière *</label>
-          <select id="subject" required>
-            <option value="">— Choisir —</option>
-          </select>
-        </div>
+        <form class="contrib-card" id="contribForm">
+          <div class="contrib-field">
+            <label class="contrib-label" for="level">
+              Niveau et Semestre <span class="req">*</span>
+            </label>
+            <select id="level" class="contrib-select" required>
+              <option value="">- Choisir -</option>
+              <option value="S1">S1</option>
+              <option value="S2">S2</option>
+              <option value="S3">S3</option>
+              <option value="S4">S4</option>
+              <option value="S5">S5</option>
+              <option value="S6">S6</option>
+            </select>
+          </div>
 
-        <!-- وجه GEM (يظهر فقط عند اختيار GEM في S2) -->
-        <div class="form-group" id="gemAspectGroup" style="display: none">
-          <label>Aspect GEM *</label>
-          <select id="gemAspect">
-            <option value="">— Choisir —</option>
-            <option value="Dessin">Dessin</option>
-            <option value="Electricite">Électricité</option>
-          </select>
-        </div>
+          <div class="contrib-field" id="deptGroup" style="display: none">
+            <label class="contrib-label" for="dept">
+              Departement <span class="req">*</span>
+            </label>
+            <select id="dept" class="contrib-select">
+              <option value="">- Choisir -</option>
+              <option value="PPV">PPV</option>
+              <option value="GAB">GAB</option>
+              <option value="GEM">GEM</option>
+              <option value="PSA">PSA</option>
+              <option value="STA">STA</option>
+            </select>
+          </div>
 
-        <!-- نوع الملف -->
-        <div class="form-group">
-          <label>Type de fichier *</label>
-          <select id="type" required>
-            <option value="">— Choisir —</option>
-            <option value="Cours">Cours</option>
-            <option value="TD">TD</option>
-            <option value="Devoirs">Devoirs</option>
-            <option value="Examens">Examens</option>
-          </select>
-        </div>
+          <div class="contrib-field" id="subjectGroup" style="display: none">
+            <label class="contrib-label" for="subject">
+              Matiere <span class="req">*</span>
+            </label>
+            <select id="subject" class="contrib-select" required>
+              <option value="">- Choisir -</option>
+            </select>
+          </div>
 
-        <!-- اختيار الملف -->
-        <div class="form-group">
-          <label>Fichier *</label>
-          <div class="drop-zone" id="dropZone">
-            <div class="icon">📎</div>
-            <div class="text">
-              Cliquez pour choisir un fichier<br />ou glissez-déposez ici
+          <div class="contrib-field" id="gemAspectGroup" style="display: none">
+            <label class="contrib-label" for="gemAspect">
+              Aspect GEM <span class="req">*</span>
+            </label>
+            <select id="gemAspect" class="contrib-select">
+              <option value="">- Choisir -</option>
+              <option value="Dessin">Dessin</option>
+              <option value="Electricite">Electricite</option>
+            </select>
+          </div>
+
+          <div class="contrib-field">
+            <label class="contrib-label" for="type">
+              Type de fichier <span class="req">*</span>
+            </label>
+            <select id="type" class="contrib-select" required>
+              <option value="">- Choisir -</option>
+              <option value="Cours">Cours</option>
+              <option value="TD">TD</option>
+              <option value="Devoirs">Devoirs</option>
+              <option value="Examens">Examens</option>
+            </select>
+          </div>
+
+          <div class="contrib-field">
+            <label class="contrib-label">
+              Fichier <span class="req">*</span>
+            </label>
+            <div class="contrib-drop" id="dropZone">
+              <span class="contrib-drop-icon">
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"
+                  />
+                </svg>
+              </span>
+              <div class="contrib-drop-text" id="dropText">
+                <strong>Cliquez</strong> pour choisir un fichier<br />
+                ou glissez-deposez ici
+              </div>
+              <div class="contrib-drop-hint">
+                PDF - DOC - DOCX - PPT - PPTX - XLS - XLSX - JPG - PNG - Max 50
+                MB
+              </div>
             </div>
-            <div class="hint">
-              PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX, JPG, PNG — Max 50 MB
+            <input
+              type="file"
+              id="fileInput"
+              style="display: none"
+              accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.jpg,.jpeg,.png,.txt"
+            />
+            <div class="contrib-file-info" id="fileInfo">
+              <div class="meta">
+                <span class="fname" id="fileName">-</span>
+                <span class="fsize" id="fileSize"></span>
+              </div>
+              <button type="button" class="contrib-file-remove" id="removeFile">
+                X
+              </button>
             </div>
           </div>
-          <input
-            type="file"
-            id="fileInput"
-            style="display: none"
-            accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.jpg,.jpeg,.png,.txt"
-          />
-          <div class="file-info" id="fileInfo" style="display: none">
-            <div>
-              <span class="name" id="fileName">—</span>
-              <span class="size" id="fileSize"></span>
-            </div>
-            <button type="button" class="remove" id="removeFile">✕</button>
+
+          <div class="contrib-field">
+            <label class="contrib-label" for="author"
+              >Votre nom (optionnel)</label
+            >
+            <input
+              type="text"
+              id="author"
+              class="contrib-input"
+              placeholder="Ex : Ahmed M."
+              autocomplete="name"
+            />
           </div>
-        </div>
 
-        <!-- اسم المساهم -->
-        <div class="form-group">
-          <label>Votre nom (optionnel)</label>
-          <input type="text" id="author" placeholder="Ex: Ahmed M." />
-        </div>
+          <button type="submit" class="contrib-submit" id="submitBtn">
+            Envoyer la contribution
+          </button>
 
-        <!-- زر الإرسال -->
-        <button type="submit" class="btn-submit" id="submitBtn">
-          Envoyer la contribution
-        </button>
+          <div class="contrib-progress" id="progressBar">
+            <div class="contrib-progress-bar">
+              <div class="contrib-progress-fill" id="progressFill"></div>
+            </div>
+            <div class="contrib-progress-text" id="progressText"></div>
+          </div>
+        </form>
+      </div>
+    </main>
 
-        <div class="progress-bar" id="progressBar">
-          <div class="fill" id="progressFill"></div>
+    <footer class="contrib-footer">
+      <div class="contrib-footer-container">
+        <div class="contrib-footer-brand">
+          <div class="contrib-footer-logo">ESAV</div>
+          <p>
+            Cours, TD, devoirs et examens, organises par semestre et matiere
+            pour faciliter le travail des etudiants.
+          </p>
         </div>
-        <div class="progress-text" id="progressText"></div>
-      </form>
-    </div>
+        <div class="contrib-footer-bottom">
+          Developpe par
+          <a href="https://github.com/Cheikh-a44" target="_blank" rel="noopener"
+            >Cheikh Ahmedou</a
+          >
+        </div>
+      </div>
+    </footer>
+
+    <!-- Config centralisee -->
+    <script src="config.js"></script>
 
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -310,41 +635,23 @@
         set,
       } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-      // =================================================================
-      //  إعدادات Firebase (من main.js)
-      // =================================================================
-      const firebaseConfig = {
-        apiKey: "AIzaSyDnrW6WnmbEFpbWzlW9IGglxAafajt2Kyo",
-        authDomain: "iset-b9974.firebaseapp.com",
-        databaseURL: "https://iset-b9974-default-rtdb.firebaseio.com",
-        projectId: "iset-b9974",
-        storageBucket: "iset-b9974.firebasestorage.app",
-        messagingSenderId: "1054170284751",
-        appId: "1:1054170284751:web:8f02232478430d5ae2adba",
-      };
+      // Lecture depuis config.js
+      const firebaseConfig = window.FIREBASE_CONFIG;
+      const APPS_SCRIPT_URL = window.APPS_SCRIPT_URL;
+      const SECRET_KEY = window.APPS_SCRIPT_SECRET;
 
-      // =================================================================
-      //   عدّل هذين السطرين
-      // =================================================================
-      const APPS_SCRIPT_URL =
-        "https://script.google.com/macros/s/AKfycbyXvPZNlWemdTHFHaBd29UTKJcuVKtMP3kuQv1QIH3__ZMP8Ydwqf0vwj65NlfFtMAZ/exec";
-      const SECRET_KEY = "ESAV_2026_cheikha44_37635859_ch";
-
-      // =================================================================
-      //  المواد (منسوخة حرفياً من main.js)
-      // =================================================================
       const SUBJECT_NAMES = {
-        Math: "Mathématiques",
+        Math: "Mathematiques",
         Physique: "Physique",
         Chimie: "Chimie",
         Anglais: "Anglais",
-        Francais: "Français",
+        Francais: "Francais",
         Biologie: "Biologie",
         Microbiologie: "Microbiologie",
-        Genetique: "Génétique",
+        Genetique: "Genetique",
         Informatique: "Informatique",
         Statistique: "Statistique",
-        Francais2: "Français 2",
+        Francais2: "Francais 2",
         Anglais2: "Anglais 2",
         GEM: "GEM",
         GAB: "GAB",
@@ -352,62 +659,62 @@
         TIC: "TIC",
         STA: "STA",
         PSA: "PSA",
-        Francais3: "Français 3",
-        EconomieGestion: "Économie et Gestion",
+        Francais3: "Francais 3",
+        EconomieGestion: "Economie et Gestion",
         Agronomie: "Agronomie",
         Horticulture: "Horticulture",
         Pesticides: "Pesticides",
         Entomologie: "Entomologie",
         ScienceSols: "Science des Sols",
         SciencePlantes: "Science des Plantes",
-        ResistanceMateriaux: "Résistance de matériaux",
-        EnergieRenouvelable: "Énergie renouvelable",
+        ResistanceMateriaux: "Resistance de materiaux",
+        EnergieRenouvelable: "Energie renouvelable",
         Environnement: "Environnement",
         Topographie: "Topographie",
         DAO: "DAO",
-        MecaniqueFluides: "Mécanique de fluides",
+        MecaniqueFluides: "Mecanique de fluides",
         ChimieEau: "Chimie de l'eau",
         Automatique: "Automatique",
         Automatisme: "Automatisme",
-        ProcedeFabrication: "Procédé de fabrication mécanique",
-        Electronique: "Électronique",
+        ProcedeFabrication: "Procede de fabrication mecanique",
+        Electronique: "Electronique",
         DessinIndustriel: "Dessin industriel",
-        ResistanceMateriauxGEM: "Résistance de matériaux",
-        SchemasCablage: "Schémas et câblage électrique",
+        ResistanceMateriauxGEM: "Resistance de materiaux",
+        SchemasCablage: "Schemas et cablage electrique",
         Vulgarisation: "Vulgarisation",
         TechniquePropagation: "Technique de propagation",
         TechniqueIrrigation: "Technique d'irrigation",
-        Ecophysiologie: "Ecophysiologie végétale",
+        Ecophysiologie: "Ecophysiologie vegetale",
         BiochimieStructurale: "Biochimie structurale",
-        FertiliteSol: "Fertilité du sol",
-        MethodesDiagnostic: "Méthodes de diagnostic",
+        FertiliteSol: "Fertilite du sol",
+        MethodesDiagnostic: "Methodes de diagnostic",
         Malherbologie: "Malherbologie",
         BesoinEau: "Besoin en eau",
-        SciencesMateriaux: "Sciences de matériaux",
-        TechnologieConstruction: "Technologie de construction mécanique",
-        Metrologie: "Métrologie capteur instrumentation",
-        Refrigeration: "Réfrigération climatisation ventilation",
-        Electrotechnique: "Électrotechnique",
-        MoteurCombustion: "Moteur à combustion interne",
-        DroitSanteSecurite: "Droit Santé et sécurité au travail",
+        SciencesMateriaux: "Sciences de materiaux",
+        TechnologieConstruction: "Technologie de construction mecanique",
+        Metrologie: "Metrologie capteur instrumentation",
+        Refrigeration: "Refrigeration climatisation ventilation",
+        Electrotechnique: "Electrotechnique",
+        MoteurCombustion: "Moteur a combustion interne",
+        DroitSanteSecurite: "Droit Sante et securite au travail",
         TechniqueGestionEntrepreneuriat:
           "Technique de gestion et entreprenariat",
-        SystemeProduction: "Système de Production",
+        SystemeProduction: "Systeme de Production",
         Arboriculture: "Arboriculture",
         ConduiteCalibrage: "Conduite et Calibrage",
         Phytopathologie1: "Phytopathologie 1",
         GestionConservationSolEau: "Gestion et conservation du sol et de l'eau",
-        EnnemisCultures: "Ennemis des cultures et lutte intégrée",
+        EnnemisCultures: "Ennemis des cultures et lutte integree",
         PaysageCulturesOrnementales:
           "Intro au paysage et cultures ornementales",
-        RedactionRapports: "Rédaction et édition des rapports",
+        RedactionRapports: "Redaction et edition des rapports",
         AmeliorationGenetique:
-          "Amélioration génétique des plantes et biotechnologie",
-        Agroenvironnement: "Agroenvironnement et agriculture de précision",
+          "Amelioration genetique des plantes et biotechnologie",
+        Agroenvironnement: "Agroenvironnement et agriculture de precision",
         Phytopathologie2: "Phytopathologie 2",
         AdaptationClimat:
           "Adaptation au changement climatique et agriculture durable",
-        AmenagementPaysager: "Aménagement paysager et poste récolte",
+        AmenagementPaysager: "Amenagement paysager et poste recolte",
       };
 
       const SHARED = {
@@ -509,15 +816,9 @@
         S2: ["Francais2", "Anglais2", "GEM", "GAB", "PPV", "TIC", "STA", "PSA"],
       };
 
-      // =================================================================
-      //  Firebase init
-      // =================================================================
       const app = initializeApp(firebaseConfig);
       const db = getDatabase(app);
 
-      // =================================================================
-      //  عناصر النموذج
-      // =================================================================
       const levelEl = document.getElementById("level");
       const deptGroup = document.getElementById("deptGroup");
       const deptEl = document.getElementById("dept");
@@ -528,6 +829,7 @@
       const typeEl = document.getElementById("type");
       const authorEl = document.getElementById("author");
       const dropZone = document.getElementById("dropZone");
+      const dropText = document.getElementById("dropText");
       const fileInput = document.getElementById("fileInput");
       const fileInfo = document.getElementById("fileInfo");
       const fileNameEl = document.getElementById("fileName");
@@ -543,9 +845,6 @@
       const MAX_SIZE = 50 * 1024 * 1024;
       let selectedFile = null;
 
-      // =================================================================
-      //  القوائم المنسدلة الذكية
-      // =================================================================
       function getSubjectsForLevel(level, dept) {
         if (level === "S1") return FIXED.S1 || [];
         if (level === "S2") return FIXED.S2 || [];
@@ -554,13 +853,12 @@
       }
 
       function fillSubjects(subjects) {
-        // إعادة بناء القائمة
-        subjectEl.innerHTML = '<option value="">— Choisir —</option>';
+        subjectEl.innerHTML = '<option value="">- Choisir -</option>';
         if (subjects.length === 0) {
           const opt = document.createElement("option");
           opt.value = "";
           opt.disabled = true;
-          opt.textContent = "Aucune matière disponible";
+          opt.textContent = "Aucune matiere disponible";
           subjectEl.appendChild(opt);
           subjectGroup.style.display = "block";
           subjectEl.required = false;
@@ -579,27 +877,21 @@
 
       function updateSubjects() {
         const level = levelEl.value;
-
-        // إخفاء الكل أولاً
         subjectGroup.style.display = "none";
         gemAspectGroup.style.display = "none";
         gemAspectEl.required = false;
         gemAspectEl.value = "";
 
         if (!level) return;
-
         if (level === "S1" || level === "S2") {
-          // مواد ثابتة
           fillSubjects(FIXED[level] || []);
         } else {
-          // يحتاج قسم
           const dept = deptEl.value;
           if (!dept) return;
           fillSubjects(getSubjectsForLevel(level, dept));
         }
       }
 
-      // عند تغيير المستوى
       levelEl.addEventListener("change", function () {
         const v = levelEl.value;
         const needDept = ["S3", "S4", "S5", "S6"].indexOf(v) !== -1;
@@ -609,10 +901,8 @@
         updateSubjects();
       });
 
-      // عند تغيير القسم
       deptEl.addEventListener("change", updateSubjects);
 
-      // عند تغيير المادة (للتحقق من GEM)
       subjectEl.addEventListener("change", function () {
         if (subjectEl.value === "GEM" && levelEl.value === "S2") {
           gemAspectGroup.style.display = "block";
@@ -624,9 +914,6 @@
         }
       });
 
-      // =================================================================
-      //  اختيار الملف
-      // =================================================================
       dropZone.addEventListener("click", () => fileInput.click());
 
       ["dragenter", "dragover"].forEach((ev) =>
@@ -652,25 +939,25 @@
 
       function setFile(f) {
         if (f.size > MAX_SIZE) {
-          showAlert(" Fichier trop volumineux (max 50 MB).", "error");
+          showAlert("Fichier trop volumineux (max 50 MB).", "error");
           return;
         }
         selectedFile = f;
         fileNameEl.textContent = f.name;
-        fileSizeEl.textContent = "(" + humanSize(f.size) + ")";
-        fileInfo.style.display = "flex";
+        fileSizeEl.textContent = humanSize(f.size);
+        fileInfo.classList.add("show");
         dropZone.classList.add("has-file");
-        dropZone.querySelector(".text").innerHTML = " Fichier sélectionné";
+        dropText.innerHTML = "<strong>Fichier selectionne</strong>";
       }
 
       removeFileBtn.addEventListener("click", (e) => {
         e.stopPropagation();
         selectedFile = null;
         fileInput.value = "";
-        fileInfo.style.display = "none";
+        fileInfo.classList.remove("show");
         dropZone.classList.remove("has-file");
-        dropZone.querySelector(".text").innerHTML =
-          "Cliquez pour choisir un fichier<br>ou glissez-déposez ici";
+        dropText.innerHTML =
+          "<strong>Cliquez</strong> pour choisir un fichier<br>ou glissez-deposez ici";
       });
 
       function humanSize(bytes) {
@@ -681,7 +968,8 @@
 
       function showAlert(msg, type) {
         alertBox.textContent = msg;
-        alertBox.className = "alert " + type;
+        alertBox.className = "contrib-alert " + type;
+        alertBox.scrollIntoView({ behavior: "smooth", block: "center" });
       }
 
       function fileToBase64(file) {
@@ -693,42 +981,38 @@
         });
       }
 
-      // =================================================================
-      //  الإرسال
-      // =================================================================
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
         if (!selectedFile) {
-          showAlert(" Veuillez sélectionner un fichier.", "error");
+          showAlert("Veuillez selectionner un fichier.", "error");
           return;
         }
         if (!levelEl.value) {
-          showAlert(" Veuillez choisir un niveau.", "error");
+          showAlert("Veuillez choisir un niveau.", "error");
           return;
         }
         if (deptGroup.style.display !== "none" && !deptEl.value) {
-          showAlert(" Veuillez choisir un département.", "error");
+          showAlert("Veuillez choisir un departement.", "error");
           return;
         }
         if (!subjectEl.value) {
-          showAlert(" Veuillez choisir une matière.", "error");
+          showAlert("Veuillez choisir une matiere.", "error");
           return;
         }
         if (gemAspectGroup.style.display !== "none" && !gemAspectEl.value) {
-          showAlert(" Veuillez choisir un aspect GEM.", "error");
+          showAlert("Veuillez choisir un aspect GEM.", "error");
           return;
         }
         if (!typeEl.value) {
-          showAlert(" Veuillez choisir un type de fichier.", "error");
+          showAlert("Veuillez choisir un type de fichier.", "error");
           return;
         }
 
         submitBtn.disabled = true;
         submitBtn.textContent = "Envoi en cours...";
-        alertBox.className = "alert";
-        progressBar.style.display = "block";
-        progressText.style.display = "block";
+        alertBox.className = "contrib-alert";
+        progressBar.classList.add("show");
         progressText.textContent = "Conversion du fichier...";
         progressFill.style.width = "20%";
 
@@ -740,12 +1024,10 @@
           const type = typeEl.value;
           const author = authorEl.value.trim() || "Anonyme";
 
-          // 1) تحويل الملف إلى Base64
           const base64 = await fileToBase64(selectedFile);
           progressText.textContent = "Envoi vers Google Drive...";
           progressFill.style.width = "50%";
 
-          // 2) رفع الملف إلى Google Drive عبر Apps Script
           const response = await fetch(APPS_SCRIPT_URL, {
             method: "POST",
             body: JSON.stringify({
@@ -757,14 +1039,12 @@
           });
 
           const result = await response.json();
-          if (!result.success) {
+          if (!result.success)
             throw new Error(result.error || "Erreur lors de l'envoi");
-          }
 
           progressText.textContent = "Enregistrement de la contribution...";
           progressFill.style.width = "80%";
 
-          // 3) حفظ الطلب في Firebase
           const submissionRef = push(ref(db, "pending_submissions"));
           await set(submissionRef, {
             name: selectedFile.name,
@@ -785,28 +1065,27 @@
 
           progressFill.style.width = "100%";
           showAlert(
-            " Merci ! Votre contribution a été envoyée. Elle sera publiée après vérification.",
+            "Merci ! Votre contribution a ete envoyee. Elle sera publiee apres verification.",
             "success",
           );
 
-          // إعادة تعيين النموذج
           form.reset();
           selectedFile = null;
-          fileInfo.style.display = "none";
+          fileInfo.classList.remove("show");
           dropZone.classList.remove("has-file");
-          dropZone.querySelector(".text").innerHTML =
-            "Cliquez pour choisir un fichier<br>ou glissez-déposez ici";
+          dropText.innerHTML =
+            "<strong>Cliquez</strong> pour choisir un fichier<br>ou glissez-deposez ici";
           deptGroup.style.display = "none";
           subjectGroup.style.display = "none";
           gemAspectGroup.style.display = "none";
         } catch (err) {
           console.error(err);
-          showAlert(" Erreur : " + err.message, "error");
+          showAlert("Erreur : " + err.message, "error");
         } finally {
           submitBtn.disabled = false;
           submitBtn.textContent = "Envoyer la contribution";
-          progressBar.style.display = "none";
-          progressText.style.display = "none";
+          progressBar.classList.remove("show");
+          progressText.textContent = "";
           progressFill.style.width = "0%";
         }
       });
