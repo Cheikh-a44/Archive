@@ -66,20 +66,14 @@
         align-items: center;
         justify-content: space-between;
       }
-      .contrib-logo {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        text-decoration: none;
-        color: var(--c-primary);
-        font-family: "League Spartan", sans-serif;
-        font-weight: 800;
-        font-size: 22px;
-        letter-spacing: 2px;
+
+      /* Le style du logo est repris depuis style.css (classe .logo) */
+      .contrib-header .logo img {
+        height: 40px;
+        width: auto;
+        display: block;
       }
-      .contrib-logo-text {
-        color: var(--c-primary);
-      }
+
       .contrib-back {
         display: inline-flex;
         align-items: center;
@@ -110,25 +104,6 @@
       .contrib-intro {
         text-align: center;
         margin-bottom: 28px;
-      }
-      .contrib-icon {
-        width: 64px;
-        height: 64px;
-        margin: 0 auto 14px;
-        background: var(--c-primary-light);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      .contrib-icon svg {
-        width: 30px;
-        height: 30px;
-        stroke: var(--c-primary);
-        fill: none;
-        stroke-width: 2;
-        stroke-linecap: round;
-        stroke-linejoin: round;
       }
       .contrib-title {
         font-family: "League Spartan", sans-serif;
@@ -434,12 +409,12 @@
         .contrib-header .container {
           padding: 12px 14px;
         }
+        .contrib-header .logo img {
+          height: 34px;
+        }
         .contrib-back {
           padding: 8px 12px;
           font-size: 12px;
-        }
-        .contrib-logo {
-          font-size: 19px;
         }
         .contrib-drop {
           padding: 24px 14px;
@@ -450,8 +425,8 @@
   <body>
     <header class="contrib-header">
       <div class="container">
-        <a href="index.html" class="contrib-logo">
-          <span class="contrib-logo-text">ESAV</span>
+        <a href="index.html" class="logo" id="contribLogo">
+          <span class="logo-text">ESAVweb</span>
         </a>
         <a href="index.html" class="contrib-back">Retour a l'accueil</a>
       </div>
@@ -460,13 +435,6 @@
     <main class="contrib-main">
       <div class="contrib-container">
         <div class="contrib-intro">
-          <div class="contrib-icon">
-            <svg viewBox="0 0 24 24">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-              <polyline points="17 8 12 3 7 8" />
-              <line x1="12" y1="3" x2="12" y2="15" />
-            </svg>
-          </div>
           <h1 class="contrib-title">Contribuer un fichier</h1>
           <p class="contrib-subtitle">
             Partagez un cours, TD, devoir ou examen. Votre contribution sera
@@ -608,22 +576,31 @@
     <footer class="contrib-footer">
       <div class="contrib-footer-container">
         <div class="contrib-footer-brand">
-          <div class="contrib-footer-logo">ESAV</div>
+          <div class="contrib-footer-logo">ESAVweb</div>
           <p>
-            Cours, TD, devoirs et examens, organises par semestre et matiere
-            pour faciliter le travail des etudiants.
+            Cours, TD, devoirs et examens, organises par semestre et matiere.
           </p>
-        </div>
-        <div class="contrib-footer-bottom">
-          Developpe par
-          <a href="https://github.com/Cheikh-a44" target="_blank" rel="noopener"
-            >Cheikh Ahmedou</a
-          >
         </div>
       </div>
     </footer>
 
-    <!-- Config centralisee -->
+    <script src="images.js"></script>
+    <script>
+      (function () {
+        if (typeof IMAGES === "undefined" || !IMAGES.logo) return;
+        var el = document.getElementById("contribLogo");
+        if (!el) return;
+        var src = String(IMAGES.logo)
+          .trim()
+          .replace(/\\/g, "/")
+          .replace(/ /g, "%20");
+        el.innerHTML =
+          '<img src="' +
+          src +
+          '" alt="ESAV"><span class="logo-text">ESAVweb</span>';
+      })();
+    </script>
+
     <script src="config.js"></script>
 
     <script type="module">
@@ -635,7 +612,6 @@
         set,
       } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-      // Lecture depuis config.js
       const firebaseConfig = window.FIREBASE_CONFIG;
       const APPS_SCRIPT_URL = window.APPS_SCRIPT_URL;
       const SECRET_KEY = window.APPS_SCRIPT_SECRET;
