@@ -811,8 +811,8 @@ function renderHome() {
     "</div></section>" +
     '<section class="section cta"><div class="container"><div class="box"><div>' +
     '<h3 class="h3">Vous avez un fichier à partager ?</h3>' +
-    "<p>Contribuez en nous l'envoyant sur WhatsApp.</p></div>" +
-    '<button type="button" class="btn light" onclick="location.href=\'contribuer.html\'"><span>Contribuer un fichier</span></button>' +
+    "<p></p></div>" +
+    '<button type="button" class="btn light" onclick="location.href=\'contribuer.html\'"><span>partager un fichier</span></button>' +
     "</div></div></section>";
   return h;
 }
