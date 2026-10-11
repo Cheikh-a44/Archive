@@ -11,279 +11,69 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --c-primary: #0a7ea4;
-      --c-primary-dark: #065a75;
-      --c-primary-light: #e6f4f9;
-      --c-text: #1e293b;
-      --c-text-soft: #64748b;
-      --c-border: #e2e8f0;
-      --c-bg: #f4f8fb;
-      --c-white: #ffffff;
-      --c-success: #16a34a;
-      --c-success-bg: #dcfce7;
-      --c-error: #dc2626;
-      --c-error-bg: #fee2e2;
-      --radius: 8px;
-      --shadow: 0 2px 10px rgba(10, 126, 164, 0.08);
+      --c-primary: #0a7ea4; --c-primary-dark: #065a75; --c-primary-light: #e6f4f9;
+      --c-text: #1e293b; --c-text-soft: #64748b; --c-border: #e2e8f0;
+      --c-bg: #f4f8fb; --c-white: #ffffff;
+      --c-success: #16a34a; --c-success-bg: #dcfce7;
+      --c-error: #dc2626; --c-error-bg: #fee2e2;
+      --radius: 8px; --shadow: 0 2px 10px rgba(10, 126, 164, 0.08);
     }
-    body {
-      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--c-bg);
-      color: var(--c-text);
-      min-height: 100vh;
-      line-height: 1.5;
-    }
-    h1, h2, h3, h4, label, .btn, th {
-      font-family: 'League Spartan', sans-serif;
-      letter-spacing: 0.3px;
-    }
-    .topbar {
-      background: var(--c-white);
-      padding: 14px 20px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .topbar-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    .logo {
-      font-family: 'League Spartan', sans-serif;
-      font-weight: 800;
-      color: var(--c-primary);
-      font-size: 24px;
-      letter-spacing: 4px;
-      text-decoration: none;
-    }
-    .nav-links {
-      display: flex;
-      gap: 20px;
-      align-items: center;
-    }
-    .nav-links a {
-      color: var(--c-text-soft);
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 500;
-    }
+    body { font-family: 'Poppins', -apple-system, sans-serif; background: var(--c-bg); color: var(--c-text); min-height: 100vh; line-height: 1.5; }
+    h1, h2, h3, h4, label, .btn, th { font-family: 'League Spartan', sans-serif; letter-spacing: 0.3px; }
+    .topbar { background: var(--c-white); padding: 14px 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); position: sticky; top: 0; z-index: 100; }
+    .topbar-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .logo { font-family: 'League Spartan', sans-serif; font-weight: 800; color: var(--c-primary); font-size: 24px; letter-spacing: 4px; text-decoration: none; }
+    .nav-links { display: flex; gap: 20px; align-items: center; }
+    .nav-links a { color: var(--c-text-soft); text-decoration: none; font-size: 14px; font-weight: 500; }
     .nav-links a:hover { color: var(--c-primary); }
     .nav-links a.active { color: var(--c-primary); font-weight: 700; }
-
     .container { max-width: 1100px; margin: 0 auto; padding: 24px 20px 60px; }
     .hero-title { text-align: center; margin-bottom: 24px; }
     .hero-title h1 { font-size: 28px; font-weight: 800; color: var(--c-text); margin-bottom: 6px; }
     .hero-title p { color: var(--c-text-soft); font-size: 14px; }
-
-    .card {
-      background: var(--c-white);
-      border-radius: var(--radius);
-      padding: 24px;
-      margin-bottom: 16px;
-      box-shadow: var(--shadow);
-    }
-
-    .dept-selector {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-    .dept-btn {
-      padding: 10px 22px;
-      background: var(--c-white);
-      color: var(--c-text-soft);
-      border: 1.5px solid var(--c-border);
-      border-radius: var(--radius);
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: 'League Spartan', sans-serif;
-      transition: all 0.15s;
-    }
+    .card { background: var(--c-white); border-radius: var(--radius); padding: 24px; margin-bottom: 16px; box-shadow: var(--shadow); }
+    .dept-selector { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 20px; }
+    .dept-btn { padding: 10px 22px; background: var(--c-white); color: var(--c-text-soft); border: 1.5px solid var(--c-border); border-radius: var(--radius); font-size: 14px; font-weight: 600; cursor: pointer; font-family: 'League Spartan', sans-serif; }
     .dept-btn:hover { border-color: var(--c-primary); color: var(--c-primary); }
     .dept-btn.active { background: var(--c-primary); color: #fff; border-color: var(--c-primary); }
-
-    .search-box {
-      display: flex;
-      gap: 10px;
-      max-width: 500px;
-      margin: 0 auto;
-    }
-    .search-box input {
-      flex: 1;
-      padding: 13px 16px;
-      border: 1.5px solid var(--c-border);
-      border-radius: var(--radius);
-      font-size: 14px;
-      font-family: inherit;
-      outline: none;
-    }
+    .search-box { display: flex; gap: 10px; max-width: 500px; margin: 0 auto; }
+    .search-box input { flex: 1; padding: 13px 16px; border: 1.5px solid var(--c-border); border-radius: var(--radius); font-size: 14px; font-family: inherit; outline: none; }
     .search-box input:focus { border-color: var(--c-primary); }
-    .search-box button {
-      padding: 13px 24px;
-      background: var(--c-primary);
-      color: #fff;
-      border: none;
-      border-radius: var(--radius);
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: 'League Spartan', sans-serif;
-    }
+    .search-box button { padding: 13px 24px; background: var(--c-primary); color: #fff; border: none; border-radius: var(--radius); font-size: 14px; font-weight: 600; cursor: pointer; font-family: 'League Spartan', sans-serif; }
     .search-box button:hover { background: var(--c-primary-dark); }
     .search-box button:disabled { opacity: 0.5; cursor: not-allowed; }
-
-    .student-info {
-      background: var(--c-primary-light);
-      border-radius: var(--radius);
-      padding: 16px 20px;
-      margin-bottom: 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
+    .student-info { background: var(--c-primary-light); border-radius: var(--radius); padding: 16px 20px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
     .student-info h3 { color: var(--c-primary-dark); font-size: 18px; font-weight: 700; }
     .student-info p { color: var(--c-text-soft); font-size: 13px; }
-
-    .status-pill {
-      display: inline-block;
-      padding: 6px 16px;
-      border-radius: 50px;
-      font-size: 13px;
-      font-weight: 700;
-      font-family: 'League Spartan', sans-serif;
-    }
+    .status-pill { display: inline-block; padding: 6px 16px; border-radius: 50px; font-size: 13px; font-weight: 700; font-family: 'League Spartan', sans-serif; }
     .status-pill.valid { background: var(--c-success-bg); color: #166534; }
     .status-pill.invalid { background: var(--c-error-bg); color: #991b1b; }
     .status-pill.pending { background: #fef3c7; color: #92400e; }
-
-    .semester-pill {
-      display: inline-block;
-      background: var(--c-primary);
-      color: #fff;
-      padding: 4px 12px;
-      border-radius: 50px;
-      font-weight: 700;
-      font-size: 13px;
-      font-family: 'League Spartan', sans-serif;
-      letter-spacing: 1px;
-      margin-left: 4px;
-    }
-
-    .table-wrap {
-      overflow-x: auto;
-      margin-top: 12px;
-      border-radius: var(--radius);
-      border: 1px solid var(--c-border);
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-      min-width: 600px;
-    }
-    th, td {
-      padding: 10px 12px;
-      text-align: center;
-      border-bottom: 1px solid var(--c-border);
-    }
-    th {
-      background: #f8fafc;
-      font-weight: 700;
-      color: var(--c-text);
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
+    .semester-pill { display: inline-block; background: var(--c-primary); color: #fff; padding: 4px 12px; border-radius: 50px; font-weight: 700; font-size: 13px; font-family: 'League Spartan', sans-serif; letter-spacing: 1px; margin-left: 4px; }
+    .table-wrap { overflow-x: auto; margin-top: 12px; border-radius: var(--radius); border: 1px solid var(--c-border); }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 600px; }
+    th, td { padding: 10px 12px; text-align: center; border-bottom: 1px solid var(--c-border); }
+    th { background: #f8fafc; font-weight: 700; color: var(--c-text); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
     td.subject-name { text-align: left; padding-left: 20px; color: var(--c-text); }
-    tr.module-row td {
-      background: var(--c-primary-light);
-      font-weight: 700;
-      color: var(--c-primary-dark);
-      border-top: 2px solid var(--c-primary);
-    }
-    tr.module-row td:first-child { text-align: left; }
-    tr.module-row td:nth-child(2) { text-align: left; }
-    tr.total-row td {
-      background: #f8fafc;
-      font-weight: 700;
-      color: var(--c-text);
-      border-top: 2px solid var(--c-border);
-    }
-    .badge-C { color: var(--c-success); font-weight: 700; }
-    .badge-NC { color: var(--c-error); font-weight: 700; }
-    .badge-V { color: var(--c-success); font-weight: 700; }
-    .badge-NV { color: var(--c-error); font-weight: 700; }
+    tr.module-row td { background: var(--c-primary-light); font-weight: 700; color: var(--c-primary-dark); border-top: 2px solid var(--c-primary); }
+    tr.module-row td:first-child, tr.module-row td:nth-child(2) { text-align: left; }
+    tr.total-row td { background: #f8fafc; font-weight: 700; color: var(--c-text); border-top: 2px solid var(--c-border); }
+    .badge-C, .badge-V { color: var(--c-success); font-weight: 700; }
+    .badge-NC, .badge-NV { color: var(--c-error); font-weight: 700; }
     .note-value { font-weight: 600; }
     .note-missing { color: #94a3b8; font-style: italic; font-size: 11px; }
-
-    .info-box {
-      background: #fef3c7;
-      border-left: 4px solid #f59e0b;
-      border-radius: var(--radius);
-      padding: 14px 18px;
-      margin-bottom: 16px;
-      font-size: 13px;
-      color: #92400e;
-      line-height: 1.6;
-    }
-    .info-box.success {
-      background: var(--c-success-bg);
-      border-left-color: var(--c-success);
-      color: #166534;
-    }
-
+    .info-box { background: #fef3c7; border-left: 4px solid #f59e0b; border-radius: var(--radius); padding: 14px 18px; margin-bottom: 16px; font-size: 13px; color: #92400e; line-height: 1.6; }
+    .info-box.success { background: var(--c-success-bg); border-left-color: var(--c-success); color: #166534; }
     .empty-state { text-align: center; padding: 40px 20px; color: var(--c-text-soft); }
     .empty-state h3 { color: var(--c-text); margin-bottom: 8px; font-size: 18px; }
-
-    .pdf-btn {
-      display: block;
-      margin: 20px auto 0;
-      padding: 13px 32px;
-      background: var(--c-primary);
-      color: #fff;
-      border: none;
-      border-radius: var(--radius);
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: 'League Spartan', sans-serif;
-    }
+    .pdf-btn { display: block; margin: 20px auto 0; padding: 13px 32px; background: var(--c-primary); color: #fff; border: none; border-radius: var(--radius); font-size: 14px; font-weight: 600; cursor: pointer; font-family: 'League Spartan', sans-serif; }
     .pdf-btn:hover { background: var(--c-primary-dark); }
-
     .loading { text-align: center; padding: 40px; color: var(--c-text-soft); }
-    .spinner {
-      width: 40px;
-      height: 40px;
-      border: 4px solid var(--c-primary-light);
-      border-top-color: var(--c-primary);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin: 0 auto 16px;
-    }
+    .spinner { width: 40px; height: 40px; border: 4px solid var(--c-primary-light); border-top-color: var(--c-primary); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
     @keyframes spin { to { transform: rotate(360deg); } }
-
     .missing-table { margin-top: 16px; }
     .missing-table th { background: var(--c-error-bg); color: #991b1b; }
-    .missing-table td { font-size: 13px; }
-
-    @media (max-width: 600px) {
-      .container { padding: 16px 12px 40px; }
-      .card { padding: 18px; }
-      .hero-title h1 { font-size: 22px; }
-      .search-box { flex-direction: column; }
-      .search-box button { width: 100%; }
-    }
+    @media (max-width: 600px) { .container { padding: 16px 12px 40px; } .card { padding: 18px; } .hero-title h1 { font-size: 22px; } .search-box { flex-direction: column; } .search-box button { width: 100%; } }
   </style>
 </head>
 <body>
@@ -314,7 +104,6 @@
         <button type="button" class="dept-btn" data-dept="STA">STA</button>
         <button type="button" class="dept-btn" data-dept="TC">TC</button>
       </div>
-
       <div class="search-box">
         <input type="text" id="studentIdInput" placeholder="Numero d'etudiant" autocomplete="off">
         <button type="button" id="searchBtn">Rechercher</button>
@@ -324,25 +113,16 @@
     <div id="resultContainer"></div>
   </div>
 
-  <!-- ==================== CONFIG.JS ==================== -->
-  <!-- Charge la configuration centralisee (FIREBASE_CONFIG, APPS_SCRIPT_URL, etc.) -->
   <script src="config.js"></script>
-
-  <!-- ==================== FIREBASE SDK ==================== -->
+  <script src="credits.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-database-compat.js"></script>
 
   <script>
   (function () {
     'use strict';
-
-    // ==================== LECTURE DE LA CONFIG ====================
-    // Config lue depuis config.js (variable globale window.FIREBASE_CONFIG)
     var cfg = window.FIREBASE_CONFIG;
-
-    // Fallback de securite si config.js manque
     if (!cfg) {
-      console.warn('config.js non charge ou FIREBASE_CONFIG manquant. Utilisation du fallback.');
       cfg = {
         apiKey: "AIzaSyDnrW6WnmbEFpbWzlW9IGglxAafajt2Kyo",
         authDomain: "iset-b9974.firebaseapp.com",
@@ -353,61 +133,33 @@
         appId: "1:1054170284751:web:8f02232478430d5ae2adba"
       };
     }
-
-    console.log('Config Firebase :', cfg ? 'OK' : 'MANQUANTE');
-
-    // ==================== FIREBASE INIT ====================
     var db = null;
-    var firebaseError = null;
+    try { firebase.initializeApp(cfg); db = firebase.database(); } catch (e) { console.error(e); }
 
-    try {
-      if (typeof firebase === 'undefined') {
-        firebaseError = 'SDK Firebase non charge.';
-      } else {
-        firebase.initializeApp(cfg);
-        db = firebase.database();
-        console.log('Firebase initialise.');
-      }
-    } catch (e) {
-      firebaseError = 'Erreur init Firebase : ' + e.message;
-      console.error(firebaseError);
-    }
-
-    // ==================== STATE ====================
     var DEPT_SEMESTERS = {
-      TC:  ['S1', 'S2'],
-      PPV: ['S3', 'S4', 'S5', 'S6'],
-      GAB: ['S3', 'S4', 'S5', 'S6'],
-      GEM: ['S3', 'S4', 'S5', 'S6'],
-      PSA: ['S3', 'S4', 'S5', 'S6'],
-      STA: ['S3', 'S4', 'S5', 'S6']
+      TC: ['S1', 'S2'], PPV: ['S3', 'S4', 'S5', 'S6'],
+      GAB: ['S3', 'S4', 'S5', 'S6'], GEM: ['S3', 'S4', 'S5', 'S6'],
+      PSA: ['S3', 'S4', 'S5', 'S6'], STA: ['S3', 'S4', 'S5', 'S6']
     };
+    var STAGE_SUBJECTS = ['Stage', 'Stage_fin_etude'];
 
     var selectedDept = 'PPV';
-    var structure = {};
-    var noTPSubjects = [];
-    var pdfState = null;
+    var structure = {}, noTPSubjects = [], pdfState = null;
 
-    // ==================== HELPERS ====================
     function displayName(s) {
+      if (window.SUBJECT_DISPLAY && window.SUBJECT_DISPLAY[s]) return window.SUBJECT_DISPLAY[s];
       return String(s || '').replace(/_/g, ' ');
     }
-    function hasTP(subject) {
-      return noTPSubjects.indexOf(subject) === -1;
-    }
-    function esc(s) {
-      return String(s == null ? '' : s)
-        .replace(/&/g, '&amp;').replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;').replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-    }
+    function hasTP(subject) { return noTPSubjects.indexOf(subject) === -1; }
+    function isStage(subject) { return STAGE_SUBJECTS.indexOf(subject) !== -1; }
+    function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
     function normalizeType(t) {
-      var s = String(t || '').toLowerCase().trim()
-        .normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      var s = String(t || '').toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
       if (s.indexOf('rattrap') !== -1) return 'Rattrapage';
       if (s.indexOf('examen') !== -1 || s === 'exam') return 'Examen';
       if (s.indexOf('controle') !== -1 || s === 'cc') return 'Controle continu';
       if (s === 'tp' || s.indexOf('travaux') !== -1) return 'TP';
+      if (s === 'stage') return 'Stage';
       return String(t || '').trim();
     }
     function normalizeNote(v) {
@@ -416,18 +168,17 @@
       return isNaN(n) ? null : n;
     }
 
-    // ==================== STRUCTURE ====================
+    function getCredits(subject) {
+      if (window.CREDITS && window.CREDITS[subject] !== undefined) return window.CREDITS[subject];
+      return 3;
+    }
+
     function loadStructure() {
       if (!db) return Promise.resolve();
       return Promise.all([
         db.ref('structure').once('value').then(function (s) { structure = s.val() || {}; }),
         db.ref('no_tp_subjects').once('value').then(function (s) { noTPSubjects = s.val() || []; })
-      ]).then(function () {
-        console.log('Structure chargee :', Object.keys(structure).length, 'departements');
-        console.log('No TP subjects :', noTPSubjects.length);
-      }).catch(function (err) {
-        console.error('Erreur structure :', err);
-      });
+      ]);
     }
 
     function getSubjectsForDeptSem(dept, sem) {
@@ -441,45 +192,31 @@
       return subjects;
     }
 
-    function getCredits(dept, sem, subject) {
-      var modules = (structure[dept] || {})[sem] || {};
-      var result = 3;
-      Object.keys(modules).forEach(function (modKey) {
-        var c = modules[modKey].subjectCredits;
-        if (c && c[subject] !== undefined) result = c[subject];
-      });
-      return result;
-    }
-
-    // ==================== CHECK COMPLETENESS ====================
     function checkCompleteness(notes, dept, sem) {
       var subjects = getSubjectsForDeptSem(dept, sem);
       var missing = [];
       subjects.forEach(function (subject) {
         var n = notes[subject] || {};
         var m = [];
-        if (n['Examen'] === undefined && n['Rattrapage'] === undefined) m.push('Examen');
-        if (n['Controle continu'] === undefined) m.push('CC');
-        if (hasTP(subject) && n['TP'] === undefined) m.push('TP');
+        if (isStage(subject)) {
+          // Stage : besoin d'au moins une note (CC ou Examen)
+          if (n['Controle continu'] === undefined && n['Examen'] === undefined) m.push('Note de stage');
+        } else {
+          if (n['Examen'] === undefined && n['Rattrapage'] === undefined) m.push('Examen');
+          if (n['Controle continu'] === undefined) m.push('CC');
+          if (hasTP(subject) && n['TP'] === undefined) m.push('TP');
+        }
         if (m.length > 0) missing.push({ subject: subject, missing: m });
       });
-      return {
-        complete: missing.length === 0,
-        missing: missing,
-        total: subjects.length,
-        completeCount: subjects.length - missing.length
-      };
+      return { complete: missing.length === 0, missing: missing, total: subjects.length, completeCount: subjects.length - missing.length };
     }
 
-    // ==================== CALCUL ====================
     function calculateResults(notes, dept, sem) {
       var modules = (structure[dept] || {})[sem] || {};
       var allSubjects = getSubjectsForDeptSem(dept, sem);
       if (allSubjects.length === 0) return null;
 
-      var subjectAvg = {};
-      var subjectSR = {};
-
+      var subjectAvg = {}, subjectSR = {};
       allSubjects.forEach(function (subject) {
         var n = notes[subject] || {};
         var exam = n['Examen'] !== undefined ? n['Examen'] : 0;
@@ -489,8 +226,13 @@
         var useSR = ratt !== undefined && ratt > exam;
         subjectSR[subject] = useSR;
         var finalExam = useSR ? ratt : exam;
-        if (hasTP(subject)) subjectAvg[subject] = (tp + cc * 2 + finalExam * 3) / 6;
-        else subjectAvg[subject] = (cc * 2 + finalExam * 3) / 5;
+        if (isStage(subject)) {
+          subjectAvg[subject] = (cc * 2 + finalExam * 3) / 5;
+        } else if (hasTP(subject)) {
+          subjectAvg[subject] = (tp + cc * 2 + finalExam * 3) / 6;
+        } else {
+          subjectAvg[subject] = (cc * 2 + finalExam * 3) / 5;
+        }
       });
 
       var moduleAvg = {};
@@ -498,7 +240,7 @@
         var mod = modules[modKey];
         var totalW = 0, totalC = 0;
         (mod.subjects || []).forEach(function (subject) {
-          var c = getCredits(dept, sem, subject);
+          var c = getCredits(subject);
           totalW += (subjectAvg[subject] || 0) * c;
           totalC += c;
         });
@@ -507,7 +249,7 @@
 
       var totalW = 0, totalC = 0;
       allSubjects.forEach(function (subject) {
-        var c = getCredits(dept, sem, subject);
+        var c = getCredits(subject);
         totalW += (subjectAvg[subject] || 0) * c;
         totalC += c;
       });
@@ -526,7 +268,7 @@
       Object.keys(modules).forEach(function (modKey) {
         var allC = true, earned = 0;
         (modules[modKey].subjects || []).forEach(function (subject) {
-          var c = getCredits(dept, sem, subject);
+          var c = getCredits(subject);
           if (subjectStatus[subject] === 'C') earned += c;
           else allC = false;
         });
@@ -547,7 +289,6 @@
       };
     }
 
-    // ==================== DOM ====================
     var resultContainer = document.getElementById('resultContainer');
     var studentIdInput = document.getElementById('studentIdInput');
     var searchBtn = document.getElementById('searchBtn');
@@ -560,43 +301,25 @@
       for (var i = 0; i < all.length; i++) all[i].classList.remove('active');
       btn.classList.add('active');
       resultContainer.innerHTML = '';
-      console.log('Departement :', selectedDept);
     });
 
     searchBtn.addEventListener('click', searchStudent);
-    studentIdInput.addEventListener('keypress', function (e) {
-      if (e.key === 'Enter') searchStudent();
-    });
+    studentIdInput.addEventListener('keypress', function (e) { if (e.key === 'Enter') searchStudent(); });
 
-    // ==================== SEARCH ====================
     function searchStudent() {
       var studentId = studentIdInput.value.trim();
       if (!studentId) { alert('Veuillez entrer votre numero'); return; }
-
-      if (!db) {
-        resultContainer.innerHTML =
-          '<div class="card"><div class="empty-state">' +
-          '<h3>Erreur Firebase</h3>' +
-          '<p>' + esc(firebaseError || 'Configuration invalide') + '</p>' +
-          '</div></div>';
-        return;
-      }
-
-      console.log('Recherche :', studentId, 'dans', selectedDept);
+      if (!db) { resultContainer.innerHTML = '<div class="card"><div class="empty-state"><h3>Erreur Firebase</h3></div></div>'; return; }
       pdfState = null;
       searchBtn.disabled = true;
       searchBtn.textContent = 'Chargement...';
       resultContainer.innerHTML = '<div class="card"><div class="loading"><div class="spinner"></div>Chargement...</div></div>';
-
       var semesters = DEPT_SEMESTERS[selectedDept] || [];
 
       Promise.all(semesters.map(function (sem) {
         return db.ref('results/' + selectedDept + '/' + sem + '/' + studentId).once('value')
           .then(function (snap) { return { sem: sem, snap: snap }; })
-          .catch(function (err) {
-            console.error('Erreur ' + sem + ' :', err);
-            return { sem: sem, snap: null };
-          });
+          .catch(function () { return { sem: sem, snap: null }; });
       })).then(function (results) {
         var found = [];
         results.forEach(function (r) {
@@ -618,11 +341,7 @@
         });
 
         if (found.length === 0) {
-          resultContainer.innerHTML =
-            '<div class="card"><div class="empty-state">' +
-            '<h3>Aucun resultat trouve</h3>' +
-            '<p>Verifiez votre numero et le departement selectionne.</p>' +
-            '</div></div>';
+          resultContainer.innerHTML = '<div class="card"><div class="empty-state"><h3>Aucun resultat trouve</h3><p>Verifiez votre numero et le departement.</p></div></div>';
           return;
         }
 
@@ -630,15 +349,10 @@
         found.forEach(function (f) {
           var requiredSubjects = getSubjectsForDeptSem(selectedDept, f.sem);
           var check = checkCompleteness(f.notes, selectedDept, f.sem);
-          console.log('Semestre ' + f.sem + ' : ' + check.completeCount + '/' + check.total);
           if (check.complete && requiredSubjects.length > 0) {
             var r2 = calculateResults(f.notes, selectedDept, f.sem);
             if (r2) {
-              pdfState = {
-                notes: f.notes, results: r2,
-                studentId: studentId, studentName: f.studentName,
-                dept: selectedDept, sem: f.sem
-              };
+              pdfState = { notes: f.notes, results: r2, studentId: studentId, studentName: f.studentName, dept: selectedDept, sem: f.sem };
               allHtml += renderComplete(studentId, f.studentName, f.notes, r2, selectedDept, f.sem);
             }
           } else {
@@ -648,48 +362,27 @@
         resultContainer.innerHTML = allHtml;
 
       }).catch(function (err) {
-        console.error(err);
-        resultContainer.innerHTML =
-          '<div class="card"><div class="empty-state">' +
-          '<h3>Erreur</h3><p>' + esc(err.message) + '</p></div></div>';
-      }).then(function () {
-        searchBtn.disabled = false;
-        searchBtn.textContent = 'Rechercher';
-      });
+        resultContainer.innerHTML = '<div class="card"><div class="empty-state"><h3>Erreur</h3><p>' + esc(err.message) + '</p></div></div>';
+      }).then(function () { searchBtn.disabled = false; searchBtn.textContent = 'Rechercher'; });
     }
 
-    // ==================== RENDER COMPLETE ====================
     function renderComplete(studentId, studentName, notes, r, dept, sem) {
       var showSR = r.hasSR;
       var colspanTotal = showSR ? 6 : 5;
-      var html =
-        '<div class="card">' +
-        '<div class="student-info"><div>' +
+      var html = '<div class="card"><div class="student-info"><div>' +
         '<h3>' + esc(studentName || 'Etudiant') + '</h3>' +
-        '<p>Numero : <strong>' + esc(studentId) + '</strong> | ' +
-        'Departement : <strong>' + esc(dept) + '</strong> | ' +
-        '<span class="semester-pill">' + esc(sem) + '</span></p>' +
-        '</div><span class="status-pill ' + (r.semesterStatus === 'Valide' ? 'valid' : 'invalid') + '">' +
-        r.semesterStatus + '</span></div>';
+        '<p>Numero : <strong>' + esc(studentId) + '</strong> | Departement : <strong>' + esc(dept) + '</strong> | <span class="semester-pill">' + esc(sem) + '</span></p>' +
+        '</div><span class="status-pill ' + (r.semesterStatus === 'Valide' ? 'valid' : 'invalid') + '">' + r.semesterStatus + '</span></div>';
 
-      html += '<div class="info-box success"><strong>Resultats complets.</strong> ' +
-        'Moyenne du semestre : <strong>' + r.overallAvg + ' / 20</strong></div>';
-
-      html += '<div class="table-wrap"><table><thead><tr>' +
-        '<th>Module</th><th>Matiere</th><th>TP</th><th>CC</th><th>Exam</th>' +
-        (showSR ? '<th>SR</th>' : '') +
-        '<th>Moy</th><th>Credit</th><th>Obs</th>' +
-        '</tr></thead><tbody>';
-
-      html += '<tr><td colspan="2" style="text-align:left; font-weight:700; background:#f8fafc;">' +
-        esc(studentId) + ' - ' + esc(studentName) + '</td>' +
-        '<td colspan="' + (showSR ? 7 : 6) + '" style="background:#f8fafc;"></td></tr>';
+      html += '<div class="info-box success"><strong>Resultats complets.</strong> Moyenne du semestre : <strong>' + r.overallAvg + ' / 20</strong></div>';
+      html += '<div class="table-wrap"><table><thead><tr><th>Module</th><th>Matiere</th><th>TP</th><th>CC</th><th>Exam</th>' +
+        (showSR ? '<th>SR</th>' : '') + '<th>Moy</th><th>Credit</th><th>Obs</th></tr></thead><tbody>';
+      html += '<tr><td colspan="2" style="text-align:left; font-weight:700; background:#f8fafc;">' + esc(studentId) + ' - ' + esc(studentName) + '</td><td colspan="' + (showSR ? 7 : 6) + '" style="background:#f8fafc;"></td></tr>';
 
       Object.keys(r.modules).forEach(function (modKey) {
         var mod = r.modules[modKey];
         var modLabel = modKey.replace(/_[A-Z]+$/, '');
-        html += '<tr class="module-row">' +
-          '<td>' + esc(modLabel) + '</td><td>' + esc(mod.name || '') + '</td>' +
+        html += '<tr class="module-row"><td>' + esc(modLabel) + '</td><td>' + esc(mod.name || '') + '</td>' +
           '<td colspan="' + (showSR ? 4 : 3) + '"></td>' +
           '<td>' + (Math.round(r.moduleAvg[modKey] * 100) / 100) + '</td>' +
           '<td>' + r.moduleCredits[modKey].toFixed(1) + '</td>' +
@@ -697,15 +390,13 @@
 
         (mod.subjects || []).forEach(function (subject) {
           var n = notes[subject] || {};
-          var tpVal = hasTP(subject) && n['TP'] !== undefined ? n['TP'].toFixed(2) : '';
+          var tpVal = (!isStage(subject) && hasTP(subject) && n['TP'] !== undefined) ? n['TP'].toFixed(2) : '';
           var ccVal = n['Controle continu'] !== undefined ? n['Controle continu'].toFixed(2) : '';
           var examVal = n['Examen'] !== undefined ? n['Examen'].toFixed(2) : '';
           var rattVal = n['Rattrapage'] !== undefined ? n['Rattrapage'].toFixed(2) : '';
-          var credit = getCredits(dept, sem, subject);
-          html += '<tr><td></td>' +
-            '<td class="subject-name">' + esc(displayName(subject)) + '</td>' +
-            '<td class="note-value">' + tpVal + '</td>' +
-            '<td class="note-value">' + ccVal + '</td>' +
+          var credit = getCredits(subject);
+          html += '<tr><td></td><td class="subject-name">' + esc(displayName(subject)) + '</td>' +
+            '<td class="note-value">' + tpVal + '</td><td class="note-value">' + ccVal + '</td>' +
             '<td class="note-value">' + examVal + '</td>' +
             (showSR ? '<td class="note-value">' + rattVal + '</td>' : '') +
             '<td class="note-value">' + (Math.round(r.subjectAvg[subject] * 100) / 100) + '</td>' +
@@ -716,38 +407,28 @@
 
       html += '<tr class="total-row"><td colspan="' + colspanTotal + '" style="text-align:right;">Moyenne Semestre :</td>' +
         '<td>' + r.overallAvg + '</td><td></td>' +
-        '<td class="badge-' + (r.semesterStatus === 'Valide' ? 'V' : 'NV') + '">' +
-        (r.semesterStatus === 'Valide' ? 'V' : 'NV') + '</td></tr></tbody></table></div>';
-
+        '<td class="badge-' + (r.semesterStatus === 'Valide' ? 'V' : 'NV') + '">' + (r.semesterStatus === 'Valide' ? 'V' : 'NV') + '</td></tr></tbody></table></div>';
       html += '<button type="button" class="pdf-btn" onclick="window.generatePDF()">Telecharger le releve PDF</button></div>';
       return html;
     }
 
-    // ==================== RENDER PARTIAL ====================
     function renderPartial(studentId, studentName, notes, dept, sem, check) {
       var availableSubjects = Object.keys(notes).sort();
-      var html =
-        '<div class="card">' +
-        '<div class="student-info"><div>' +
+      var html = '<div class="card"><div class="student-info"><div>' +
         '<h3>' + esc(studentName || 'Etudiant') + '</h3>' +
-        '<p>Numero : <strong>' + esc(studentId) + '</strong> | ' +
-        'Departement : <strong>' + esc(dept) + '</strong> | ' +
-        '<span class="semester-pill">' + esc(sem) + '</span></p>' +
+        '<p>Numero : <strong>' + esc(studentId) + '</strong> | Departement : <strong>' + esc(dept) + '</strong> | <span class="semester-pill">' + esc(sem) + '</span></p>' +
         '</div><span class="status-pill pending">En attente</span></div>';
-
-      html += '<div class="info-box"><strong>Resultats non finalises.</strong> ' +
-        check.completeCount + ' matiere(s) sur ' + check.total + ' sont completes.</div>';
+      html += '<div class="info-box"><strong>Resultats non finalises.</strong> ' + check.completeCount + ' matiere(s) sur ' + check.total + ' sont completes.</div>';
 
       if (availableSubjects.length === 0) {
         html += '<div class="empty-state"><p>Aucune note disponible.</p></div>';
       } else {
-        html += '<div class="table-wrap"><table><thead><tr>' +
-          '<th>Matiere</th><th>TP</th><th>CC</th><th>Examen</th><th>Rattrapage</th>' +
-          '</tr></thead><tbody>';
+        html += '<div class="table-wrap"><table><thead><tr><th>Matiere</th><th>TP</th><th>CC</th><th>Examen</th><th>Rattrapage</th></tr></thead><tbody>';
         availableSubjects.forEach(function (subject) {
           var n = notes[subject] || {};
+          var tpShow = (!isStage(subject) && hasTP(subject)) ? (n['TP'] !== undefined ? n['TP'].toFixed(2) : '<span class="note-missing">-</span>') : '<span class="note-missing">-</span>';
           html += '<tr><td class="subject-name">' + esc(displayName(subject)) + '</td>' +
-            '<td class="note-value">' + (n['TP'] !== undefined ? n['TP'].toFixed(2) : '<span class="note-missing">-</span>') + '</td>' +
+            '<td class="note-value">' + tpShow + '</td>' +
             '<td class="note-value">' + (n['Controle continu'] !== undefined ? n['Controle continu'].toFixed(2) : '<span class="note-missing">-</span>') + '</td>' +
             '<td class="note-value">' + (n['Examen'] !== undefined ? n['Examen'].toFixed(2) : '<span class="note-missing">-</span>') + '</td>' +
             '<td class="note-value">' + (n['Rattrapage'] !== undefined ? n['Rattrapage'].toFixed(2) : '<span class="note-missing">-</span>') + '</td></tr>';
@@ -756,22 +437,17 @@
       }
 
       if (check.missing.length > 0) {
-        html += '<div class="missing-table">' +
-          '<h4 style="color:#dc2626; font-size:14px; margin:16px 0 8px 0;">Donnees manquantes</h4>' +
-          '<div class="table-wrap"><table><thead><tr>' +
-          '<th>Matiere</th><th>Element(s) manquant(s)</th></tr></thead><tbody>';
+        html += '<div class="missing-table"><h4 style="color:#dc2626; font-size:14px; margin:16px 0 8px 0;">Donnees manquantes</h4>' +
+          '<div class="table-wrap"><table><thead><tr><th>Matiere</th><th>Element(s) manquant(s)</th></tr></thead><tbody>';
         check.missing.forEach(function (m) {
-          html += '<tr><td class="subject-name">' + esc(displayName(m.subject)) + '</td>' +
-            '<td style="color:#dc2626; font-weight:600;">' + m.missing.join(', ') + '</td></tr>';
+          html += '<tr><td class="subject-name">' + esc(displayName(m.subject)) + '</td><td style="color:#dc2626; font-weight:600;">' + m.missing.join(', ') + '</td></tr>';
         });
         html += '</tbody></table></div></div>';
       }
-
       html += '</div>';
       return html;
     }
 
-    // ==================== PDF ====================
     window.generatePDF = function () {
       if (!pdfState) { alert('Donnees non disponibles'); return; }
       var notes = pdfState.notes, results = pdfState.results;
@@ -813,11 +489,11 @@
           '<td style="border:1px solid #000; padding:4px;">' + results.moduleStatus[modKey] + '</td></tr>';
         (mod.subjects || []).forEach(function (subject) {
           var n = notes[subject] || {};
-          var tpVal = hasTP(subject) && n['TP'] !== undefined ? n['TP'].toFixed(2) : '';
+          var tpVal = (!isStage(subject) && hasTP(subject) && n['TP'] !== undefined) ? n['TP'].toFixed(2) : '';
           var ccVal = n['Controle continu'] !== undefined ? n['Controle continu'].toFixed(2) : '';
           var examVal = n['Examen'] !== undefined ? n['Examen'].toFixed(2) : '';
           var rattVal = n['Rattrapage'] !== undefined ? n['Rattrapage'].toFixed(2) : '';
-          var credit = getCredits(dept, sem, subject);
+          var credit = getCredits(subject);
           html += '<tr><td style="border:1px solid #000; padding:3px;"></td>' +
             '<td style="border:1px solid #000; padding:3px; padding-left:15px;">' + esc(displayName(subject)) + '</td>' +
             '<td style="border:1px solid #000; padding:3px; text-align:center;">' + tpVal + '</td>' +
@@ -835,8 +511,7 @@
         '<td colspan="' + colspanTotal + '" style="border:none; padding:8px 4px; text-align:right;">Moyenne Semestre :</td>' +
         '<td style="border:none; padding:8px 4px; text-align:center;">' + results.overallAvg + '</td>' +
         '<td style="border:none;"></td>' +
-        '<td style="border:none; padding:8px 4px; text-align:center;">' + results.semesterStatus + '</td></tr>' +
-        '</tbody></table></div>';
+        '<td style="border:none; padding:8px 4px; text-align:center;">' + results.semesterStatus + '</td></tr></tbody></table></div>';
 
       var el = document.createElement('div');
       el.innerHTML = html;
@@ -850,9 +525,7 @@
       }).from(el).save().then(function () { document.body.removeChild(el); });
     };
 
-    // ==================== INIT ====================
     if (db) loadStructure();
-
   })();
   </script>
 </body>
