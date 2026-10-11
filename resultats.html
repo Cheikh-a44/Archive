@@ -1,813 +1,685 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Resultats - ESAV</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700;800&family=Poppins:wght@400;500;600&display=swap"
-      rel="stylesheet"
-    />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <style>
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-      :root {
-        --c-primary: #0a7ea4;
-        --c-primary-dark: #065a75;
-        --c-primary-light: #e6f4f9;
-        --c-text: #1e293b;
-        --c-text-soft: #64748b;
-        --c-border: #e2e8f0;
-        --c-bg: #f4f8fb;
-        --c-white: #ffffff;
-        --c-success: #16a34a;
-        --c-success-bg: #dcfce7;
-        --c-error: #dc2626;
-        --c-error-bg: #fee2e2;
-        --radius: 8px;
-        --shadow: 0 2px 10px rgba(10, 126, 164, 0.08);
-      }
-      body {
-        font-family:
-          "Poppins",
-          -apple-system,
-          BlinkMacSystemFont,
-          sans-serif;
-        background: var(--c-bg);
-        color: var(--c-text);
-        min-height: 100vh;
-        line-height: 1.5;
-      }
-      h1,
-      h2,
-      h3,
-      label,
-      .btn,
-      th {
-        font-family: "League Spartan", sans-serif;
-        letter-spacing: 0.3px;
-      }
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resultats - ESAV</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700;800&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --c-primary: #0a7ea4;
+      --c-primary-dark: #065a75;
+      --c-primary-light: #e6f4f9;
+      --c-text: #1e293b;
+      --c-text-soft: #64748b;
+      --c-border: #e2e8f0;
+      --c-bg: #f4f8fb;
+      --c-white: #ffffff;
+      --c-success: #16a34a;
+      --c-success-bg: #dcfce7;
+      --c-error: #dc2626;
+      --c-error-bg: #fee2e2;
+      --radius: 8px;
+      --shadow: 0 2px 10px rgba(10, 126, 164, 0.08);
+    }
+    body {
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--c-bg);
+      color: var(--c-text);
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+    h1, h2, h3, h4, label, .btn, th {
+      font-family: 'League Spartan', sans-serif;
+      letter-spacing: 0.3px;
+    }
+    .topbar {
+      background: var(--c-white);
+      padding: 14px 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .topbar-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .logo {
+      font-family: 'League Spartan', sans-serif;
+      font-weight: 800;
+      color: var(--c-primary);
+      font-size: 24px;
+      letter-spacing: 4px;
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    .nav-links a {
+      color: var(--c-text-soft);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .nav-links a:hover { color: var(--c-primary); }
+    .nav-links a.active { color: var(--c-primary); font-weight: 700; }
 
-      /* ---------- HEADER ---------- */
-      .topbar {
-        background: var(--c-white);
-        padding: 14px 20px;
-        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
-        position: sticky;
-        top: 0;
-        z-index: 100;
-      }
-      .topbar-inner {
-        max-width: 1100px;
-        margin: 0 auto;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 12px;
-        flex-wrap: wrap;
-      }
-      .logo {
-        font-family: "League Spartan", sans-serif;
-        font-weight: 800;
-        color: var(--c-primary);
-        font-size: 24px;
-        letter-spacing: 4px;
-        text-decoration: none;
-      }
-      .nav-links {
-        display: flex;
-        gap: 20px;
-        align-items: center;
-      }
-      .nav-links a {
-        color: var(--c-text-soft);
-        text-decoration: none;
-        font-size: 14px;
-        font-weight: 500;
-        transition: color 0.15s;
-      }
-      .nav-links a:hover {
-        color: var(--c-primary);
-      }
-      .nav-links a.active {
-        color: var(--c-primary);
-        font-weight: 700;
-      }
+    .container { max-width: 1100px; margin: 0 auto; padding: 24px 20px; }
+    .hero-title { text-align: center; margin-bottom: 24px; }
+    .hero-title h1 { font-size: 28px; font-weight: 800; color: var(--c-text); margin-bottom: 6px; }
+    .hero-title p { color: var(--c-text-soft); font-size: 14px; }
 
-      /* ---------- MAIN ---------- */
-      .container {
-        max-width: 1100px;
-        margin: 0 auto;
-        padding: 24px 20px;
-      }
-      .hero-title {
-        text-align: center;
-        margin-bottom: 24px;
-      }
-      .hero-title h1 {
-        font-size: 28px;
-        font-weight: 800;
-        color: var(--c-text);
-        margin-bottom: 6px;
-      }
-      .hero-title p {
-        color: var(--c-text-soft);
-        font-size: 14px;
-      }
+    .card {
+      background: var(--c-white);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+    }
 
-      .card {
-        background: var(--c-white);
-        border-radius: var(--radius);
-        padding: 24px;
-        margin-bottom: 16px;
-        box-shadow: var(--shadow);
-      }
+    .dept-selector {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .dept-btn {
+      padding: 10px 22px;
+      background: var(--c-white);
+      color: var(--c-text-soft);
+      border: 1.5px solid var(--c-border);
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'League Spartan', sans-serif;
+      transition: all 0.15s;
+    }
+    .dept-btn:hover { border-color: var(--c-primary); color: var(--c-primary); }
+    .dept-btn.active { background: var(--c-primary); color: #fff; border-color: var(--c-primary); }
 
-      /* ---------- SEARCH SECTION ---------- */
-      .dept-selector {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        justify-content: center;
-        margin-bottom: 20px;
-      }
-      .dept-btn {
-        padding: 10px 22px;
-        background: var(--c-white);
-        color: var(--c-text-soft);
-        border: 1.5px solid var(--c-border);
-        border-radius: var(--radius);
-        font-size: 14px;
-        font-weight: 600;
-        cursor: pointer;
-        font-family: "League Spartan", sans-serif;
-        transition: all 0.15s;
-      }
-      .dept-btn:hover {
-        border-color: var(--c-primary);
-        color: var(--c-primary);
-      }
-      .dept-btn.active {
-        background: var(--c-primary);
-        color: #fff;
-        border-color: var(--c-primary);
-      }
+    .search-box {
+      display: flex;
+      gap: 10px;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    .search-box input {
+      flex: 1;
+      padding: 13px 16px;
+      border: 1.5px solid var(--c-border);
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+    }
+    .search-box input:focus { border-color: var(--c-primary); }
+    .search-box button {
+      padding: 13px 24px;
+      background: var(--c-primary);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'League Spartan', sans-serif;
+    }
+    .search-box button:hover { background: var(--c-primary-dark); }
+    .search-box button:disabled { opacity: 0.5; cursor: not-allowed; }
 
-      .search-box {
-        display: flex;
-        gap: 10px;
-        max-width: 500px;
-        margin: 0 auto;
-      }
-      .search-box input {
-        flex: 1;
-        padding: 13px 16px;
-        border: 1.5px solid var(--c-border);
-        border-radius: var(--radius);
-        font-size: 14px;
-        font-family: inherit;
-        outline: none;
-        transition: border-color 0.2s;
-      }
-      .search-box input:focus {
-        border-color: var(--c-primary);
-      }
-      .search-box button {
-        padding: 13px 24px;
-        background: var(--c-primary);
-        color: #fff;
-        border: none;
-        border-radius: var(--radius);
-        font-size: 14px;
-        font-weight: 600;
-        cursor: pointer;
-        font-family: "League Spartan", sans-serif;
-        transition: background 0.15s;
-      }
-      .search-box button:hover {
-        background: var(--c-primary-dark);
-      }
-      .search-box button:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-      }
+    .student-info {
+      background: var(--c-primary-light);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .student-info h3 { color: var(--c-primary-dark); font-size: 18px; font-weight: 700; }
+    .student-info p { color: var(--c-text-soft); font-size: 13px; }
 
-      /* ---------- RESULTS ---------- */
-      .student-info {
-        background: var(--c-primary-light);
-        border-radius: var(--radius);
-        padding: 16px 20px;
-        margin-bottom: 16px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 10px;
-      }
-      .student-info h3 {
-        color: var(--c-primary-dark);
-        font-size: 18px;
-        font-weight: 700;
-      }
-      .student-info p {
-        color: var(--c-text-soft);
-        font-size: 13px;
-      }
+    .status-pill {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: 'League Spartan', sans-serif;
+    }
+    .status-pill.valid { background: var(--c-success-bg); color: #166534; }
+    .status-pill.invalid { background: var(--c-error-bg); color: #991b1b; }
+    .status-pill.pending { background: #fef3c7; color: #92400e; }
 
-      .status-pill {
-        display: inline-block;
-        padding: 6px 16px;
-        border-radius: 50px;
-        font-size: 13px;
-        font-weight: 700;
-        font-family: "League Spartan", sans-serif;
-      }
-      .status-pill.valid {
-        background: var(--c-success-bg);
-        color: #166534;
-      }
-      .status-pill.invalid {
-        background: var(--c-error-bg);
-        color: #991b1b;
-      }
-      .status-pill.pending {
-        background: #fef3c7;
-        color: #92400e;
-      }
+    .semester-pill {
+      display: inline-block;
+      background: var(--c-primary);
+      color: #fff;
+      padding: 4px 12px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 13px;
+      font-family: 'League Spartan', sans-serif;
+      letter-spacing: 1px;
+      margin-left: 4px;
+    }
 
-      .table-wrap {
-        overflow-x: auto;
-        margin-top: 12px;
-        border-radius: var(--radius);
-        border: 1px solid var(--c-border);
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 13px;
-        min-width: 600px;
-      }
-      th,
-      td {
-        padding: 10px 12px;
-        text-align: center;
-        border-bottom: 1px solid var(--c-border);
-      }
-      th {
-        background: #f8fafc;
-        font-weight: 700;
-        color: var(--c-text);
-        font-size: 12px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-      }
-      td.subject-name {
-        text-align: left;
-        padding-left: 20px;
-        color: var(--c-text);
-      }
-      tr.module-row td {
-        background: var(--c-primary-light);
-        font-weight: 700;
-        color: var(--c-primary-dark);
-        border-top: 2px solid var(--c-primary);
-      }
-      tr.module-row td:first-child {
-        text-align: left;
-      }
-      tr.module-row td:nth-child(2) {
-        text-align: left;
-      }
-      tr.total-row td {
-        background: #f8fafc;
-        font-weight: 700;
-        color: var(--c-text);
-        border-top: 2px solid var(--c-border);
-      }
-      .badge-C {
-        color: var(--c-success);
-        font-weight: 700;
-      }
-      .badge-NC {
-        color: var(--c-error);
-        font-weight: 700;
-      }
-      .badge-V {
-        color: var(--c-success);
-        font-weight: 700;
-      }
-      .badge-NV {
-        color: var(--c-error);
-        font-weight: 700;
-      }
-      .note-value {
-        font-weight: 600;
-      }
-      .note-missing {
-        color: #94a3b8;
-        font-style: italic;
-        font-size: 11px;
-      }
+    .table-wrap {
+      overflow-x: auto;
+      margin-top: 12px;
+      border-radius: var(--radius);
+      border: 1px solid var(--c-border);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      min-width: 600px;
+    }
+    th, td {
+      padding: 10px 12px;
+      text-align: center;
+      border-bottom: 1px solid var(--c-border);
+    }
+    th {
+      background: #f8fafc;
+      font-weight: 700;
+      color: var(--c-text);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    td.subject-name { text-align: left; padding-left: 20px; color: var(--c-text); }
+    tr.module-row td {
+      background: var(--c-primary-light);
+      font-weight: 700;
+      color: var(--c-primary-dark);
+      border-top: 2px solid var(--c-primary);
+    }
+    tr.module-row td:first-child { text-align: left; }
+    tr.module-row td:nth-child(2) { text-align: left; }
+    tr.total-row td {
+      background: #f8fafc;
+      font-weight: 700;
+      color: var(--c-text);
+      border-top: 2px solid var(--c-border);
+    }
+    .badge-C { color: var(--c-success); font-weight: 700; }
+    .badge-NC { color: var(--c-error); font-weight: 700; }
+    .badge-V { color: var(--c-success); font-weight: 700; }
+    .badge-NV { color: var(--c-error); font-weight: 700; }
+    .note-value { font-weight: 600; }
+    .note-missing { color: #94a3b8; font-style: italic; font-size: 11px; }
 
-      .info-box {
-        background: #fef3c7;
-        border-left: 4px solid #f59e0b;
-        border-radius: var(--radius);
-        padding: 14px 18px;
-        margin-bottom: 16px;
-        font-size: 13px;
-        color: #92400e;
-      }
+    .info-box {
+      background: #fef3c7;
+      border-left: 4px solid #f59e0b;
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      margin-bottom: 16px;
+      font-size: 13px;
+      color: #92400e;
+      line-height: 1.6;
+    }
+    .info-box.success {
+      background: var(--c-success-bg);
+      border-left-color: var(--c-success);
+      color: #166534;
+    }
 
-      .empty-state {
-        text-align: center;
-        padding: 40px 20px;
-        color: var(--c-text-soft);
-      }
-      .empty-state h3 {
-        color: var(--c-text);
-        margin-bottom: 8px;
-        font-size: 18px;
-      }
+    .empty-state { text-align: center; padding: 40px 20px; color: var(--c-text-soft); }
+    .empty-state h3 { color: var(--c-text); margin-bottom: 8px; font-size: 18px; }
 
-      .pdf-btn {
-        display: block;
-        margin: 20px auto 0;
-        padding: 13px 32px;
-        background: var(--c-primary);
-        color: #fff;
-        border: none;
-        border-radius: var(--radius);
-        font-size: 14px;
-        font-weight: 600;
-        cursor: pointer;
-        font-family: "League Spartan", sans-serif;
-        transition: background 0.15s;
-      }
-      .pdf-btn:hover {
-        background: var(--c-primary-dark);
-      }
+    .pdf-btn {
+      display: block;
+      margin: 20px auto 0;
+      padding: 13px 32px;
+      background: var(--c-primary);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'League Spartan', sans-serif;
+    }
+    .pdf-btn:hover { background: var(--c-primary-dark); }
 
-      .loading {
-        text-align: center;
-        padding: 40px;
-        color: var(--c-text-soft);
-      }
-      .spinner {
-        width: 40px;
-        height: 40px;
-        border: 4px solid var(--c-primary-light);
-        border-top-color: var(--c-primary);
-        border-radius: 50%;
-        animation: spin 0.8s linear infinite;
-        margin: 0 auto 16px;
-      }
-      @keyframes spin {
-        to {
-          transform: rotate(360deg);
-        }
-      }
+    .loading { text-align: center; padding: 40px; color: var(--c-text-soft); }
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid var(--c-primary-light);
+      border-top-color: var(--c-primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-      /* ---------- FOOTER ---------- */
-      .footer {
-        background: #0f172a;
-        color: #cbd5e1;
-        padding: 30px 20px 20px;
-        text-align: center;
-        margin-top: 40px;
-      }
-      .footer .logo-f {
-        font-family: "League Spartan", sans-serif;
-        font-weight: 800;
-        font-size: 22px;
-        color: #fff;
-        letter-spacing: 3px;
-        margin-bottom: 8px;
-      }
-      .footer p {
-        font-size: 13px;
-        line-height: 1.6;
-        max-width: 500px;
-        margin: 0 auto;
-      }
-      .footer a {
-        color: var(--c-primary);
-        text-decoration: none;
-        font-weight: 600;
-      }
+    .footer {
+      background: #0f172a;
+      color: #cbd5e1;
+      padding: 30px 20px 20px;
+      text-align: center;
+      margin-top: 40px;
+    }
+    .footer .logo-f {
+      font-family: 'League Spartan', sans-serif;
+      font-weight: 800;
+      font-size: 22px;
+      color: #fff;
+      letter-spacing: 3px;
+      margin-bottom: 8px;
+    }
+    .footer p { font-size: 13px; line-height: 1.6; max-width: 500px; margin: 0 auto; }
+    .footer a { color: var(--c-primary); text-decoration: none; font-weight: 600; }
 
-      @media (max-width: 600px) {
-        .container {
-          padding: 16px 12px;
-        }
-        .card {
-          padding: 18px;
-        }
-        .hero-title h1 {
-          font-size: 22px;
-        }
-        .search-box {
-          flex-direction: column;
-        }
-        .search-box button {
-          width: 100%;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <!-- ==================== HEADER ==================== -->
-    <div class="topbar">
-      <div class="topbar-inner">
-        <a href="index.html" class="logo">ESAV</a>
-        <div class="nav-links">
-          <a href="index.html">Accueil</a>
-          <a href="resultats.html" class="active">Resultats</a>
-          <a href="contribuer.html">Contribuer</a>
-        </div>
+    .missing-table { margin-top: 16px; }
+    .missing-table th { background: var(--c-error-bg); color: #991b1b; }
+    .missing-table td { font-size: 13px; }
+
+    @media (max-width: 600px) {
+      .container { padding: 16px 12px; }
+      .card { padding: 18px; }
+      .hero-title h1 { font-size: 22px; }
+      .search-box { flex-direction: column; }
+      .search-box button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="topbar-inner">
+      <a href="index.html" class="logo">ESAV</a>
+      <div class="nav-links">
+        <a href="index.html">Accueil</a>
+        <a href="resultats.html" class="active">Resultats</a>
+        <a href="contribuer.html">Contribuer</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="hero-title">
+      <h1>Consultation des resultats</h1>
+      <p>Entrez votre numero d'etudiant pour voir vos notes</p>
+    </div>
+
+    <div class="card">
+      <div class="dept-selector" id="deptSelector">
+        <button class="dept-btn" data-dept="PPV">PPV</button>
+        <button class="dept-btn" data-dept="GAB">GAB</button>
+        <button class="dept-btn" data-dept="GEM">GEM</button>
+        <button class="dept-btn" data-dept="PSA">PSA</button>
+        <button class="dept-btn" data-dept="STA">STA</button>
+        <button class="dept-btn" data-dept="TC">TC</button>
+      </div>
+
+      <div class="search-box">
+        <input type="text" id="studentIdInput" placeholder="Numero d'etudiant" autocomplete="off">
+        <button id="searchBtn">Rechercher</button>
       </div>
     </div>
 
-    <!-- ==================== MAIN ==================== -->
-    <div class="container">
-      <div class="hero-title">
-        <h1>Consultation des resultats</h1>
-        <p>Entrez votre numero d'etudiant pour voir vos notes</p>
-      </div>
+    <div id="resultContainer"></div>
+  </div>
 
-      <div class="card">
-        <div class="dept-selector" id="deptSelector">
-          <button class="dept-btn" data-dept="PPV">PPV</button>
-          <button class="dept-btn" data-dept="GAB">GAB</button>
-          <button class="dept-btn" data-dept="GEM">GEM</button>
-          <button class="dept-btn" data-dept="PSA">PSA</button>
-          <button class="dept-btn" data-dept="STA">STA</button>
-          <button class="dept-btn" data-dept="TC">TC</button>
-        </div>
+  <div class="footer">
+    <div class="logo-f">ESAV</div>
+    <p>Cours, TD, devoirs et examens, organises par semestre et matiere pour faciliter le travail des etudiants.</p>
+  </div>
 
-        <div class="search-box">
-          <input
-            type="text"
-            id="studentIdInput"
-            placeholder="Numero d'etudiant"
-            autocomplete="off"
-          />
-          <button id="searchBtn">Rechercher</button>
-        </div>
-      </div>
+  <script src="config.js"></script>
 
-      <div id="resultContainer"></div>
-    </div>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getDatabase, ref, get, child }
+      from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-    <!-- ==================== FOOTER ==================== -->
-    <div class="footer">
-      <div class="logo-f">ESAV</div>
-      <p>
-        Cours, TD, devoirs et examens, organises par semestre et matiere pour
-        faciliter le travail des etudiants.
-      </p>
-    </div>
+    const app = initializeApp(window.FIREBASE_CONFIG);
+    const db = getDatabase(app);
 
-    <!-- ==================== SCRIPTS ==================== -->
-    <script src="config.js"></script>
+    const DEPT_SEMESTERS = {
+      TC:  ["S1", "S2"],
+      PPV: ["S3", "S4", "S5", "S6"],
+      GAB: ["S3", "S4", "S5", "S6"],
+      GEM: ["S3", "S4", "S5", "S6"],
+      PSA: ["S3", "S4", "S5", "S6"],
+      STA: ["S3", "S4", "S5", "S6"]
+    };
 
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-      import {
-        getDatabase,
-        ref,
-        get,
-        child,
-      } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+    let selectedDept = 'PPV';
+    let structure = {};
+    let noTPSubjects = [];
+    let pdfState = null;
 
-      const app = initializeApp(window.FIREBASE_CONFIG);
-      const db = getDatabase(app);
+    const resultContainer = document.getElementById('resultContainer');
+    const studentIdInput = document.getElementById('studentIdInput');
+    const searchBtn = document.getElementById('searchBtn');
 
-      // ==================== STATE ====================
-      const DEPT_SEMESTERS = {
-        TC: ["S1", "S2"],
-        PPV: ["S3", "S4", "S5", "S6"],
-        GAB: ["S3", "S4", "S5", "S6"],
-        GEM: ["S3", "S4", "S5", "S6"],
-        PSA: ["S3", "S4", "S5", "S6"],
-        STA: ["S3", "S4", "S5", "S6"],
+    // ============ HELPERS ============
+    function displayName(s) {
+      return String(s || '').replace(/_/g, ' ');
+    }
+    function hasTP(subject) {
+      return !noTPSubjects.includes(subject);
+    }
+    function esc(s) {
+      return String(s == null ? '' : s)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    // Normalise le type (supprime accents, casse, espaces)
+    function normalizeType(t) {
+      const s = String(t || '').toLowerCase().trim()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      if (s.includes('rattrap')) return 'Rattrapage';
+      if (s.includes('examen') || s === 'exam') return 'Examen';
+      if (s.includes('controle') || s === 'cc') return 'Controle continu';
+      if (s === 'tp' || s.includes('travaux')) return 'TP';
+      return String(t || '').trim();
+    }
+
+    function normalizeNote(v) {
+      if (v === undefined || v === null || v === '') return null;
+      const n = parseFloat(String(v).replace(',', '.'));
+      return isNaN(n) ? null : n;
+    }
+
+    // ============ LOAD STRUCTURE ============
+    async function loadStructure() {
+      const s1 = await get(child(ref(db), 'structure'));
+      structure = s1.exists() ? s1.val() : {};
+      const s2 = await get(child(ref(db), 'no_tp_subjects'));
+      noTPSubjects = s2.exists() ? s2.val() : [];
+      console.log('Structure chargee:', Object.keys(structure));
+      console.log('No TP subjects:', noTPSubjects.length);
+    }
+
+    function getSubjectsForDeptSem(dept, sem) {
+      const modules = structure[dept]?.[sem] || {};
+      const subjects = [];
+      for (const modKey of Object.keys(modules)) {
+        const mod = modules[modKey];
+        for (const s of mod.subjects || []) {
+          if (!subjects.includes(s)) subjects.push(s);
+        }
+      }
+      return subjects;
+    }
+
+    function getCredits(dept, sem, subject) {
+      const modules = structure[dept]?.[sem] || {};
+      for (const modKey of Object.keys(modules)) {
+        const mod = modules[modKey];
+        if (mod.subjectCredits && mod.subjectCredits[subject] !== undefined) {
+          return mod.subjectCredits[subject];
+        }
+      }
+      return 3;
+    }
+
+    // ============ VERIFICATION DE COMPLETUDE ============
+    // Regle: pour chaque matiere, il faut au minimum Examen + CC
+    //        et TP si la matiere a un TP
+    function checkCompleteness(notes, dept, sem) {
+      const subjects = getSubjectsForDeptSem(dept, sem);
+      const missing = [];
+
+      for (const subject of subjects) {
+        const n = notes[subject] || {};
+        const m = [];
+
+        const hasExam = n['Examen'] !== undefined;
+        const hasRatt = n['Rattrapage'] !== undefined;
+        if (!hasExam && !hasRatt) m.push('Examen');
+
+        if (n['Controle continu'] === undefined) m.push('CC');
+
+        if (hasTP(subject) && n['TP'] === undefined) m.push('TP');
+
+        if (m.length > 0) {
+          missing.push({ subject, missing: m });
+        }
+      }
+
+      return {
+        complete: missing.length === 0,
+        missing,
+        total: subjects.length,
+        completeCount: subjects.length - missing.length
       };
+    }
 
-      let selectedDept = "PPV";
-      let structure = {};
-      let noTPSubjects = [];
-      let pdfState = null;
+    // ============ CALCUL ============
+    function calculateResults(notes, dept, sem) {
+      const modules = structure[dept]?.[sem] || {};
+      const allSubjects = getSubjectsForDeptSem(dept, sem);
+      if (allSubjects.length === 0) return null;
 
-      // ==================== ELEMENTS ====================
-      const resultContainer = document.getElementById("resultContainer");
-      const studentIdInput = document.getElementById("studentIdInput");
-      const searchBtn = document.getElementById("searchBtn");
+      const subjectAvg = {};
+      const subjectSR = {};
 
-      // ==================== HELPERS ====================
-      function displayName(s) {
-        return String(s || "").replace(/_/g, " ");
-      }
-      function hasTP(subject) {
-        return !noTPSubjects.includes(subject);
-      }
-      function esc(s) {
-        return String(s == null ? "" : s)
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;")
-          .replace(/'/g, "&#39;");
-      }
+      for (const subject of allSubjects) {
+        const n = notes[subject] || {};
+        const exam = n['Examen'] !== undefined ? n['Examen'] : 0;
+        const cc = n['Controle continu'] !== undefined ? n['Controle continu'] : 0;
+        const tp = n['TP'] !== undefined ? n['TP'] : 0;
+        const ratt = n['Rattrapage'];
 
-      // ==================== LOAD STRUCTURE ====================
-      async function loadStructure() {
-        const s1 = await get(child(ref(db), "structure"));
-        structure = s1.exists() ? s1.val() : {};
-        const s2 = await get(child(ref(db), "no_tp_subjects"));
-        noTPSubjects = s2.exists() ? s2.val() : [];
-      }
+        const useSR = ratt !== undefined && ratt > exam;
+        subjectSR[subject] = useSR;
+        const finalExam = useSR ? ratt : exam;
 
-      function getSubjectsForDeptSem(dept, sem) {
-        const modules = structure[dept]?.[sem] || {};
-        const subjects = [];
-        for (const modKey of Object.keys(modules)) {
-          const mod = modules[modKey];
-          for (const s of mod.subjects || []) {
-            if (!subjects.includes(s)) subjects.push(s);
-          }
+        if (hasTP(subject)) {
+          subjectAvg[subject] = (tp + cc * 2 + finalExam * 3) / 6;
+        } else {
+          subjectAvg[subject] = (cc * 2 + finalExam * 3) / 5;
         }
-        return subjects;
       }
 
-      function getCredits(dept, sem, subject) {
-        const modules = structure[dept]?.[sem] || {};
-        for (const modKey of Object.keys(modules)) {
-          const mod = modules[modKey];
-          if (mod.subjectCredits && mod.subjectCredits[subject] !== undefined) {
-            return mod.subjectCredits[subject];
-          }
-        }
-        return 3; // Default
-      }
-
-      // ==================== CALCUL ====================
-      function calculateResults(notes, dept, sem) {
-        const modules = structure[dept]?.[sem] || {};
-        const allSubjects = getSubjectsForDeptSem(dept, sem);
-        if (allSubjects.length === 0) return null;
-
-        // Moyenne par matiere
-        const subjectAvg = {};
-        const subjectSR = {};
-        for (const subject of allSubjects) {
-          const n = notes[subject] || {};
-          const exam = Number(n["Examen"]) || 0;
-          const cc = Number(n["Controle continu"]) || 0;
-          const tp = Number(n["TP"]) || 0;
-          const ratt =
-            n["Rattrapage"] !== undefined ? Number(n["Rattrapage"]) : null;
-
-          const useSR = ratt !== null && ratt > exam;
-          subjectSR[subject] = useSR;
-          const finalExam = useSR ? ratt : exam;
-
-          if (hasTP(subject)) {
-            subjectAvg[subject] = (tp + cc * 2 + finalExam * 3) / 6;
-          } else {
-            subjectAvg[subject] = (cc * 2 + finalExam * 3) / 5;
-          }
-        }
-
-        // Moyenne par module
-        const moduleAvg = {};
-        for (const modKey of Object.keys(modules)) {
-          const mod = modules[modKey];
-          let totalW = 0,
-            totalC = 0;
-          for (const subject of mod.subjects || []) {
-            const c = getCredits(dept, sem, subject);
-            totalW += (subjectAvg[subject] || 0) * c;
-            totalC += c;
-          }
-          moduleAvg[modKey] = totalC > 0 ? totalW / totalC : 0;
-        }
-
-        // Moyenne generale
-        let totalW = 0,
-          totalC = 0;
-        for (const subject of allSubjects) {
+      const moduleAvg = {};
+      for (const modKey of Object.keys(modules)) {
+        const mod = modules[modKey];
+        let totalW = 0, totalC = 0;
+        for (const subject of mod.subjects || []) {
           const c = getCredits(dept, sem, subject);
           totalW += (subjectAvg[subject] || 0) * c;
           totalC += c;
         }
-        const overallAvg = totalC > 0 ? totalW / totalC : 0;
-
-        // Status matiere
-        const subjectStatus = {};
-        for (const modKey of Object.keys(modules)) {
-          const mod = modules[modKey];
-          for (const subject of mod.subjects || []) {
-            if (subjectAvg[subject] >= 10) subjectStatus[subject] = "C";
-            else if (subjectAvg[subject] >= 7 && moduleAvg[modKey] >= 10)
-              subjectStatus[subject] = "C";
-            else subjectStatus[subject] = "NC";
-          }
-        }
-
-        // Status module
-        const moduleStatus = {};
-        const moduleCredits = {};
-        for (const modKey of Object.keys(modules)) {
-          const mod = modules[modKey];
-          let allC = true,
-            earned = 0;
-          for (const subject of mod.subjects || []) {
-            const c = getCredits(dept, sem, subject);
-            if (subjectStatus[subject] === "C") earned += c;
-            else allC = false;
-          }
-          moduleCredits[modKey] = earned;
-          moduleStatus[modKey] = moduleAvg[modKey] >= 10 && allC ? "V" : "NV";
-        }
-
-        // Status semestre
-        const hasNV = Object.values(moduleStatus).some((s) => s === "NV");
-        const semesterStatus =
-          overallAvg >= 10 && !hasNV ? "Valide" : "Non Valide";
-        const hasSR = Object.values(subjectSR).some((v) => v === true);
-
-        return {
-          subjectAvg,
-          subjectStatus,
-          moduleAvg,
-          moduleStatus,
-          moduleCredits,
-          overallAvg: Math.round(overallAvg * 100) / 100,
-          semesterStatus,
-          hasSR,
-          modules,
-          subjectSR,
-        };
+        moduleAvg[modKey] = totalC > 0 ? totalW / totalC : 0;
       }
 
-      // ==================== CHECK COMPLETENESS ====================
-      function isComplete(notes, dept, sem) {
-        const subjects = getSubjectsForDeptSem(dept, sem);
-        for (const subject of subjects) {
-          const n = notes[subject] || {};
-          // Doit avoir Examen
-          if (n["Examen"] === undefined && n["Rattrapage"] === undefined)
-            return false;
-          // Doit avoir CC
-          if (n["Controle continu"] === undefined) return false;
-          // Doit avoir TP si applicable
-          if (hasTP(subject) && n["TP"] === undefined) return false;
+      let totalW = 0, totalC = 0;
+      for (const subject of allSubjects) {
+        const c = getCredits(dept, sem, subject);
+        totalW += (subjectAvg[subject] || 0) * c;
+        totalC += c;
+      }
+      const overallAvg = totalC > 0 ? totalW / totalC : 0;
+
+      const subjectStatus = {};
+      for (const modKey of Object.keys(modules)) {
+        const mod = modules[modKey];
+        for (const subject of mod.subjects || []) {
+          if (subjectAvg[subject] >= 10) subjectStatus[subject] = 'C';
+          else if (subjectAvg[subject] >= 7 && moduleAvg[modKey] >= 10) subjectStatus[subject] = 'C';
+          else subjectStatus[subject] = 'NC';
         }
-        return true;
       }
 
-      // ==================== SEARCH ====================
-      searchBtn.addEventListener("click", searchStudent);
-      studentIdInput.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") searchStudent();
-      });
-
-      document.querySelectorAll(".dept-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          selectedDept = btn.dataset.dept;
-          document
-            .querySelectorAll(".dept-btn")
-            .forEach((b) => b.classList.remove("active"));
-          btn.classList.add("active");
-          resultContainer.innerHTML = "";
-        });
-      });
-
-      async function searchStudent() {
-        const studentId = studentIdInput.value.trim();
-        if (!studentId) {
-          alert("Veuillez entrer votre numero");
-          return;
+      const moduleStatus = {};
+      const moduleCredits = {};
+      for (const modKey of Object.keys(modules)) {
+        const mod = modules[modKey];
+        let allC = true, earned = 0;
+        for (const subject of mod.subjects || []) {
+          const c = getCredits(dept, sem, subject);
+          if (subjectStatus[subject] === 'C') earned += c;
+          else allC = false;
         }
+        moduleCredits[modKey] = earned;
+        moduleStatus[modKey] = (moduleAvg[modKey] >= 10 && allC) ? 'V' : 'NV';
+      }
 
-        pdfState = null;
-        searchBtn.disabled = true;
-        resultContainer.innerHTML =
-          '<div class="card"><div class="loading"><div class="spinner"></div>Chargement...</div></div>';
+      const hasNV = Object.values(moduleStatus).some(s => s === 'NV');
+      const semesterStatus = (overallAvg >= 10 && !hasNV) ? 'Valide' : 'Non Valide';
+      const hasSR = Object.values(subjectSR).some(v => v === true);
 
-        try {
-          const semesters = DEPT_SEMESTERS[selectedDept] || [];
-          let foundData = null;
-          let foundSem = null;
+      return {
+        subjectAvg, subjectStatus,
+        moduleAvg, moduleStatus, moduleCredits,
+        overallAvg: Math.round(overallAvg * 100) / 100,
+        semesterStatus, hasSR,
+        modules, subjectSR
+      };
+    }
 
-          for (const sem of semesters) {
-            const snap = await get(
-              child(ref(db), `results/${selectedDept}/${sem}/${studentId}`),
-            );
-            if (snap.exists()) {
-              foundData = snap.val();
-              foundSem = sem;
-              break;
+    // ============ SEARCH ============
+    searchBtn.addEventListener('click', searchStudent);
+    studentIdInput.addEventListener('keypress', e => {
+      if (e.key === 'Enter') searchStudent();
+    });
+
+    document.querySelectorAll('.dept-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        selectedDept = btn.dataset.dept;
+        document.querySelectorAll('.dept-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        resultContainer.innerHTML = '';
+      });
+    });
+
+    async function searchStudent() {
+      const studentId = studentIdInput.value.trim();
+      if (!studentId) {
+        alert('Veuillez entrer votre numero');
+        return;
+      }
+
+      pdfState = null;
+      searchBtn.disabled = true;
+      resultContainer.innerHTML = '<div class="card"><div class="loading"><div class="spinner"></div>Chargement...</div></div>';
+
+      try {
+        const semesters = DEPT_SEMESTERS[selectedDept] || [];
+        const found = [];
+
+        for (const sem of semesters) {
+          const snap = await get(child(ref(db), `results/${selectedDept}/${sem}/${studentId}`));
+          if (snap.exists()) {
+            const data = snap.val();
+            let studentName = '';
+            const notes = {};
+
+            for (const key of Object.keys(data)) {
+              const e = data[key];
+              if (e.name && !studentName) studentName = e.name;
+              if (e.subject) {
+                if (!notes[e.subject]) notes[e.subject] = {};
+                const t = normalizeType(e.type);
+                const g = normalizeNote(e.grade);
+                if (g !== null) notes[e.subject][t] = g;
+              }
             }
-          }
 
-          if (!foundData) {
-            resultContainer.innerHTML = `
+            console.log(`Etudiant ${studentId} trouve en ${sem}:`, notes);
+            found.push({ sem, notes, studentName });
+          }
+        }
+
+        if (found.length === 0) {
+          resultContainer.innerHTML = `
             <div class="card">
               <div class="empty-state">
                 <h3>Aucun resultat trouve</h3>
                 <p>Verifiez votre numero et le departement selectionne.</p>
               </div>
             </div>`;
-            return;
-          }
+          return;
+        }
 
-          // Extraire nom + notes
-          let studentName = "";
-          const notes = {};
-          for (const key of Object.keys(foundData)) {
-            const e = foundData[key];
-            if (e.name && !studentName) studentName = e.name;
-            if (e.subject) {
-              if (!notes[e.subject]) notes[e.subject] = {};
-              notes[e.subject][e.type] = Number(e.grade);
-            }
-          }
+        let allHtml = '';
+        for (const f of found) {
+          const requiredSubjects = getSubjectsForDeptSem(selectedDept, f.sem);
+          const check = checkCompleteness(f.notes, selectedDept, f.sem);
 
-          const requiredSubjects = getSubjectsForDeptSem(
-            selectedDept,
-            foundSem,
-          );
-          const complete = isComplete(notes, selectedDept, foundSem);
+          console.log(`Semestre ${f.sem}: ${check.completeCount}/${check.total} matieres completes`);
 
-          if (complete && requiredSubjects.length > 0) {
-            const results = calculateResults(notes, selectedDept, foundSem);
+          if (check.complete && requiredSubjects.length > 0) {
+            const results = calculateResults(f.notes, selectedDept, f.sem);
             if (results) {
               pdfState = {
-                notes,
-                results,
-                studentId,
-                studentName,
-                dept: selectedDept,
-                sem: foundSem,
+                notes: f.notes, results,
+                studentId, studentName: f.studentName,
+                dept: selectedDept, sem: f.sem
               };
-              resultContainer.innerHTML = renderComplete(
-                studentId,
-                studentName,
-                notes,
-                results,
-                selectedDept,
-                foundSem,
-              );
-            } else {
-              resultContainer.innerHTML =
-                '<div class="card"><div class="empty-state"><h3>Impossible de calculer</h3></div></div>';
+              allHtml += renderComplete(studentId, f.studentName, f.notes, results, selectedDept, f.sem);
             }
           } else {
-            resultContainer.innerHTML = renderPartial(
-              studentId,
-              studentName,
-              notes,
-              selectedDept,
-              foundSem,
-              requiredSubjects,
-            );
+            allHtml += renderPartial(studentId, f.studentName, f.notes, selectedDept, f.sem, check);
           }
-        } catch (err) {
-          console.error(err);
-          resultContainer.innerHTML = `
+        }
+        resultContainer.innerHTML = allHtml;
+
+      } catch (err) {
+        console.error(err);
+        resultContainer.innerHTML = `
           <div class="card">
             <div class="empty-state">
               <h3>Erreur</h3>
               <p>${esc(err.message)}</p>
             </div>
           </div>`;
-        } finally {
-          searchBtn.disabled = false;
-        }
+      } finally {
+        searchBtn.disabled = false;
       }
+    }
 
-      // ==================== RENDER COMPLETE ====================
-      function renderComplete(studentId, studentName, notes, r, dept, sem) {
-        const showSR = r.hasSR;
-        const colspanTotal = showSR ? 6 : 5;
+    // ============ RENDER COMPLETE ============
+    function renderComplete(studentId, studentName, notes, r, dept, sem) {
+      const showSR = r.hasSR;
+      const colspanTotal = showSR ? 6 : 5;
 
-        let html = `
+      let html = `
         <div class="card">
           <div class="student-info">
             <div>
-              <h3>${esc(studentName || "Etudiant")}</h3>
-              <p>Numero : ${esc(studentId)} | Departement : ${esc(dept)} | Semestre : ${esc(sem)}</p>
+              <h3>${esc(studentName || 'Etudiant')}</h3>
+              <p>
+                Numero : <strong>${esc(studentId)}</strong> |
+                Departement : <strong>${esc(dept)}</strong> |
+                <span class="semester-pill">${esc(sem)}</span>
+              </p>
             </div>
-            <span class="status-pill ${r.semesterStatus === "Valide" ? "valid" : "invalid"}">
+            <span class="status-pill ${r.semesterStatus === 'Valide' ? 'valid' : 'invalid'}">
               ${r.semesterStatus}
             </span>
+          </div>
+
+          <div class="info-box success">
+            <strong>Resultats complets.</strong>
+            Moyenne du semestre : <strong>${r.overallAvg} / 20</strong>
           </div>
 
           <div class="table-wrap">
@@ -819,7 +691,7 @@
                   <th>TP</th>
                   <th>CC</th>
                   <th>Exam</th>
-                  ${showSR ? "<th>SR</th>" : ""}
+                  ${showSR ? '<th>SR</th>' : ''}
                   <th>Moy</th>
                   <th>Credit</th>
                   <th>Obs</th>
@@ -827,19 +699,19 @@
               </thead>
               <tbody>
                 <tr>
-                  <td colspan="2" style="text-align:left; font-weight:700;">${esc(studentId)} - ${esc(studentName)}</td>
-                  <td colspan="${showSR ? 7 : 6}"></td>
+                  <td colspan="2" style="text-align:left; font-weight:700; background:#f8fafc;">${esc(studentId)} - ${esc(studentName)}</td>
+                  <td colspan="${showSR ? 7 : 6}" style="background:#f8fafc;"></td>
                 </tr>
       `;
 
-        for (const modKey of Object.keys(r.modules)) {
-          const mod = r.modules[modKey];
-          const modLabel = modKey.replace(/_[A-Z]+$/, "");
+      for (const modKey of Object.keys(r.modules)) {
+        const mod = r.modules[modKey];
+        const modLabel = modKey.replace(/_[A-Z]+$/, '');
 
-          html += `
+        html += `
           <tr class="module-row">
             <td>${esc(modLabel)}</td>
-            <td>${esc(mod.name || "")}</td>
+            <td>${esc(mod.name || '')}</td>
             <td colspan="${showSR ? 4 : 3}"></td>
             <td>${Math.round(r.moduleAvg[modKey] * 100) / 100}</td>
             <td>${r.moduleCredits[modKey].toFixed(1)}</td>
@@ -847,50 +719,37 @@
           </tr>
         `;
 
-          for (const subject of mod.subjects || []) {
-            const n = notes[subject] || {};
-            const tpVal =
-              hasTP(subject) && n["TP"] !== undefined
-                ? Number(n["TP"]).toFixed(2)
-                : "";
-            const ccVal =
-              n["Controle continu"] !== undefined
-                ? Number(n["Controle continu"]).toFixed(2)
-                : "";
-            const examVal =
-              n["Examen"] !== undefined ? Number(n["Examen"]).toFixed(2) : "";
-            const rattVal =
-              n["Rattrapage"] !== undefined
-                ? Number(n["Rattrapage"]).toFixed(2)
-                : "";
-            const credit = getCredits(dept, sem, subject);
+        for (const subject of mod.subjects || []) {
+          const n = notes[subject] || {};
+          const tpVal = hasTP(subject) && n['TP'] !== undefined ? n['TP'].toFixed(2) : '';
+          const ccVal = n['Controle continu'] !== undefined ? n['Controle continu'].toFixed(2) : '';
+          const examVal = n['Examen'] !== undefined ? n['Examen'].toFixed(2) : '';
+          const rattVal = n['Rattrapage'] !== undefined ? n['Rattrapage'].toFixed(2) : '';
+          const credit = getCredits(dept, sem, subject);
 
-            html += `
+          html += `
             <tr>
               <td></td>
               <td class="subject-name">${esc(displayName(subject))}</td>
               <td class="note-value">${tpVal}</td>
               <td class="note-value">${ccVal}</td>
               <td class="note-value">${examVal}</td>
-              ${showSR ? `<td class="note-value">${rattVal}</td>` : ""}
+              ${showSR ? `<td class="note-value">${rattVal}</td>` : ''}
               <td class="note-value">${Math.round(r.subjectAvg[subject] * 100) / 100}</td>
               <td>${credit.toFixed(1)}</td>
               <td class="badge-${r.subjectStatus[subject]}">${r.subjectStatus[subject]}</td>
             </tr>
           `;
-          }
         }
+      }
 
-        html += `
+      html += `
         <tr class="total-row">
           <td colspan="${colspanTotal}" style="text-align:right;">Moyenne Semestre :</td>
           <td>${r.overallAvg}</td>
           <td></td>
-          <td class="badge-${r.semesterStatus === "Valide" ? "V" : "NV"}">${r.semesterStatus === "Valide" ? "V" : "NV"}</td>
+          <td class="badge-${r.semesterStatus === 'Valide' ? 'V' : 'NV'}">${r.semesterStatus === 'Valide' ? 'V' : 'NV'}</td>
         </tr>
-      `;
-
-        html += `
               </tbody>
             </table>
           </div>
@@ -899,71 +758,88 @@
         </div>
       `;
 
-        return html;
-      }
+      return html;
+    }
 
-      // ==================== RENDER PARTIAL ====================
-      function renderPartial(
-        studentId,
-        studentName,
-        notes,
-        dept,
-        sem,
-        requiredSubjects,
-      ) {
-        const availableSubjects = Object.keys(notes);
-        let html = `
+    // ============ RENDER PARTIAL ============
+    function renderPartial(studentId, studentName, notes, dept, sem, check) {
+      const availableSubjects = Object.keys(notes).sort();
+
+      let html = `
         <div class="card">
           <div class="student-info">
             <div>
-              <h3>${esc(studentName || "Etudiant")}</h3>
-              <p>Numero : ${esc(studentId)} | Departement : ${esc(dept)} | Semestre : ${esc(sem)}</p>
+              <h3>${esc(studentName || 'Etudiant')}</h3>
+              <p>
+                Numero : <strong>${esc(studentId)}</strong> |
+                Departement : <strong>${esc(dept)}</strong> |
+                <span class="semester-pill">${esc(sem)}</span>
+              </p>
             </div>
             <span class="status-pill pending">En attente</span>
           </div>
 
           <div class="info-box">
-            Les resultats ne sont pas encore finalises. Voici les notes deja disponibles.
+            <strong>Resultats non finalises.</strong>
+            ${check.completeCount} matiere(s) sur ${check.total} sont completes.
+            La moyenne sera calculee des que toutes les notes seront disponibles.
           </div>
       `;
 
-        if (availableSubjects.length === 0) {
-          html +=
-            '<div class="empty-state"><p>Aucune note disponible pour le moment.</p></div>';
-        } else {
-          html +=
-            '<div class="table-wrap"><table><thead><tr><th>Matiere</th><th>Type</th><th>Note</th></tr></thead><tbody>';
-          for (const subject of availableSubjects.sort()) {
-            const entries = Object.entries(notes[subject]);
-            for (let i = 0; i < entries.length; i++) {
-              const [type, grade] = entries[i];
-              html += "<tr>";
-              if (i === 0) {
-                html += `<td rowspan="${entries.length}" class="subject-name">${esc(displayName(subject))}</td>`;
-              }
-              html += `<td>${esc(type)}</td><td class="note-value">${grade}</td></tr>`;
-            }
-          }
-          html += "</tbody></table></div>";
+      if (availableSubjects.length === 0) {
+        html += '<div class="empty-state"><p>Aucune note disponible pour le moment.</p></div>';
+      } else {
+        html += '<div class="table-wrap"><table><thead><tr><th>Matiere</th><th>TP</th><th>CC</th><th>Examen</th><th>Rattrapage</th></tr></thead><tbody>';
+        for (const subject of availableSubjects) {
+          const n = notes[subject] || {};
+          html += `
+            <tr>
+              <td class="subject-name">${esc(displayName(subject))}</td>
+              <td class="note-value">${n['TP'] !== undefined ? n['TP'].toFixed(2) : '<span class="note-missing">-</span>'}</td>
+              <td class="note-value">${n['Controle continu'] !== undefined ? n['Controle continu'].toFixed(2) : '<span class="note-missing">-</span>'}</td>
+              <td class="note-value">${n['Examen'] !== undefined ? n['Examen'].toFixed(2) : '<span class="note-missing">-</span>'}</td>
+              <td class="note-value">${n['Rattrapage'] !== undefined ? n['Rattrapage'].toFixed(2) : '<span class="note-missing">-</span>'}</td>
+            </tr>
+          `;
         }
-
-        html += "</div>";
-        return html;
+        html += '</tbody></table></div>';
       }
 
-      // ==================== PDF ====================
-      window.generatePDF = function () {
-        if (!pdfState) {
-          alert("Donnees non disponibles");
-          return;
-        }
+      if (check.missing.length > 0) {
+        html += `
+          <div class="missing-table">
+            <h4 style="color:var(--c-error); font-size:14px; margin:16px 0 8px 0;">Details des donnees manquantes</h4>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Matiere</th><th>Element(s) manquant(s)</th></tr></thead>
+                <tbody>
+                  ${check.missing.map(m => `
+                    <tr>
+                      <td class="subject-name">${esc(displayName(m.subject))}</td>
+                      <td style="color:var(--c-error); font-weight:600;">${m.missing.join(', ')}</td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+      }
 
-        const { notes, results, studentId, studentName, dept, sem } = pdfState;
-        const showSR = results.hasSR;
-        const year = new Date().getFullYear();
-        const academicYear = year - 1 + "-" + year;
+      html += '</div>';
+      return html;
+    }
 
-        let html = `
+    // ============ PDF ============
+    window.generatePDF = function () {
+      if (!pdfState) { alert('Donnees non disponibles'); return; }
+
+      const { notes, results, studentId, studentName, dept, sem } = pdfState;
+      const showSR = results.hasSR;
+      const year = new Date().getFullYear();
+      const academicYear = (year - 1) + '-' + year;
+
+      let html = `
         <div style="padding:15mm 10mm; font-family:Arial,Helvetica,sans-serif; font-size:11pt;">
           <div style="font-weight:bold; font-size:13pt;">Ecole Superieure d'Agronomie de Villeneuve (ESAV)</div>
           <div style="display:flex; justify-content:space-between; margin-top:10px;">
@@ -978,7 +854,7 @@
                 <th style="border:1px solid #000; padding:5px;">TP</th>
                 <th style="border:1px solid #000; padding:5px;">CC</th>
                 <th style="border:1px solid #000; padding:5px;">Exam</th>
-                ${showSR ? '<th style="border:1px solid #000; padding:5px;">SR</th>' : ""}
+                ${showSR ? '<th style="border:1px solid #000; padding:5px;">SR</th>' : ''}
                 <th style="border:1px solid #000; padding:5px;">Moy</th>
                 <th style="border:1px solid #000; padding:5px;">Credit</th>
                 <th style="border:1px solid #000; padding:5px;">Obs</th>
@@ -991,54 +867,44 @@
               </tr>
       `;
 
-        for (const modKey of Object.keys(results.modules)) {
-          const mod = results.modules[modKey];
-          const modLabel = modKey.replace(/_[A-Z]+$/, "");
-          html += `
+      for (const modKey of Object.keys(results.modules)) {
+        const mod = results.modules[modKey];
+        const modLabel = modKey.replace(/_[A-Z]+$/, '');
+        html += `
           <tr style="background:#e6f4f9; font-weight:bold;">
             <td style="border:1px solid #000; padding:4px;">${esc(modLabel)}</td>
-            <td style="border:1px solid #000; padding:4px; text-align:left;">${esc(mod.name || "")}</td>
+            <td style="border:1px solid #000; padding:4px; text-align:left;">${esc(mod.name || '')}</td>
             <td colspan="${showSR ? 4 : 3}" style="border:1px solid #000; padding:4px;"></td>
             <td style="border:1px solid #000; padding:4px;">${Math.round(results.moduleAvg[modKey] * 100) / 100}</td>
             <td style="border:1px solid #000; padding:4px;">${results.moduleCredits[modKey].toFixed(1)}</td>
             <td style="border:1px solid #000; padding:4px;">${results.moduleStatus[modKey]}</td>
           </tr>
         `;
-          for (const subject of mod.subjects || []) {
-            const n = notes[subject] || {};
-            const tpVal =
-              hasTP(subject) && n["TP"] !== undefined
-                ? Number(n["TP"]).toFixed(2)
-                : "";
-            const ccVal =
-              n["Controle continu"] !== undefined
-                ? Number(n["Controle continu"]).toFixed(2)
-                : "";
-            const examVal =
-              n["Examen"] !== undefined ? Number(n["Examen"]).toFixed(2) : "";
-            const rattVal =
-              n["Rattrapage"] !== undefined
-                ? Number(n["Rattrapage"]).toFixed(2)
-                : "";
-            const credit = getCredits(dept, sem, subject);
-            html += `
+        for (const subject of mod.subjects || []) {
+          const n = notes[subject] || {};
+          const tpVal = hasTP(subject) && n['TP'] !== undefined ? n['TP'].toFixed(2) : '';
+          const ccVal = n['Controle continu'] !== undefined ? n['Controle continu'].toFixed(2) : '';
+          const examVal = n['Examen'] !== undefined ? n['Examen'].toFixed(2) : '';
+          const rattVal = n['Rattrapage'] !== undefined ? n['Rattrapage'].toFixed(2) : '';
+          const credit = getCredits(dept, sem, subject);
+          html += `
             <tr>
               <td style="border:1px solid #000; padding:3px;"></td>
               <td style="border:1px solid #000; padding:3px; text-align:left; padding-left:15px;">${esc(displayName(subject))}</td>
               <td style="border:1px solid #000; padding:3px; text-align:center;">${tpVal}</td>
               <td style="border:1px solid #000; padding:3px; text-align:center;">${ccVal}</td>
               <td style="border:1px solid #000; padding:3px; text-align:center;">${examVal}</td>
-              ${showSR ? `<td style="border:1px solid #000; padding:3px; text-align:center;">${rattVal}</td>` : ""}
+              ${showSR ? `<td style="border:1px solid #000; padding:3px; text-align:center;">${rattVal}</td>` : ''}
               <td style="border:1px solid #000; padding:3px; text-align:center; font-weight:bold;">${Math.round(results.subjectAvg[subject] * 100) / 100}</td>
               <td style="border:1px solid #000; padding:3px; text-align:center;">${credit.toFixed(1)}</td>
               <td style="border:1px solid #000; padding:3px; text-align:center;">${results.subjectStatus[subject]}</td>
             </tr>
           `;
-          }
         }
+      }
 
-        const colspanTotal = showSR ? 6 : 5;
-        html += `
+      const colspanTotal = showSR ? 6 : 5;
+      html += `
             <tr style="font-weight:bold;">
               <td colspan="${colspanTotal}" style="border:none; padding:8px 4px; text-align:right;">Moyenne Semestre :</td>
               <td style="border:none; padding:8px 4px; text-align:center;">${results.overallAvg}</td>
@@ -1050,30 +916,24 @@
         </div>
       `;
 
-        const el = document.createElement("div");
-        el.innerHTML = html;
-        document.body.appendChild(el);
+      const el = document.createElement('div');
+      el.innerHTML = html;
+      document.body.appendChild(el);
 
-        html2pdf()
-          .set({
-            margin: [0, 5, 5, 5],
-            filename: `Releve_${studentId}_${dept}_${sem}.pdf`,
-            image: { type: "jpeg", quality: 0.98 },
-            html2canvas: { scale: 2, letterRendering: true, scrollY: 0 },
-            jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-          })
-          .from(el)
-          .save()
-          .then(() => document.body.removeChild(el));
-      };
+      html2pdf().set({
+        margin: [0, 5, 5, 5],
+        filename: `Releve_${studentId}_${dept}_${sem}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, letterRendering: true, scrollY: 0 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      }).from(el).save().then(() => document.body.removeChild(el));
+    };
 
-      // ==================== INIT ====================
-      (async function init() {
-        await loadStructure();
-        document
-          .querySelector('.dept-btn[data-dept="PPV"]')
-          .classList.add("active");
-      })();
-    </script>
-  </body>
+    // ============ INIT ============
+    (async function init() {
+      await loadStructure();
+      document.querySelector('.dept-btn[data-dept="PPV"]').classList.add('active');
+    })();
+  </script>
+</body>
 </html>
