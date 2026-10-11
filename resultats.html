@@ -31,8 +31,13 @@
         --shadow-1: 0 6px 15px 0 hsla(0, 0%, 0%, 0.05);
         --shadow-2: 0 10px 30px hsla(0, 0%, 0%, 0.06);
         --shadow-3: 0 10px 50px 0 hsla(220, 53%, 22%, 0.1);
+        --radius-3: 3px;
+        --radius-5: 5px;
+        --transition-1: 0.25s ease;
+        --transition-2: 0.5s ease;
         --ff-head: "League Spartan", sans-serif;
         --ff-body: "Poppins", sans-serif;
+        --logo-height: 44px;
       }
 
       * {
@@ -42,9 +47,10 @@
       }
       body {
         font-family: var(--ff-body);
+        font-size: 16px;
+        line-height: 1.75;
         background: var(--isabelline);
         color: var(--eerie);
-        line-height: 1.6;
         min-height: 100vh;
         display: flex;
         flex-direction: column;
@@ -59,38 +65,55 @@
         padding: 20px;
       }
 
-      /* ---------- Header / hero ---------- */
+      /* ---------- Header / navbar (style eduweb) ---------- */
       header {
-        background:
-          radial-gradient(
-            circle at 85% 20%,
-            hsla(170, 75%, 41%, 0.18),
-            transparent 40%
-          ),
-          radial-gradient(
-            circle at 10% 90%,
-            hsla(42, 94%, 55%, 0.22),
-            transparent 35%
-          ),
-          var(--isabelline);
-        padding: 36px 0 24px;
-        text-align: center;
+        background: white;
+        box-shadow: var(--shadow-1);
+      }
+      header .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding-top: 12px;
+        padding-bottom: 12px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .brand-logo {
+        height: var(--logo-height);
+        width: auto;
+        display: block;
       }
       header h1 {
         font-family: var(--ff-head);
-        font-size: 3rem;
-        font-weight: 800;
-        line-height: 1.1;
+        font-size: 23px;
+        font-weight: 600;
+        line-height: 1;
         color: var(--eerie);
-        margin-bottom: 8px;
       }
-      header h1::after {
-        content: ".";
+      header nav ul {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        gap: 30px;
+      }
+      .nav-link {
+        background: none;
+        border: none;
+        padding-block: 8px;
+        color: var(--eerie);
+        font-family: var(--ff-body);
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: var(--transition-1);
+      }
+      .nav-link:is(:hover, :focus) {
         color: var(--kappel);
-      }
-      header p {
-        color: var(--gray);
-        font-size: 0.95rem;
       }
 
       /* ---------- Annonce ---------- */
@@ -101,7 +124,7 @@
         background: hsla(42, 94%, 55%, 0.18);
         border-left: 5px solid var(--yellow);
         padding: 14px 18px;
-        border-radius: 10px;
+        border-radius: var(--radius-5);
         display: flex;
         gap: 12px;
         box-shadow: var(--shadow-1);
@@ -121,18 +144,19 @@
       /* ---------- Card ---------- */
       .result-card {
         background: white;
-        border-radius: 10px;
+        border-radius: var(--radius-5);
         padding: 28px 24px;
         box-shadow: var(--shadow-2);
         overflow: hidden;
       }
       .section-title {
         font-family: var(--ff-head);
-        font-size: 1.9rem;
-        font-weight: 700;
+        font-size: 32px;
+        font-weight: 600;
+        line-height: 1;
         color: var(--eerie);
         text-align: center;
-        margin-bottom: 20px;
+        margin-bottom: 24px;
       }
 
       .dept-selector {
@@ -143,67 +167,48 @@
         margin-bottom: 22px;
       }
       .dept-btn {
-        padding: 8px 24px;
+        padding: 8px 20px;
         background: white;
         color: var(--eerie);
-        border: 1.5px solid var(--platinum);
-        border-radius: 500px;
+        border: 1px solid var(--platinum);
+        border-radius: var(--radius-5);
         cursor: pointer;
         font-family: var(--ff-head);
-        font-size: 16px;
-        font-weight: 600;
-        transition: 0.25s ease;
+        font-size: 18px;
+        font-weight: 500;
+        transition: var(--transition-1);
       }
-      .dept-btn:hover {
+      .dept-btn:is(:hover, :focus) {
         border-color: var(--kappel);
-        color: var(--kappel-dark);
+        color: var(--kappel);
       }
       .dept-btn.active {
-        background: var(--gradient);
+        background: var(--kappel);
         color: white;
-        border-color: transparent;
+        border-color: var(--kappel);
       }
 
       .search-box {
-        display: flex;
-        gap: 10px;
         max-width: 520px;
         margin: 0 auto;
       }
       .search-box input {
-        flex: 1;
-        min-width: 0;
-        padding: 12px 20px;
-        border: 1.5px solid var(--platinum);
-        border-radius: 500px;
-        font-size: 15px;
+        width: 100%;
+        padding: 12px;
+        background: white;
+        color: var(--eerie);
+        border: 1px solid var(--platinum);
+        border-radius: var(--radius-5);
+        font-family: var(--ff-body);
+        font-size: 16px;
         outline: none;
-        font-family: inherit;
-        transition: 0.25s ease;
+        transition: var(--transition-1);
+      }
+      .search-box input::placeholder {
+        color: var(--gray);
       }
       .search-box input:focus {
         border-color: var(--kappel);
-        box-shadow: 0 0 0 3px var(--kappel-15);
-      }
-      .search-box button {
-        padding: 12px 26px;
-        background: var(--gradient);
-        color: white;
-        border: none;
-        border-radius: 500px;
-        font-family: var(--ff-head);
-        font-size: 17px;
-        font-weight: 700;
-        cursor: pointer;
-        transition: 0.25s ease;
-        white-space: nowrap;
-      }
-      .search-box button:hover {
-        background: var(--eerie);
-      }
-      .search-box button:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
       }
 
       /* ---------- States ---------- */
@@ -214,9 +219,11 @@
       }
       .empty-state h3 {
         font-family: var(--ff-head);
-        font-size: 1.4rem;
+        font-size: 23px;
+        font-weight: 500;
+        line-height: 1;
         color: var(--eerie);
-        margin-bottom: 8px;
+        margin-bottom: 10px;
       }
       .loading {
         text-align: center;
@@ -248,19 +255,21 @@
       .student-header {
         background: var(--kappel-15);
         padding: 16px 20px;
-        border-radius: 10px;
+        border-radius: var(--radius-5);
         margin: 24px 0 16px;
       }
       .student-header h3 {
         font-family: var(--ff-head);
-        font-size: 1.5rem;
-        font-weight: 700;
+        font-size: 23px;
+        font-weight: 500;
+        line-height: 1.1;
         color: var(--eerie);
-        margin-bottom: 2px;
+        margin-bottom: 4px;
       }
       .student-header p {
         color: var(--gray);
-        font-size: 13px;
+        font-size: 14px;
+        line-height: 1.6;
       }
 
       /* ---------- Table ---------- */
@@ -271,6 +280,7 @@
         width: 100%;
         border-collapse: collapse;
         font-size: 13px;
+        line-height: 1.5;
         margin: 10px 0;
       }
       .releve-table th,
@@ -282,8 +292,8 @@
       .releve-table th {
         background: var(--isabelline);
         font-family: var(--ff-head);
-        font-size: 14px;
-        font-weight: 700;
+        font-size: 15px;
+        font-weight: 600;
       }
       .releve-table th:first-child,
       .releve-table td:first-child {
@@ -318,30 +328,43 @@
         font-weight: 700;
       }
 
+      /* Bouton principal (comme .btn d'eduweb : fond plein + dégradé qui glisse au survol) */
       .pdf-link {
+        position: relative;
+        isolation: isolate;
+        overflow: hidden;
         display: block;
         margin: 16px auto 0;
-        padding: 12px 30px;
-        background: var(--gradient);
+        padding: 10px 20px;
+        background: var(--kappel);
         color: white;
         border: none;
-        border-radius: 500px;
+        border-radius: var(--radius-5);
         font-family: var(--ff-head);
-        font-size: 17px;
-        font-weight: 700;
+        font-size: 18px;
         cursor: pointer;
-        transition: 0.25s ease;
       }
-      .pdf-link:hover {
-        background: var(--eerie);
+      .pdf-link::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: var(--gradient);
+        z-index: -1;
+        border-radius: inherit;
+        transform: translateX(-100%);
+        transition: var(--transition-2);
+      }
+      .pdf-link:is(:hover, :focus)::before {
+        transform: translateX(0);
       }
       .neutral-message {
         background: hsla(42, 94%, 55%, 0.18);
         border-left: 5px solid var(--yellow);
         padding: 12px 16px;
-        border-radius: 10px;
+        border-radius: var(--radius-5);
         margin-bottom: 12px;
         font-size: 14px;
+        line-height: 1.6;
       }
 
       /* ---------- Footer ---------- */
@@ -356,10 +379,23 @@
         box-shadow: 0 -6px 15px 0 hsla(0, 0%, 0%, 0.04);
       }
 
+      /* ---------- Tablette et plus ---------- */
+      @media (min-width: 768px) {
+        .pdf-link {
+          padding: 15px 30px;
+        }
+      }
+
       /* ---------- Mobile ---------- */
       @media (max-width: 600px) {
+        :root {
+          --logo-height: 38px;
+        }
         header h1 {
-          font-size: 2.4rem;
+          font-size: 21px;
+        }
+        .nav-link {
+          font-size: 15px;
         }
         .container {
           padding: 14px;
@@ -368,10 +404,11 @@
           padding: 22px 14px;
         }
         .section-title {
-          font-size: 1.6rem;
+          font-size: 28px;
         }
-        .search-box button {
-          padding: 12px 18px;
+        .dept-btn {
+          font-size: 16px;
+          padding: 6px 16px;
         }
         .releve-table {
           font-size: 11px;
@@ -386,7 +423,23 @@
   <body>
     <header>
       <div class="container">
-        <h1>ESAVweb</h1>
+        <div class="brand" id="brand">
+          <h1>ESAVweb</h1>
+        </div>
+        <nav>
+          <ul>
+            <li>
+              <!-- TODO : remplacer LIEN par l'adresse de la page d'accueil -->
+              <button
+                type="button"
+                class="nav-link"
+                onclick="window.location.href = 'LIEN'"
+              >
+                Accueil
+              </button>
+            </li>
+          </ul>
+        </nav>
       </div>
     </header>
 
@@ -406,14 +459,19 @@
             <button class="dept-btn" data-dept="STA">STA</button>
           </div>
 
-          <div class="search-box">
+          <form
+            class="search-box"
+            id="searchForm"
+            action="#"
+            autocomplete="off"
+          >
             <input
               type="text"
               id="studentIdInput"
-              placeholder="Entrez votre numéro d'étudiant..."
+              enterkeyhint="search"
+              placeholder="Numéro d'étudiant, puis Entrée"
             />
-            <button id="searchBtn">Rechercher</button>
-          </div>
+          </form>
 
           <div id="studentResultContainer" style="display: none"></div>
           <div id="noResultMessage" style="display: none" class="empty-state">
@@ -430,6 +488,24 @@
       <p>© 2026 ESAVweb</p>
     </footer>
 
+    <script src="images.js"></script>
+    <script>
+      // Logo : affiché à côté du nom seulement si IMAGES.logo est renseigné dans images.js.
+      // Vide ou fichier introuvable => rien n'est affiché (aucun espace réservé).
+      (function () {
+        try {
+          if (typeof IMAGES === "undefined" || !IMAGES.logo) return;
+          var img = new Image();
+          img.className = "brand-logo";
+          img.alt = "ESAVweb";
+          img.onerror = function () {
+            img.remove();
+          };
+          img.src = IMAGES.logo;
+          document.getElementById("brand").prepend(img);
+        } catch (e) {}
+      })();
+    </script>
     <script src="firebase-config.js"></script>
     <script src="credits.js"></script>
     <script type="module">
@@ -1079,12 +1155,10 @@
           );
         });
         document
-          .getElementById("searchBtn")
-          .addEventListener("click", searchStudentResult);
-        document
-          .getElementById("studentIdInput")
-          .addEventListener("keypress", (e) => {
-            if (e.key === "Enter") searchStudentResult();
+          .getElementById("searchForm")
+          .addEventListener("submit", (e) => {
+            e.preventDefault();
+            searchStudentResult();
           });
       }
 
