@@ -324,27 +324,56 @@
     <div id="resultContainer"></div>
   </div>
 
-  <!-- Firebase SDK (compat, comme dans main.js) -->
+  <!-- ==================== CONFIG.JS ==================== -->
+  <!-- Charge la configuration centralisee (FIREBASE_CONFIG, APPS_SCRIPT_URL, etc.) -->
+  <script src="config.js"></script>
+
+  <!-- ==================== FIREBASE SDK ==================== -->
   <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-database-compat.js"></script>
-
-  <!-- Config centralisee -->
-  <script src="config.js"></script>
 
   <script>
   (function () {
     'use strict';
 
-    // ==================== FIREBASE ====================
-    let db = null;
-    try {
-      firebase.initializeApp(window.FIREBASE_CONFIG);
-      db = firebase.database();
-    } catch (e) {
-      console.error('Firebase init error:', e);
+    // ==================== LECTURE DE LA CONFIG ====================
+    // Config lue depuis config.js (variable globale window.FIREBASE_CONFIG)
+    var cfg = window.FIREBASE_CONFIG;
+
+    // Fallback de securite si config.js manque
+    if (!cfg) {
+      console.warn('config.js non charge ou FIREBASE_CONFIG manquant. Utilisation du fallback.');
+      cfg = {
+        apiKey: "AIzaSyDnrW6WnmbEFpbWzlW9IGglxAafajt2Kyo",
+        authDomain: "iset-b9974.firebaseapp.com",
+        databaseURL: "https://iset-b9974-default-rtdb.firebaseio.com",
+        projectId: "iset-b9974",
+        storageBucket: "iset-b9974.firebasestorage.app",
+        messagingSenderId: "1054170284751",
+        appId: "1:1054170284751:web:8f02232478430d5ae2adba"
+      };
     }
 
-    // ==================== ETAT ====================
+    console.log('Config Firebase :', cfg ? 'OK' : 'MANQUANTE');
+
+    // ==================== FIREBASE INIT ====================
+    var db = null;
+    var firebaseError = null;
+
+    try {
+      if (typeof firebase === 'undefined') {
+        firebaseError = 'SDK Firebase non charge.';
+      } else {
+        firebase.initializeApp(cfg);
+        db = firebase.database();
+        console.log('Firebase initialise.');
+      }
+    } catch (e) {
+      firebaseError = 'Erreur init Firebase : ' + e.message;
+      console.error(firebaseError);
+    }
+
+    // ==================== STATE ====================
     var DEPT_SEMESTERS = {
       TC:  ['S1', 'S2'],
       PPV: ['S3', 'S4', 'S5', 'S6'],
@@ -387,18 +416,17 @@
       return isNaN(n) ? null : n;
     }
 
-    // ==================== CHARGE STRUCTURE ====================
+    // ==================== STRUCTURE ====================
     function loadStructure() {
+      if (!db) return Promise.resolve();
       return Promise.all([
-        db.ref('structure').once('value').then(function (s) {
-          structure = s.val() || {};
-        }),
-        db.ref('no_tp_subjects').once('value').then(function (s) {
-          noTPSubjects = s.val() || [];
-        })
+        db.ref('structure').once('value').then(function (s) { structure = s.val() || {}; }),
+        db.ref('no_tp_subjects').once('value').then(function (s) { noTPSubjects = s.val() || []; })
       ]).then(function () {
-        console.log('Structure chargee:', Object.keys(structure));
-        console.log('No TP subjects:', noTPSubjects.length);
+        console.log('Structure chargee :', Object.keys(structure).length, 'departements');
+        console.log('No TP subjects :', noTPSubjects.length);
+      }).catch(function (err) {
+        console.error('Erreur structure :', err);
       });
     }
 
@@ -406,8 +434,7 @@
       var modules = (structure[dept] || {})[sem] || {};
       var subjects = [];
       Object.keys(modules).forEach(function (modKey) {
-        var mod = modules[modKey];
-        (mod.subjects || []).forEach(function (s) {
+        (modules[modKey].subjects || []).forEach(function (s) {
           if (subjects.indexOf(s) === -1) subjects.push(s);
         });
       });
@@ -418,30 +445,24 @@
       var modules = (structure[dept] || {})[sem] || {};
       var result = 3;
       Object.keys(modules).forEach(function (modKey) {
-        var mod = modules[modKey];
-        if (mod.subjectCredits && mod.subjectCredits[subject] !== undefined) {
-          result = mod.subjectCredits[subject];
-        }
+        var c = modules[modKey].subjectCredits;
+        if (c && c[subject] !== undefined) result = c[subject];
       });
       return result;
     }
 
-    // ==================== VERIFICATION ====================
+    // ==================== CHECK COMPLETENESS ====================
     function checkCompleteness(notes, dept, sem) {
       var subjects = getSubjectsForDeptSem(dept, sem);
       var missing = [];
-
       subjects.forEach(function (subject) {
         var n = notes[subject] || {};
         var m = [];
-        var hasExam = n['Examen'] !== undefined;
-        var hasRatt = n['Rattrapage'] !== undefined;
-        if (!hasExam && !hasRatt) m.push('Examen');
+        if (n['Examen'] === undefined && n['Rattrapage'] === undefined) m.push('Examen');
         if (n['Controle continu'] === undefined) m.push('CC');
         if (hasTP(subject) && n['TP'] === undefined) m.push('TP');
         if (m.length > 0) missing.push({ subject: subject, missing: m });
       });
-
       return {
         complete: missing.length === 0,
         missing: missing,
@@ -465,16 +486,11 @@
         var cc = n['Controle continu'] !== undefined ? n['Controle continu'] : 0;
         var tp = n['TP'] !== undefined ? n['TP'] : 0;
         var ratt = n['Rattrapage'];
-
         var useSR = ratt !== undefined && ratt > exam;
         subjectSR[subject] = useSR;
         var finalExam = useSR ? ratt : exam;
-
-        if (hasTP(subject)) {
-          subjectAvg[subject] = (tp + cc * 2 + finalExam * 3) / 6;
-        } else {
-          subjectAvg[subject] = (cc * 2 + finalExam * 3) / 5;
-        }
+        if (hasTP(subject)) subjectAvg[subject] = (tp + cc * 2 + finalExam * 3) / 6;
+        else subjectAvg[subject] = (cc * 2 + finalExam * 3) / 5;
       });
 
       var moduleAvg = {};
@@ -499,20 +515,17 @@
 
       var subjectStatus = {};
       Object.keys(modules).forEach(function (modKey) {
-        var mod = modules[modKey];
-        (mod.subjects || []).forEach(function (subject) {
+        (modules[modKey].subjects || []).forEach(function (subject) {
           if (subjectAvg[subject] >= 10) subjectStatus[subject] = 'C';
           else if (subjectAvg[subject] >= 7 && moduleAvg[modKey] >= 10) subjectStatus[subject] = 'C';
           else subjectStatus[subject] = 'NC';
         });
       });
 
-      var moduleStatus = {};
-      var moduleCredits = {};
+      var moduleStatus = {}, moduleCredits = {};
       Object.keys(modules).forEach(function (modKey) {
-        var mod = modules[modKey];
         var allC = true, earned = 0;
-        (mod.subjects || []).forEach(function (subject) {
+        (modules[modKey].subjects || []).forEach(function (subject) {
           var c = getCredits(dept, sem, subject);
           if (subjectStatus[subject] === 'C') earned += c;
           else allC = false;
@@ -539,17 +552,15 @@
     var studentIdInput = document.getElementById('studentIdInput');
     var searchBtn = document.getElementById('searchBtn');
 
-    // ==================== DELEGATION DE CLIC ====================
-    // Une seule listener sur le conteneur parent pour TOUS les boutons
     document.getElementById('deptSelector').addEventListener('click', function (e) {
       var btn = e.target.closest('.dept-btn');
       if (!btn) return;
       selectedDept = btn.getAttribute('data-dept');
-      var allBtns = document.querySelectorAll('.dept-btn');
-      for (var i = 0; i < allBtns.length; i++) allBtns[i].classList.remove('active');
+      var all = document.querySelectorAll('.dept-btn');
+      for (var i = 0; i < all.length; i++) all[i].classList.remove('active');
       btn.classList.add('active');
       resultContainer.innerHTML = '';
-      console.log('Departement selectionne:', selectedDept);
+      console.log('Departement :', selectedDept);
     });
 
     searchBtn.addEventListener('click', searchStudent);
@@ -560,17 +571,18 @@
     // ==================== SEARCH ====================
     function searchStudent() {
       var studentId = studentIdInput.value.trim();
-      if (!studentId) {
-        alert('Veuillez entrer votre numero');
-        return;
-      }
+      if (!studentId) { alert('Veuillez entrer votre numero'); return; }
+
       if (!db) {
-        resultContainer.innerHTML = '<div class="card"><div class="empty-state"><h3>Erreur Firebase</h3><p>Verifiez la configuration.</p></div></div>';
+        resultContainer.innerHTML =
+          '<div class="card"><div class="empty-state">' +
+          '<h3>Erreur Firebase</h3>' +
+          '<p>' + esc(firebaseError || 'Configuration invalide') + '</p>' +
+          '</div></div>';
         return;
       }
 
-      console.log('Recherche:', studentId, 'dans', selectedDept);
-
+      console.log('Recherche :', studentId, 'dans', selectedDept);
       pdfState = null;
       searchBtn.disabled = true;
       searchBtn.textContent = 'Chargement...';
@@ -580,11 +592,9 @@
 
       Promise.all(semesters.map(function (sem) {
         return db.ref('results/' + selectedDept + '/' + sem + '/' + studentId).once('value')
-          .then(function (snap) {
-            return { sem: sem, snap: snap };
-          })
+          .then(function (snap) { return { sem: sem, snap: snap }; })
           .catch(function (err) {
-            console.error('Erreur lecture ' + sem + ':', err);
+            console.error('Erreur ' + sem + ' :', err);
             return { sem: sem, snap: null };
           });
       })).then(function (results) {
@@ -604,7 +614,6 @@
               if (g !== null) notes[e.subject][t] = g;
             }
           });
-          console.log('Trouve en ' + r.sem + ':', notes);
           found.push({ sem: r.sem, notes: notes, studentName: studentName });
         });
 
@@ -621,17 +630,16 @@
         found.forEach(function (f) {
           var requiredSubjects = getSubjectsForDeptSem(selectedDept, f.sem);
           var check = checkCompleteness(f.notes, selectedDept, f.sem);
-          console.log('Semestre ' + f.sem + ': ' + check.completeCount + '/' + check.total + ' completes');
-
+          console.log('Semestre ' + f.sem + ' : ' + check.completeCount + '/' + check.total);
           if (check.complete && requiredSubjects.length > 0) {
-            var results2 = calculateResults(f.notes, selectedDept, f.sem);
-            if (results2) {
+            var r2 = calculateResults(f.notes, selectedDept, f.sem);
+            if (r2) {
               pdfState = {
-                notes: f.notes, results: results2,
+                notes: f.notes, results: r2,
                 studentId: studentId, studentName: f.studentName,
                 dept: selectedDept, sem: f.sem
               };
-              allHtml += renderComplete(studentId, f.studentName, f.notes, results2, selectedDept, f.sem);
+              allHtml += renderComplete(studentId, f.studentName, f.notes, r2, selectedDept, f.sem);
             }
           } else {
             allHtml += renderPartial(studentId, f.studentName, f.notes, selectedDept, f.sem, check);
@@ -643,8 +651,7 @@
         console.error(err);
         resultContainer.innerHTML =
           '<div class="card"><div class="empty-state">' +
-          '<h3>Erreur</h3><p>' + esc(err.message) + '</p>' +
-          '</div></div>';
+          '<h3>Erreur</h3><p>' + esc(err.message) + '</p></div></div>';
       }).then(function () {
         searchBtn.disabled = false;
         searchBtn.textContent = 'Rechercher';
@@ -655,24 +662,18 @@
     function renderComplete(studentId, studentName, notes, r, dept, sem) {
       var showSR = r.hasSR;
       var colspanTotal = showSR ? 6 : 5;
-
       var html =
         '<div class="card">' +
-        '<div class="student-info">' +
-        '<div>' +
+        '<div class="student-info"><div>' +
         '<h3>' + esc(studentName || 'Etudiant') + '</h3>' +
         '<p>Numero : <strong>' + esc(studentId) + '</strong> | ' +
         'Departement : <strong>' + esc(dept) + '</strong> | ' +
         '<span class="semester-pill">' + esc(sem) + '</span></p>' +
-        '</div>' +
-        '<span class="status-pill ' + (r.semesterStatus === 'Valide' ? 'valid' : 'invalid') + '">' +
-        r.semesterStatus + '</span>' +
-        '</div>';
+        '</div><span class="status-pill ' + (r.semesterStatus === 'Valide' ? 'valid' : 'invalid') + '">' +
+        r.semesterStatus + '</span></div>';
 
-      html += '<div class="info-box success">' +
-        '<strong>Resultats complets.</strong> ' +
-        'Moyenne du semestre : <strong>' + r.overallAvg + ' / 20</strong>' +
-        '</div>';
+      html += '<div class="info-box success"><strong>Resultats complets.</strong> ' +
+        'Moyenne du semestre : <strong>' + r.overallAvg + ' / 20</strong></div>';
 
       html += '<div class="table-wrap"><table><thead><tr>' +
         '<th>Module</th><th>Matiere</th><th>TP</th><th>CC</th><th>Exam</th>' +
@@ -687,15 +688,12 @@
       Object.keys(r.modules).forEach(function (modKey) {
         var mod = r.modules[modKey];
         var modLabel = modKey.replace(/_[A-Z]+$/, '');
-
         html += '<tr class="module-row">' +
-          '<td>' + esc(modLabel) + '</td>' +
-          '<td>' + esc(mod.name || '') + '</td>' +
+          '<td>' + esc(modLabel) + '</td><td>' + esc(mod.name || '') + '</td>' +
           '<td colspan="' + (showSR ? 4 : 3) + '"></td>' +
           '<td>' + (Math.round(r.moduleAvg[modKey] * 100) / 100) + '</td>' +
           '<td>' + r.moduleCredits[modKey].toFixed(1) + '</td>' +
-          '<td class="badge-' + r.moduleStatus[modKey] + '">' + r.moduleStatus[modKey] + '</td>' +
-          '</tr>';
+          '<td class="badge-' + r.moduleStatus[modKey] + '">' + r.moduleStatus[modKey] + '</td></tr>';
 
         (mod.subjects || []).forEach(function (subject) {
           var n = notes[subject] || {};
@@ -704,9 +702,7 @@
           var examVal = n['Examen'] !== undefined ? n['Examen'].toFixed(2) : '';
           var rattVal = n['Rattrapage'] !== undefined ? n['Rattrapage'].toFixed(2) : '';
           var credit = getCredits(dept, sem, subject);
-
-          html += '<tr>' +
-            '<td></td>' +
+          html += '<tr><td></td>' +
             '<td class="subject-name">' + esc(displayName(subject)) + '</td>' +
             '<td class="note-value">' + tpVal + '</td>' +
             '<td class="note-value">' + ccVal + '</td>' +
@@ -714,77 +710,59 @@
             (showSR ? '<td class="note-value">' + rattVal + '</td>' : '') +
             '<td class="note-value">' + (Math.round(r.subjectAvg[subject] * 100) / 100) + '</td>' +
             '<td>' + credit.toFixed(1) + '</td>' +
-            '<td class="badge-' + r.subjectStatus[subject] + '">' + r.subjectStatus[subject] + '</td>' +
-            '</tr>';
+            '<td class="badge-' + r.subjectStatus[subject] + '">' + r.subjectStatus[subject] + '</td></tr>';
         });
       });
 
-      html += '<tr class="total-row">' +
-        '<td colspan="' + colspanTotal + '" style="text-align:right;">Moyenne Semestre :</td>' +
-        '<td>' + r.overallAvg + '</td>' +
-        '<td></td>' +
+      html += '<tr class="total-row"><td colspan="' + colspanTotal + '" style="text-align:right;">Moyenne Semestre :</td>' +
+        '<td>' + r.overallAvg + '</td><td></td>' +
         '<td class="badge-' + (r.semesterStatus === 'Valide' ? 'V' : 'NV') + '">' +
-        (r.semesterStatus === 'Valide' ? 'V' : 'NV') + '</td>' +
-        '</tr></tbody></table></div>';
+        (r.semesterStatus === 'Valide' ? 'V' : 'NV') + '</td></tr></tbody></table></div>';
 
-      html += '<button type="button" class="pdf-btn" onclick="window.generatePDF()">Telecharger le releve PDF</button>';
-      html += '</div>';
-
+      html += '<button type="button" class="pdf-btn" onclick="window.generatePDF()">Telecharger le releve PDF</button></div>';
       return html;
     }
 
     // ==================== RENDER PARTIAL ====================
     function renderPartial(studentId, studentName, notes, dept, sem, check) {
       var availableSubjects = Object.keys(notes).sort();
-
       var html =
         '<div class="card">' +
-        '<div class="student-info">' +
-        '<div>' +
+        '<div class="student-info"><div>' +
         '<h3>' + esc(studentName || 'Etudiant') + '</h3>' +
         '<p>Numero : <strong>' + esc(studentId) + '</strong> | ' +
         'Departement : <strong>' + esc(dept) + '</strong> | ' +
         '<span class="semester-pill">' + esc(sem) + '</span></p>' +
-        '</div>' +
-        '<span class="status-pill pending">En attente</span>' +
-        '</div>';
+        '</div><span class="status-pill pending">En attente</span></div>';
 
-      html += '<div class="info-box">' +
-        '<strong>Resultats non finalises.</strong> ' +
-        check.completeCount + ' matiere(s) sur ' + check.total + ' sont completes. ' +
-        'La moyenne sera calculee des que toutes les notes seront disponibles.' +
-        '</div>';
+      html += '<div class="info-box"><strong>Resultats non finalises.</strong> ' +
+        check.completeCount + ' matiere(s) sur ' + check.total + ' sont completes.</div>';
 
       if (availableSubjects.length === 0) {
-        html += '<div class="empty-state"><p>Aucune note disponible pour le moment.</p></div>';
+        html += '<div class="empty-state"><p>Aucune note disponible.</p></div>';
       } else {
         html += '<div class="table-wrap"><table><thead><tr>' +
           '<th>Matiere</th><th>TP</th><th>CC</th><th>Examen</th><th>Rattrapage</th>' +
           '</tr></thead><tbody>';
         availableSubjects.forEach(function (subject) {
           var n = notes[subject] || {};
-          html += '<tr>' +
-            '<td class="subject-name">' + esc(displayName(subject)) + '</td>' +
+          html += '<tr><td class="subject-name">' + esc(displayName(subject)) + '</td>' +
             '<td class="note-value">' + (n['TP'] !== undefined ? n['TP'].toFixed(2) : '<span class="note-missing">-</span>') + '</td>' +
             '<td class="note-value">' + (n['Controle continu'] !== undefined ? n['Controle continu'].toFixed(2) : '<span class="note-missing">-</span>') + '</td>' +
             '<td class="note-value">' + (n['Examen'] !== undefined ? n['Examen'].toFixed(2) : '<span class="note-missing">-</span>') + '</td>' +
-            '<td class="note-value">' + (n['Rattrapage'] !== undefined ? n['Rattrapage'].toFixed(2) : '<span class="note-missing">-</span>') + '</td>' +
-            '</tr>';
+            '<td class="note-value">' + (n['Rattrapage'] !== undefined ? n['Rattrapage'].toFixed(2) : '<span class="note-missing">-</span>') + '</td></tr>';
         });
         html += '</tbody></table></div>';
       }
 
       if (check.missing.length > 0) {
         html += '<div class="missing-table">' +
-          '<h4 style="color:#dc2626; font-size:14px; margin:16px 0 8px 0;">Details des donnees manquantes</h4>' +
+          '<h4 style="color:#dc2626; font-size:14px; margin:16px 0 8px 0;">Donnees manquantes</h4>' +
           '<div class="table-wrap"><table><thead><tr>' +
-          '<th>Matiere</th><th>Element(s) manquant(s)</th>' +
-          '</tr></thead><tbody>';
+          '<th>Matiere</th><th>Element(s) manquant(s)</th></tr></thead><tbody>';
         check.missing.forEach(function (m) {
-          html += '<tr>' +
-            '<td class="subject-name">' + esc(displayName(m.subject)) + '</td>' +
-            '<td style="color:#dc2626; font-weight:600;">' + m.missing.join(', ') + '</td>' +
-            '</tr>';
+          html += '<tr><td class="subject-name">' + esc(displayName(m.subject)) + '</td>' +
+            '<td style="color:#dc2626; font-weight:600;">' + m.missing.join(', ') + '</td></tr>';
         });
         html += '</tbody></table></div></div>';
       }
@@ -796,24 +774,18 @@
     // ==================== PDF ====================
     window.generatePDF = function () {
       if (!pdfState) { alert('Donnees non disponibles'); return; }
-
-      var notes = pdfState.notes;
-      var results = pdfState.results;
-      var studentId = pdfState.studentId;
-      var studentName = pdfState.studentName;
-      var dept = pdfState.dept;
-      var sem = pdfState.sem;
+      var notes = pdfState.notes, results = pdfState.results;
+      var studentId = pdfState.studentId, studentName = pdfState.studentName;
+      var dept = pdfState.dept, sem = pdfState.sem;
       var showSR = results.hasSR;
       var year = new Date().getFullYear();
       var academicYear = (year - 1) + '-' + year;
 
-      var html =
-        '<div style="padding:15mm 10mm; font-family:Arial,Helvetica,sans-serif; font-size:11pt;">' +
+      var html = '<div style="padding:15mm 10mm; font-family:Arial,sans-serif; font-size:11pt;">' +
         '<div style="font-weight:bold; font-size:13pt;">Ecole Superieure d\'Agronomie de Villeneuve (ESAV)</div>' +
         '<div style="display:flex; justify-content:space-between; margin-top:10px;">' +
         '<span style="font-weight:bold; font-size:14pt;">Releve de notes - ' + esc(sem) + ' - ' + esc(dept) + '</span>' +
-        '<span>Annee : ' + academicYear + '</span>' +
-        '</div>' +
+        '<span>Annee : ' + academicYear + '</span></div>' +
         '<table style="width:100%; border-collapse:collapse; border:1px solid #000; font-size:10pt; margin-top:12px;">' +
         '<thead><tr style="background:#e6f4f9;">' +
         '<th style="border:1px solid #000; padding:5px;">Module</th>' +
@@ -824,26 +796,21 @@
         (showSR ? '<th style="border:1px solid #000; padding:5px;">SR</th>' : '') +
         '<th style="border:1px solid #000; padding:5px;">Moy</th>' +
         '<th style="border:1px solid #000; padding:5px;">Credit</th>' +
-        '<th style="border:1px solid #000; padding:5px;">Obs</th>' +
-        '</tr></thead><tbody>' +
+        '<th style="border:1px solid #000; padding:5px;">Obs</th></tr></thead><tbody>' +
         '<tr style="background:#f8fafc; font-weight:bold;">' +
-        '<td colspan="2" style="border:1px solid #000; padding:5px; text-align:left;">' +
-        esc(studentId) + ' - ' + esc(studentName) + '</td>' +
-        '<td colspan="' + (showSR ? 7 : 6) + '" style="border:1px solid #000; padding:5px;"></td>' +
-        '</tr>';
+        '<td colspan="2" style="border:1px solid #000; padding:5px;">' + esc(studentId) + ' - ' + esc(studentName) + '</td>' +
+        '<td colspan="' + (showSR ? 7 : 6) + '" style="border:1px solid #000; padding:5px;"></td></tr>';
 
       Object.keys(results.modules).forEach(function (modKey) {
         var mod = results.modules[modKey];
         var modLabel = modKey.replace(/_[A-Z]+$/, '');
         html += '<tr style="background:#e6f4f9; font-weight:bold;">' +
           '<td style="border:1px solid #000; padding:4px;">' + esc(modLabel) + '</td>' +
-          '<td style="border:1px solid #000; padding:4px; text-align:left;">' + esc(mod.name || '') + '</td>' +
+          '<td style="border:1px solid #000; padding:4px;">' + esc(mod.name || '') + '</td>' +
           '<td colspan="' + (showSR ? 4 : 3) + '" style="border:1px solid #000; padding:4px;"></td>' +
           '<td style="border:1px solid #000; padding:4px;">' + (Math.round(results.moduleAvg[modKey] * 100) / 100) + '</td>' +
           '<td style="border:1px solid #000; padding:4px;">' + results.moduleCredits[modKey].toFixed(1) + '</td>' +
-          '<td style="border:1px solid #000; padding:4px;">' + results.moduleStatus[modKey] + '</td>' +
-          '</tr>';
-
+          '<td style="border:1px solid #000; padding:4px;">' + results.moduleStatus[modKey] + '</td></tr>';
         (mod.subjects || []).forEach(function (subject) {
           var n = notes[subject] || {};
           var tpVal = hasTP(subject) && n['TP'] !== undefined ? n['TP'].toFixed(2) : '';
@@ -851,18 +818,15 @@
           var examVal = n['Examen'] !== undefined ? n['Examen'].toFixed(2) : '';
           var rattVal = n['Rattrapage'] !== undefined ? n['Rattrapage'].toFixed(2) : '';
           var credit = getCredits(dept, sem, subject);
-
-          html += '<tr>' +
-            '<td style="border:1px solid #000; padding:3px;"></td>' +
-            '<td style="border:1px solid #000; padding:3px; text-align:left; padding-left:15px;">' + esc(displayName(subject)) + '</td>' +
+          html += '<tr><td style="border:1px solid #000; padding:3px;"></td>' +
+            '<td style="border:1px solid #000; padding:3px; padding-left:15px;">' + esc(displayName(subject)) + '</td>' +
             '<td style="border:1px solid #000; padding:3px; text-align:center;">' + tpVal + '</td>' +
             '<td style="border:1px solid #000; padding:3px; text-align:center;">' + ccVal + '</td>' +
             '<td style="border:1px solid #000; padding:3px; text-align:center;">' + examVal + '</td>' +
             (showSR ? '<td style="border:1px solid #000; padding:3px; text-align:center;">' + rattVal + '</td>' : '') +
             '<td style="border:1px solid #000; padding:3px; text-align:center; font-weight:bold;">' + (Math.round(results.subjectAvg[subject] * 100) / 100) + '</td>' +
             '<td style="border:1px solid #000; padding:3px; text-align:center;">' + credit.toFixed(1) + '</td>' +
-            '<td style="border:1px solid #000; padding:3px; text-align:center;">' + results.subjectStatus[subject] + '</td>' +
-            '</tr>';
+            '<td style="border:1px solid #000; padding:3px; text-align:center;">' + results.subjectStatus[subject] + '</td></tr>';
         });
       });
 
@@ -871,28 +835,23 @@
         '<td colspan="' + colspanTotal + '" style="border:none; padding:8px 4px; text-align:right;">Moyenne Semestre :</td>' +
         '<td style="border:none; padding:8px 4px; text-align:center;">' + results.overallAvg + '</td>' +
         '<td style="border:none;"></td>' +
-        '<td style="border:none; padding:8px 4px; text-align:center;">' + results.semesterStatus + '</td>' +
-        '</tr></tbody></table></div>';
+        '<td style="border:none; padding:8px 4px; text-align:center;">' + results.semesterStatus + '</td></tr>' +
+        '</tbody></table></div>';
 
       var el = document.createElement('div');
       el.innerHTML = html;
       document.body.appendChild(el);
-
       html2pdf().set({
         margin: [0, 5, 5, 5],
         filename: 'Releve_' + studentId + '_' + dept + '_' + sem + '.pdf',
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2, letterRendering: true, scrollY: 0 },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      }).from(el).save().then(function () {
-        document.body.removeChild(el);
-      });
+      }).from(el).save().then(function () { document.body.removeChild(el); });
     };
 
     // ==================== INIT ====================
-    loadStructure().then(function () {
-      console.log('Pret.');
-    });
+    if (db) loadStructure();
 
   })();
   </script>
