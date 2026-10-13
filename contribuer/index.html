@@ -61,7 +61,7 @@
       .contrib-header .container {
         max-width: 1100px;
         margin: 0 auto;
-        padding: 16px 20px;
+        /* padding: 16px 20px; */
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -425,10 +425,24 @@
   <body>
     <header class="contrib-header">
       <div class="container">
-        <a href="index.html" class="logo" id="contribLogo">
+        <a class="logo" id="contribLogo">
           <span class="logo-text">ESAVweb</span>
         </a>
-        <a href="index.html" class="contrib-back">Retour a l'accueil</a>
+        <!-- contrib-back -->
+        <nav>
+          <ul>
+            <li>
+              <!-- TODO : remplacer LIEN par l'adresse de la page d'accueil -->
+              <button
+                type="button"
+                class="contrib-back"
+                onclick="window.location.href = '../archive/index.html'"
+              >
+                Accueil
+              </button>
+            </li>
+          </ul>
+        </nav>
       </div>
     </header>
 
