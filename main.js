@@ -295,6 +295,15 @@ function subjectsOfSem(p, sem) {
   return p.year === "L1" ? FIXED[sem] || [] : subjectsFor(sem + "-" + p.dept);
 }
 
+function showResultsMessage() {
+  const message = document.getElementById("resultsMessage");
+  message.classList.toggle("show");
+
+  setTimeout(function () {
+    message.classList.remove("show");
+  }, 1500);
+}
+
 function chooseYear(y) {
   if (y === "L1") return finishSetup("L1", "");
   setupYear = y;

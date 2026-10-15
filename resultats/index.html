@@ -7,6 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="../style.css">
     <link
       href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700;800&family=Poppins:wght@400;500;600&display=swap"
       rel="stylesheet"
@@ -59,65 +60,7 @@
       .main-content {
         flex: 1 0 auto;
       }
-      .container {
-        max-width: 1100px;
-        margin: 0 auto;
-        padding: 20px;
-      }
-
-      /* ---------- Header / navbar (style eduweb) ---------- */
-      header {
-        background: white;
-        box-shadow: var(--shadow-1);
-      }
-      header .container {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        padding-top: 12px;
-        padding-bottom: 12px;
-      }
-      .brand {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-      .brand-logo {
-        height: var(--logo-height);
-        width: auto;
-        display: block;
-      }
-      header h1 .dot {
-        color: var(--kappel);
-      }
-      header h1 {
-        font-family: var(--ff-head);
-        font-size: 23px;
-        font-weight: 600;
-        line-height: 1;
-        color: var(--eerie);
-      }
-      header nav ul {
-        list-style: none;
-        display: flex;
-        align-items: center;
-        gap: 30px;
-      }
-      .nav-link {
-        background: none;
-        border: none;
-        padding-block: 8px;
-        color: var(--eerie);
-        font-family: var(--ff-body);
-        font-size: 16px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: var(--transition-1);
-      }
-      .nav-link:is(:hover, :focus) {
-        color: var(--kappel);
-      }
+      
 
       /* ---------- Annonce ---------- */
       .annonce-container {
@@ -400,9 +343,6 @@
         .nav-link {
           font-size: 15px;
         }
-        .container {
-          padding: 14px;
-        }
         .result-card {
           padding: 22px 14px;
         }
@@ -424,28 +364,33 @@
     </style>
   </head>
   <body>
-    <header>
+    <header class="header">
       <div class="container">
-        <div class="brand" id="brand">
-          <h1>ESAVweb<span class="dot">.</span></h1>
-        </div>
-        <nav>
-          <ul>
-            <li>
-              <!-- TODO : remplacer LIEN par l'adresse de la page d'accueil -->
-              <button
-                type="button"
-                class="nav-link"
-                onclick="location.href = '../index.html'"
-              >
-                Accueil
-              </button>
-            </li>
+        <a
+          class="logo"
+          id="logo"
+          
+        >
+          <span class="logo-text">ESAVweb</span>
+        </a>
+
+        <div class="header-right">
+          <nav aria-label="Navigation principale">
+            <ul class="navbar-list">
+              <li>
+                <button
+                  type="button"
+                  class="navbar-link active"
+                  id="navHome"
+                  onclick="location.href ='../index.html'"
+                >
+                  Accueil
+                </button>
+              </li>
           </ul>
         </nav>
       </div>
     </header>
-
     <div class="main-content">
       <div class="container">
         <div id="annonceContainer" class="annonce-container"></div>

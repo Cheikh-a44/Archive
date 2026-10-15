@@ -50,9 +50,21 @@
                 <button
                   type="button"
                   class="navbar-link"
-                  onclick="location.href = '../resultats/index.html'"
+                  onclick="showResultsMessage()"
                 >
                   Resultats
+                </button>
+                <div id="resultsMessage" class="popup">
+                  pas encore disponible
+                </div>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  class="navbar-link"
+                  onclick="scrollToContact()"
+                >
+                  Contact
                 </button>
               </li>
             </ul>
@@ -80,7 +92,7 @@
     <footer class="footer" id="contact">
       <div class="container footer-top">
         <div class="footer-brand">
-          <div class="logo"><span class="logo-text">ESAVweb</span></div>
+          <div class="logo"><span class="footer-logo-text">ESAVweb</span></div>
           <p>
             Cours, TD, devoirs et examens, organisés par semestre et par
             matière.

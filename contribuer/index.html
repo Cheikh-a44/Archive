@@ -10,6 +10,7 @@
     <meta name="description" content="Contribuez un fichier a ESAV." />
     <link rel="stylesheet" href="style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="stylesheet" href="../style.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700;800&family=Poppins:wght@400;500&display=swap"
@@ -423,24 +424,29 @@
     </style>
   </head>
   <body>
-    <header class="contrib-header">
+    <header class="header">
       <div class="container">
-        <a class="logo" id="contribLogo">
+        <a
+          class="logo"
+          id="logo"
+          
+        >
           <span class="logo-text">ESAVweb</span>
         </a>
-        <!-- contrib-back -->
-        <nav>
-          <ul>
-            <li>
-              <!-- TODO : remplacer LIEN par l'adresse de la page d'accueil -->
-              <button
-                type="button"
-                class="contrib-back"
-                onclick="window.location.href = '../index.html'"
-              >
-                Accueil
-              </button>
-            </li>
+
+        <div class="header-right">
+          <nav aria-label="Navigation principale">
+            <ul class="navbar-list">
+              <li>
+                <button
+                  type="button"
+                  class="navbar-link active"
+                  id="navHome"
+                  onclick="location.href ='../index.html'"
+                >
+                  Accueil
+                </button>
+              </li>
           </ul>
         </nav>
       </div>
@@ -616,6 +622,7 @@
     </script>
 
     <script src="config.js"></script>
+
 
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
