@@ -494,15 +494,6 @@ function scrollToContact() {
   if (el) el.scrollIntoView({ behavior: "smooth" });
 }
 
-function openWhatsApp() {
-  window.open(
-    "https://wa.me/22237635859?text=" +
-      encodeURIComponent("Bonjour, je souhaite contribuer à ESAV"),
-    "_blank",
-    "noopener",
-  );
-}
-
 function nodeToList(node, subjectLabel) {
   const out = [];
   if (!node) return out;
@@ -938,6 +929,7 @@ function render() {
   }
 
   const el = document.getElementById("content");
+  if (!el) return;
   if (isLoading) {
     el.innerHTML = '<div class="empty">Chargement...</div>';
     return;
@@ -960,24 +952,27 @@ function render() {
 
 const contentEl = document.getElementById("content");
 
-contentEl.addEventListener("click", function (e) {
-  const t = e.target.closest("[data-act]");
-  if (!t) return;
-  e.stopPropagation();
-  const f = viewList[Number(t.dataset.i)];
-  if (!f || !f.url) return;
-  window.open(
-    t.dataset.act === "download" ? driveDownload(f.url) : drivePreview(f.url),
-    "_blank",
-    "noopener",
-  );
-});
+if (contentEl) {
+  contentEl.addEventListener("click", function (e) {
+    const t = e.target.closest("[data-act]");
+    if (!t) return;
+    e.stopPropagation();
+    const f = viewList[Number(t.dataset.i)];
+    if (!f || !f.url) return;
+    window.open(
+      t.dataset.act === "download" ? driveDownload(f.url) : drivePreview(f.url),
+      "_blank",
+      "noopener",
+    );
+  });
+}
 
-document
-  .getElementById("profileDropdown")
-  .addEventListener("click", function (e) {
+const profileDropdown = document.getElementById("profileDropdown");
+if (profileDropdown) {
+  profileDropdown.addEventListener("click", function (e) {
     e.stopPropagation();
   });
+}
 document.addEventListener("click", closeProfileMenu);
 document.addEventListener("keydown", function (e) {
   if (e.key === "Escape") closeProfileMenu();
@@ -1004,7 +999,6 @@ window.toggleProfileMenu = toggleProfileMenu;
 window.menuYear = menuYear;
 window.menuDept = menuDept;
 window.menuBack = menuBack;
-window.openWhatsApp = openWhatsApp;
 window.clearError = clearError;
 window.scrollToContact = scrollToContact;
 
@@ -1018,5 +1012,6 @@ try {
   render();
 } catch (e) {
   console.error(e);
-  contentEl.innerHTML = '<div class="empty">' + esc(e.message) + "</div>";
+  if (contentEl)
+    contentEl.innerHTML = '<div class="empty">' + esc(e.message) + "</div>";
 }

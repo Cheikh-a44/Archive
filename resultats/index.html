@@ -2,16 +2,23 @@
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ESAVweb-Resultats</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <title>Résultats — ESAVweb — Plateforme académique</title>
+    <meta
+      name="description"
+      content="Consultez vos résultats académiques par semestre et par matière."
+    />
+    <link rel="stylesheet" href="../style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="../style.css">
     <link
-      href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700;800&family=Poppins:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700;800&family=Poppins:wght@400;500&display=swap"
       rel="stylesheet"
     />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
       :root {
         --kappel: hsl(170, 75%, 41%);
@@ -369,7 +376,10 @@
         <a
           class="logo"
           id="logo"
-          
+          onclick="location.href='../index.html'"
+          role="button"
+          tabindex="0"
+          aria-label="ESAV accueil"
         >
           <span class="logo-text">ESAVweb</span>
         </a>
@@ -382,13 +392,14 @@
                   type="button"
                   class="navbar-link active"
                   id="navHome"
-                  onclick="location.href ='../index.html'"
+                  onclick="location.href='../index.html'"
                 >
                   Accueil
                 </button>
               </li>
-          </ul>
-        </nav>
+            </ul>
+          </nav>
+        </div>
       </div>
     </header>
     <div class="main-content">
@@ -433,26 +444,27 @@
     </div>
 
     <footer class="footer">
-      <p>© 2026 ESAVweb</p>
+      <div class="container">
+        <div class="footer-brand">
+          <div class="logo"><span class="footer-logo-text">ESAVweb</span></div>
+        </div>
+        <ul class="footer-list">
+          <li>
+            <button type="button" class="footer-link" onclick="location.href='../index.html'">
+              Accueil
+            </button>
+          </li>
+        </ul>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 ESAVweb — Tous droits réservés</p>
+      </div>
     </footer>
 
-    <script src="images.js"></script>
+    <script src="../images.js"></script>
+    <script src="../main.js"></script>
     <script>
-      // Logo : affiché à côté du nom seulement si IMAGES.logo est renseigné dans images.js.
-      // Vide ou fichier introuvable => rien n'est affiché (aucun espace réservé).
-      (function () {
-        try {
-          if (typeof IMAGES === "undefined" || !IMAGES.logo) return;
-          var img = new Image();
-          img.className = "brand-logo";
-          img.alt = "ESAVweb";
-          img.onerror = function () {
-            img.remove();
-          };
-          img.src = IMAGES.logo;
-          document.getElementById("brand").prepend(img);
-        } catch (e) {}
-      })();
+      applyLogo();
     </script>
     <script src="firebase-config.js"></script>
     <script src="credits.js"></script>
