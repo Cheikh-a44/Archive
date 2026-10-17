@@ -263,6 +263,7 @@ let menuStep = "";
 
 const subjectCache = {};
 let allCache = null;
+let totalFilesCount = null;
 
 function getProfile() {
   try {
@@ -489,9 +490,113 @@ function setFilter(val) {
   render();
 }
 
-function scrollToContact() {
-  const el = document.getElementById("contact");
+function scrollToAbout() {
+  if (!document.getElementById("about")) {
+    go("home");
+    setTimeout(function () {
+      const el = document.getElementById("about");
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    }, 80);
+    return;
+  }
+  const el = document.getElementById("about");
   if (el) el.scrollIntoView({ behavior: "smooth" });
+}
+
+function aboutSection() {
+  return (
+    '<section class="section about" id="about"><div class="container">' +
+    '<p class="section-subtitle">À propos</p>' +
+    '<h2 class="h2 section-title">À propos de <span class="span">ESAVweb</span></h2>' +
+    '<p class="about-text">' +
+    "Cette plateforme a été créée par un étudiant de l'ESAV, avec l'aide de quelques étudiants, pour rassembler les cours, TD, devoirs et examens des années précédentes." +
+    "</p>" +
+    '<div class="about-stats"><div class="stat">' +
+    '<div class="stat-circle">' +
+    '<span class="stat-prefix">plus de</span>' +
+    '<span class="stat-number" id="fileCount">0</span>' +
+    "</div>" +
+    '<span class="stat-label">fichiers disponibles</span>' +
+    "</div></div>" +
+    "</div></section>"
+  );
+}
+
+function countFiles(data) {
+  let total = 0;
+  if (!data) return total;
+  Object.keys(data).forEach(function (sk) {
+    const sd = data[sk];
+    if (sk === "GEM") {
+      Object.keys(sd || {}).forEach(function (aspect) {
+        total += nodeToList(sd[aspect], "").length;
+      });
+    } else {
+      total += nodeToList(sd, "").length;
+    }
+  });
+  return total;
+}
+
+async function getTotalFiles() {
+  if (totalFilesCount !== null) return totalFilesCount;
+  try {
+    const data = await loadAll();
+    totalFilesCount = countFiles(data);
+  } catch (e) {
+    totalFilesCount = 0;
+  }
+  return totalFilesCount;
+}
+
+function animateCount(el, target) {
+  if (!target) {
+    el.textContent = "0";
+    return;
+  }
+  const duration = 1600;
+  const startTime = performance.now();
+  function frame(now) {
+    const p = Math.min((now - startTime) / duration, 1);
+    const eased = 1 - Math.pow(1 - p, 3);
+    if (p < 1) {
+      el.textContent = Math.round(target * eased).toLocaleString("fr-FR");
+      requestAnimationFrame(frame);
+    } else {
+      el.textContent = target.toLocaleString("fr-FR");
+    }
+  }
+  requestAnimationFrame(frame);
+}
+
+async function initAboutCounter() {
+  let el = document.getElementById("fileCount");
+  if (!el) return;
+  const target = await getTotalFiles();
+  el = document.getElementById("fileCount");
+  if (!el || el.dataset.animated) return;
+  el.dataset.target = String(target);
+  function start() {
+    if (el.dataset.animated) return;
+    el.dataset.animated = "1";
+    animateCount(el, target);
+  }
+  if ("IntersectionObserver" in window) {
+    const obs = new IntersectionObserver(
+      function (entries, o) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            start();
+            o.disconnect();
+          }
+        });
+      },
+      { rootMargin: "0px 0px 40px 0px", threshold: 0 },
+    );
+    obs.observe(el);
+  } else {
+    start();
+  }
 }
 
 function nodeToList(node, subjectLabel) {
@@ -727,7 +832,7 @@ function renderSetup() {
         "</span></button></li>";
     });
   }
-  return h + "</ul></div></section>";
+  return h + "</ul></div></section>" + aboutSection();
 }
 
 function subjectCard(s, i, sem) {
@@ -809,6 +914,7 @@ function renderHome() {
   }
   h +=
     "</div></section>" +
+    aboutSection() +
     '<section class="section cta"><div class="container"><div class="box"><div>' +
     '<h3 class="h3">Vous avez un fichier à partager ?</h3>' +
     "<p></p></div>" +
@@ -948,6 +1054,7 @@ function render() {
   else if (s === "filesList") el.innerHTML = renderFiles(false);
   else if (s === "searchResults") el.innerHTML = renderFiles(true);
   else el.innerHTML = renderHome();
+  if (document.getElementById("fileCount")) initAboutCounter();
 }
 
 const contentEl = document.getElementById("content");
@@ -1000,7 +1107,7 @@ window.menuYear = menuYear;
 window.menuDept = menuDept;
 window.menuBack = menuBack;
 window.clearError = clearError;
-window.scrollToContact = scrollToContact;
+window.scrollToAbout = scrollToAbout;
 
 applyLogo();
 

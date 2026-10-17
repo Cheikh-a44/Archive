@@ -202,7 +202,7 @@ main {
   justify-content: space-between;
   align-items: center;
   padding: 12px 8px;
-  border-bottom: 3px solid rgba(192, 4, 4, 0.884);
+  border-bottom: 3px solid var(--kappel);
   box-sizing: border-box;
   box-shadow: var(--shadow-1);
 }
@@ -425,6 +425,62 @@ main {
 }
 .cta p {
   font-size: var(--fs-5);
+}
+
+.about {
+  background: var(--isabelline);
+}
+.about .container {
+  max-width: 800px;
+}
+.about-text {
+  font-size: var(--fs-5);
+  text-align: center;
+  color: var(--eerie-black-1);
+  margin-block: 15px 34px;
+}
+.about-stats {
+  display: flex;
+  justify-content: center;
+}
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.stat-circle {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: var(--gradient);
+  box-shadow: var(--shadow-3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  color: var(--white);
+}
+.stat-prefix {
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: rgba(255, 255, 255, 0.88);
+}
+.stat-number {
+  font-family: var(--ff-league_spartan);
+  font-size: 5.2rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--white);
+}
+.stat-label {
+  display: block;
+  margin-top: 14px;
+  font-size: var(--fs-5);
+  letter-spacing: 0.5px;
+  color: var(--gray-web);
 }
 
 .files-section {
@@ -723,7 +779,7 @@ main {
     padding: 12px 28px;
   }
   .footer-top {
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 2fr 1fr;
   }
   .navbar-link {
     font-size: 1.5rem;
